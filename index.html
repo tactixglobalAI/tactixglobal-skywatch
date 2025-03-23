@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drone Detection C2 Interface</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    
+    /* Password Screen Styles */
+    #passwordScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #1E2431;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .password-container {
+      background-color: #272E3F;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .password-container h2 {
+      color: white;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    
+    .password-container p {
+      color: #AAAAAA;
+      margin-bottom: 25px;
+    }
+    
+    #passwordInput {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    #submitButton {
+      background-color: #3F88C5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #submitButton:hover {
+      background-color: #2D6DA3;
+    }
+    
+    #errorMessage {
+      color: #FF5722;
+      margin-top: 15px;
+      display: none;
+    }
+    
+    /* Content Styles */
+    #content {
+      display: none;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .svg-container {
+      width: 100%;
+      overflow: auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Password Protection Screen -->
+  <div id="passwordScreen">
+    <div class="password-container">
+      <h2>Drone Detection Interface</h2>
+      <p>This content is password protected.</p>
+      <input type="password" id="passwordInput" placeholder="Enter password" onkeyup="checkEnter(event)">
+      <button id="submitButton" onclick="checkPassword()">Access Interface</button>
+      <div id="errorMessage">Incorrect password. Please try again.</div>
+    </div>
+  </div>
+  
+  <!-- Main Content (Hidden until password is entered) -->
+  <div id="content">
+    <div class="header">
+      <h1>Drone Detection C2 Interface</h1>
+    </div>
+    <div class="svg-container">
+      <!-- SVG Content -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+        <!-- Background -->
+        <rect width="1200" height="800" fill="#1E2431" />
+      
+        <!-- Top Bar -->
+        <rect x="0" y="0" width="1200" height="50" fill="#272E3F" />
+        <text x="20" y="30" font-family="Arial" font-size="18" fill="#FFFFFF">DRONE DETECTION SYSTEM</text>
+        
+        <!-- System Status Indicators -->
+        <circle cx="1050" cy="25" r="8" fill="#4CAF50" />
+        <text x="1065" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">SYSTEM ONLINE</text>
+        <circle cx="1150" cy="25" r="8" fill="#FF5722" />
+        <text x="1080" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">|</text>
+        <text x="1095" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">3 ALERTS</text>
+      
+        <!-- Left Control Panel -->
+        <rect x="10" y="60" width="240" height="730" fill="#272E3F" rx="5" />
+        <text x="20" y="85" font-family="Arial" font-size="16" fill="#FFFFFF">CONTROL PANEL</text>
+        
+        <!-- Sensor Status -->
+        <rect x="20" y="100" width="220" height="130" fill="#1E2431" rx="5" />
+        <text x="30" y="120" font-family="Arial" font-size="14" fill="#AAAAAA">SENSOR STATUS</text>
+        <circle cx="40" cy="145" r="6" fill="#4CAF50" />
+        <text x="55" y="150" font-family="Arial" font-size="14" fill="#FFFFFF">SENSOR 1 (NORTH) - ACTIVE</text>
+        <circle cx="40" cy="170" r="6" fill="#4CAF50" />
+        <text x="55" y="175" font-family="Arial" font-size="14" fill="#FFFFFF">SENSOR 2 (EAST) - ACTIVE</text>
+        <circle cx="40" cy="195" r="6" fill="#4CAF50" />
+        <text x="55" y="200" font-family="Arial" font-size="14" fill="#FFFFFF">SENSOR 3 (WEST) - ACTIVE</text>
+        <circle cx="40" cy="220" r="6" fill="#FF5722" />
+        <text x="55" y="225" font-family="Arial" font-size="14" fill="#FFFFFF">SENSOR 4 (SOUTH) - OFFLINE</text>
+        
+        <!-- Detection Settings -->
+        <rect x="20" y="245" width="220" height="170" fill="#1E2431" rx="5" />
+        <text x="30" y="265" font-family="Arial" font-size="14" fill="#AAAAAA">DETECTION SETTINGS</text>
+        
+        <text x="30" y="295" font-family="Arial" font-size="14" fill="#FFFFFF">Sensitivity</text>
+        <rect x="30" y="305" width="200" height="10" fill="#333333" rx="5" />
+        <rect x="30" y="305" width="140" height="10" fill="#3F88C5" rx="5" />
+        <circle cx="170" cy="310" r="8" fill="#FFFFFF" />
+        
+        <text x="30" y="335" font-family="Arial" font-size="14" fill="#FFFFFF">Range (km)</text>
+        <rect x="30" y="345" width="200" height="10" fill="#333333" rx="5" />
+        <rect x="30" y="345" width="120" height="10" fill="#3F88C5" rx="5" />
+        <circle cx="150" cy="350" r="8" fill="#FFFFFF" />
+        
+        <text x="30" y="375" font-family="Arial" font-size="14" fill="#FFFFFF">Alert Threshold</text>
+        <rect x="30" y="385" width="200" height="10" fill="#333333" rx="5" />
+        <rect x="30" y="385" width="100" height="10" fill="#3F88C5" rx="5" />
+        <circle cx="130" cy="390" r="8" fill="#FFFFFF" />
+        
+        <!-- Environment Selection -->
+        <rect x="20" y="430" width="220" height="120" fill="#1E2431" rx="5" />
+        <text x="30" y="450" font-family="Arial" font-size="14" fill="#AAAAAA">ENVIRONMENT PRESET</text>
+        <rect x="30" y="465" width="200" height="30" fill="#3F88C5" rx="5" />
+        <text x="80" y="485" font-family="Arial" font-size="14" fill="#FFFFFF">URBAN</text>
+        <rect x="30" y="505" width="200" height="30" fill="#1E2431" rx="5" stroke="#555555" />
+        <text x="80" y="525" font-family="Arial" font-size="14" fill="#AAAAAA">RURAL</text>
+        
+        <!-- Countermeasures -->
+        <rect x="20" y="565" width="220" height="90" fill="#1E2431" rx="5" />
+        <text x="30" y="585" font-family="Arial" font-size="14" fill="#AAAAAA">COUNTERMEASURES</text>
+        <rect x="30" y="600" width="200" height="40" fill="#FF5722" rx="5" />
+        <text x="75" y="625" font-family="Arial" font-weight="bold" font-size="14" fill="#FFFFFF">ACTIVATE</text>
+        
+        <!-- Mode Switch -->
+        <rect x="20" y="670" width="220" height="100" fill="#1E2431" rx="5" />
+        <text x="30" y="690" font-family="Arial" font-size="14" fill="#AAAAAA">OPERATION MODE</text>
+        <rect x="30" y="705" width="95" height="40" fill="#3F88C5" rx="5" />
+        <text x="42" y="730" font-family="Arial" font-size="14" fill="#FFFFFF">DETECTION</text>
+        <rect x="135" y="705" width="95" height="40" fill="#1E2431" rx="5" stroke="#555555" />
+        <text x="141" y="730" font-family="Arial" font-size="14" fill="#AAAAAA">S&amp;R MODE</text>
+        
+        <!-- Right Detection Panel -->
+        <rect x="950" y="60" width="240" height="380" fill="#272E3F" rx="5" />
+        <text x="960" y="85" font-family="Arial" font-size="16" fill="#FFFFFF">ACTIVE DETECTIONS</text>
+        
+        <!-- Detection Items -->
+        <rect x="960" y="100" width="220" height="80" fill="#FF5722" rx="5" />
+        <text x="970" y="120" font-family="Arial" font-size="16" font-weight="bold" fill="#FFFFFF">DJI Mavic Pro</text>
+        <text x="970" y="140" font-family="Arial" font-size="14" fill="#FFFFFF">Distance: 1.2 km</text>
+        <text x="970" y="160" font-family="Arial" font-size="14" fill="#FFFFFF">Bearing: 47° NE</text>
+        <text x="1090" y="125" font-family="Arial" font-size="14" fill="#FFFFFF">95%</text>
+        <text x="1090" y="150" font-family="Arial" font-size="14" fill="#FFFFFF">12:43:18</text>
+        
+        <rect x="960" y="190" width="220" height="80" fill="#3F88C5" rx="5" />
+        <text x="970" y="210" font-family="Arial" font-size="16" font-weight="bold" fill="#FFFFFF">Autel Evo</text>
+        <text x="970" y="230" font-family="Arial" font-size="14" fill="#FFFFFF">Distance: 2.8 km</text>
+        <text x="970" y="250" font-family="Arial" font-size="14" fill="#FFFFFF">Bearing: 210° SW</text>
+        <text x="1090" y="215" font-family="Arial" font-size="14" fill="#FFFFFF">82%</text>
+        <text x="1090" y="240" font-family="Arial" font-size="14" fill="#FFFFFF">12:41:05</text>
+        
+        <rect x="960" y="280" width="220" height="80" fill="#3F88C5" rx="5" />
+        <text x="970" y="300" font-family="Arial" font-size="16" font-weight="bold" fill="#FFFFFF">Unknown</text>
+        <text x="970" y="320" font-family="Arial" font-size="14" fill="#FFFFFF">Distance: 3.5 km</text>
+        <text x="970" y="340" font-family="Arial" font-size="14" fill="#FFFFFF">Bearing: 315° NW</text>
+        <text x="1090" y="305" font-family="Arial" font-size="14" fill="#FFFFFF">67%</text>
+        <text x="1090" y="330" font-family="Arial" font-size="14" fill="#FFFFFF">12:38:52</text>
+        
+        <!-- Signal Details -->
+        <rect x="950" y="450" width="240" height="340" fill="#272E3F" rx="5" />
+        <text x="960" y="475" font-family="Arial" font-size="16" fill="#FFFFFF">SIGNAL DETAILS</text>
+        
+        <rect x="960" y="490" width="220" height="290" fill="#1E2431" rx="5" />
+        
+        <text x="970" y="510" font-family="Arial" font-size="14" fill="#FFFFFF">Selected: DJI Mavic Pro</text>
+        <line x1="970" y1="520" x2="1170" y2="520" stroke="#555555" />
+        
+        <text x="970" y="540" font-family="Arial" font-size="14" fill="#AAAAAA">Frequency:</text>
+        <text x="1050" y="540" font-family="Arial" font-size="14" fill="#FFFFFF">2.4 GHz</text>
+        
+        <text x="970" y="565" font-family="Arial" font-size="14" fill="#AAAAAA">Protocol:</text>
+        <text x="1050" y="565" font-family="Arial" font-size="14" fill="#FFFFFF">OcuSync 2.0</text>
+        
+        <text x="970" y="590" font-family="Arial" font-size="14" fill="#AAAAAA">Signal Strength:</text>
+        <rect x="1050" y="580" width="120" height="10" fill="#333333" rx="5" />
+        <rect x="1050" y="580" width="95" height="10" fill="#FF5722" rx="5" />
+        
+        <text x="970" y="615" font-family="Arial" font-size="14" fill="#AAAAAA">First Detected:</text>
+        <text x="1070" y="615" font-family="Arial" font-size="14" fill="#FFFFFF">12:37:22</text>
+        
+        <text x="970" y="640" font-family="Arial" font-size="14" fill="#AAAAAA">Flight Time:</text>
+        <text x="1070" y="640" font-family="Arial" font-size="14" fill="#FFFFFF">5m 56s</text>
+        
+        <text x="970" y="670" font-family="Arial" font-size="16" fill="#FFFFFF">Actions:</text>
+        <rect x="970" y="680" width="100" height="30" fill="#3F88C5" rx="5" />
+        <text x="990" y="700" font-family="Arial" font-size="14" fill="#FFFFFF">TRACK</text>
+        
+        <rect x="1080" y="680" width="100" height="30" fill="#FF5722" rx="5" />
+        <text x="1100" y="700" font-family="Arial" font-size="14" fill="#FFFFFF">COUNTER</text>
+        
+        <rect x="970" y="720" width="210" height="30" fill="#272E3F" rx="5" stroke="#555555" />
+        <text x="1025" y="740" font-family="Arial" font-size="14" fill="#FFFFFF">EXPORT DATA</text>
+        
+        <!-- Main Map View -->
+        <rect x="260" y="60" width="680" height="500" fill="#1A2334" rx="5" />
+        
+        <!-- Map Elements -->
+        <!-- Topographic Base Map (simplified representation) -->
+        <rect x="260" y="60" width="680" height="500" fill="#263238" rx="5" />
+        
+        <!-- Grid lines -->
+        <line x1="310" y1="60" x2="310" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="410" y1="60" x2="410" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="510" y1="60" x2="510" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="610" y1="60" x2="610" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="710" y1="60" x2="710" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="810" y1="60" x2="810" y2="560" stroke="#37474F" stroke-width="1" />
+        <line x1="910" y1="60" x2="910" y2="560" stroke="#37474F" stroke-width="1" />
+        
+        <line x1="260" y1="110" x2="940" y2="110" stroke="#37474F" stroke-width="1" />
+        <line x1="260" y1="210" x2="940" y2="210" stroke="#37474F" stroke-width="1" />
+        <line x1="260" y1="310" x2="940" y2="310" stroke="#37474F" stroke-width="1" />
+        <line x1="260" y1="410" x2="940" y2="410" stroke="#37474F" stroke-width="1" />
+        <line x1="260" y1="510" x2="940" y2="510" stroke="#37474F" stroke-width="1" />
+        
+        <!-- Range Rings -->
+        <circle cx="600" cy="310" r="80" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
+        <circle cx="600" cy="310" r="160" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
+        <circle cx="600" cy="310" r="240" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
+        
+        <!-- Detection Center Point -->
+        <circle cx="600" cy="310" r="10" fill="#3F88C5" />
+        
+        <!-- Detected Drones -->
+        <!-- Drone 1 (High Priority) -->
+        <circle cx="700" cy="210" r="40" fill="rgba(255, 87, 34, 0.1)" />
+        <circle cx="700" cy="210" r="6" fill="#FF5722" />
+        <line x1="700" y1="210" x2="720" y2="190" stroke="#FF5722" stroke-width="2" />
+        <polygon points="720,190 725,188 723,193" fill="#FF5722" />
+        
+        <!-- Drone 2 -->
+        <circle cx="450" cy="450" r="30" fill="rgba(63, 136, 197, 0.1)" />
+        <circle cx="450" cy="450" r="5" fill="#3F88C5" />
+        <line x1="450" y1="450" x2="435" y2="465" stroke="#3F88C5" stroke-width="2" />
+        <polygon points="435,465 432,470 430,465" fill="#3F88C5" />
+        
+        <!-- Drone 3 -->
+        <circle cx="750" cy="150" r="25" fill="rgba(63, 136, 197, 0.1)" />
+        <circle cx="750" cy="150" r="5" fill="#3F88C5" />
+        <line x1="750" y1="150" x2="765" y2="140" stroke="#3F88C5" stroke-width="2" />
+        <polygon points="765,140 770,138 768,143" fill="#3F88C5" />
+        
+        <!-- Flight Paths -->
+        <path d="M 680,240 L 690,225 L 700,210" fill="none" stroke="#FF5722" stroke-width="2" stroke-dasharray="5,3" />
+        <path d="M 700,210 L 710,190 L 720,180" fill="none" stroke="#FF5722" stroke-width="2" />
+        
+        <path d="M 470,430 L 460,440 L 450,450" fill="none" stroke="#3F88C5" stroke-width="2" stroke-dasharray="5,3" />
+        <path d="M 450,450 L 440,460 L 435,465" fill="none" stroke="#3F88C5" stroke-width="2" />
+        
+        <path d="M 730,165 L 740,158 L 750,150" fill="none" stroke="#3F88C5" stroke-width="2" stroke-dasharray="5,3" />
+        <path d="M 750,150 L 760,145 L 765,140" fill="none" stroke="#3F88C5" stroke-width="2" />
+        
+        <!-- Map Controls -->
+        <circle cx="910" cy="90" r="15" fill="#272E3F" />
+        <text x="907" y="95" font-family="Arial" font-size="20" fill="#FFFFFF">+</text>
+        
+        <circle cx="910" cy="130" r="15" fill="#272E3F" />
+        <text x="907" y="135" font-family="Arial" font-size="20" fill="#FFFFFF">−</text>
+        
+        <rect x="895" y="170" width="30" height="30" fill="#272E3F" rx="5" />
+        <text x="903" y="192" font-family="Arial" font-size="20" fill="#FFFFFF">⟳</text>
+        
+        <!-- Map Legend -->
+        <rect x="270" y="70" width="150" height="80" fill="rgba(39, 46, 63, 0.8)" rx="5" />
+        <circle cx="285" cy="90" r="5" fill="#FF5722" />
+        <text x="295" y="95" font-family="Arial" font-size="12" fill="#FFFFFF">High Priority</text>
+        <circle cx="285" cy="115" r="5" fill="#3F88C5" />
+        <text x="295" y="120" font-family="Arial" font-size="12" fill="#FFFFFF">Detected Drone</text>
+        <circle cx="285" cy="140" r="5" fill="#4CAF50" />
+        <text x="295" y="145" font-family="Arial" font-size="12" fill="#FFFFFF">Authorized</text>
+        
+        <!-- Coordinates Display -->
+        <rect x="780" y="525" width="150" height="25" fill="rgba(39, 46, 63, 0.8)" rx="5" />
+        <text x="790" y="543" font-family="Arial" font-size="12" fill="#FFFFFF">40.7128° N, 74.0060° W</text>
+        
+        <!-- Bottom Spectrum Display -->
+        <rect x="260" y="570" width="680" height="220" fill="#272E3F" rx="5" />
+        <text x="270" y="595" font-family="Arial" font-size="16" fill="#FFFFFF">SPECTRUM ANALYZER</text>
+        
+        <!-- Frequency Scale -->
+        <line x1="270" y1="610" x2="930" y2="610" stroke="#AAAAAA" stroke-width="1" />
+        <text x="270" y="625" font-family="Arial" font-size="10" fill="#AAAAAA">2.4 GHz</text>
+        <text x="460" y="625" font-family="Arial" font-size="10" fill="#AAAAAA">2.45 GHz</text>
+        <text x="650" y="625" font-family="Arial" font-size="10" fill="#AAAAAA">2.5 GHz</text>
+        <text x="840" y="625" font-family="Arial" font-size="10" fill="#AAAAAA">2.55 GHz</text>
+        
+        <!-- Waterfall Display -->
+        <rect x="270" y="630" width="660" height="150" fill="#1A2334" />
+        
+        <!-- Simplified Waterfall Content -->
+        <linearGradient id="waterfall1" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#1A2334;stop-opacity:1" />
+          <stop offset="20%" style="stop-color:#3F88C5;stop-opacity:0.7" />
+          <stop offset="40%" style="stop-color:#1A2334;stop-opacity:1" />
+          <stop offset="60%" style="stop-color:#1A2334;stop-opacity:1" />
+          <stop offset="80%" style="stop-color:#FF5722;stop-opacity:0.7" />
+          <stop offset="100%" style="stop-color:#1A2334;stop-opacity:1" />
+        </linearGradient>
+        
+        <rect x="270" y="630" width="660" height="150" fill="url(#waterfall1)" />
+        
+        <!-- Signal Markers -->
+        <rect x="460" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.3" />
+        <rect x="690" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.3" />
+        
+        <!-- Current Signal Indicator -->
+        <rect x="690" y="630" width="60" height="150" stroke="#FF5722" stroke-width="2" fill="none" />
+        <text x="695" y="645" font-family="Arial" font-size="12" fill="#FF5722">DJI</text>
+        
+        <!-- Time Indicators -->
+        <text x="935" y="640" font-family="Arial" font-size="10" fill="#AAAAAA">NOW</text>
+        <text x="935" y="695" font-family="Arial" font-size="10" fill="#AAAAAA">-30s</text>
+        <text x="935" y="750" font-family="Arial" font-size="10" fill="#AAAAAA">-60s</text>
+        
+        <!-- Alert Panel -->
+        <rect x="0" y="50" width="1200" height="60" fill="#FF5722" fill-opacity="0.0">
+          <animate attributeName="fill-opacity" values="0;0.7;0;0.7;0" dur="2s" repeatCount="indefinite" />
+        </rect>
+        <text x="600" y="85" font-family="Arial" font-size="16" fill="#FFFFFF" text-anchor="middle" opacity="0">
+          ALERT: HIGH PRIORITY DRONE DETECTED - DJI MAVIC PRO - DISTANCE: 1.2KM - BEARING: 47° NE
+          <animate attributeName="opacity" values="0;1;0;1;0" dur="2s" repeatCount="indefinite" />
+        </text>
+      </svg>
+    </div>
+  </div>
+  
+  <script>
+    // Change this to your desired password
+    const correctPassword = "drone2025";
+    
+    // Function to check password
+    function checkPassword() {
+      const passwordInput = document.getElementById("passwordInput").value;
+      
+      if (passwordInput === correctPassword) {
+        // Hide password screen
+        document.getElementById("passwordScreen").style.display = "none";
+        // Show content
+        document.getElementById("content").style.display = "block";
+        // Save to session storage so refresh doesn't require re-entry (optional)
+        sessionStorage.setItem("authenticated", "true");
+      } else {
+        // Show error message
+        document.getElementById("errorMessage").style.display = "block";
+        // Clear password field
+        document.getElementById("passwordInput").value = "";
+        // Focus on password field
+        document.getElementById("passwordInput").focus();
+      }
+    }
+    
+    // Check for Enter key press
+    function checkEnter(event) {
+      if (event.key === "Enter") {
+        checkPassword();
+      }
+      // Hide error message when typing
+      document.getElementById("errorMessage").style.display = "none";
+    }
+    
+    // Check if already authenticated in this session
+    window.onload = function() {
+      if (sessionStorage.getItem("authenticated") === "true") {
+        document.getElementById("passwordScreen").style.display = "none";
+        document.getElementById("content").style.display = "block";
+      }
+    };
+  </script>
+</body>
+</html>
