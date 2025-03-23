@@ -131,11 +131,10 @@
         
         <!-- System Status Indicators -->
         <circle cx="1050" cy="25" r="8" fill="#4CAF50" />
-        <text x="1065" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">SYSTEM ONLINE</text>
-        <circle cx="1150" cy="25" r="8" fill="#FF5722" />
-        <text x="1080" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">|</text>
-        <text x="1095" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">3 ALERTS</text>
-      
+     <!-- Fix for overlapping text in header -->
+	<text x="1050" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">SYSTEM ONLINE</text>
+	<text x="1170" y="30" font-family="Arial" font-size="14" fill="#FFFFFF">3 ALERTS</text>
+        
         <!-- Left Control Panel -->
         <rect x="10" y="60" width="240" height="730" fill="#272E3F" rx="5" />
         <text x="20" y="85" font-family="Arial" font-size="16" fill="#FFFFFF">CONTROL PANEL</text>
@@ -218,6 +217,14 @@
         <text x="970" y="340" font-family="Arial" font-size="14" fill="#FFFFFF">Bearing: 315° NW</text>
         <text x="1090" y="305" font-family="Arial" font-size="14" fill="#FFFFFF">67%</text>
         <text x="1090" y="330" font-family="Arial" font-size="14" fill="#FFFFFF">12:38:52</text>
+		
+				<!-- Optional: Add an entry to Active Detections panel -->
+		<rect x="960" y="370" width="220" height="80" fill="#4CAF50" rx="5" />
+		<text x="970" y="390" font-family="Arial" font-size="16" font-weight="bold" fill="#FFFFFF">DJI Phantom 4</text>
+		<text x="970" y="410" font-family="Arial" font-size="14" fill="#FFFFFF">Distance: 1.6 km</text>
+		<text x="970" y="430" font-family="Arial" font-size="14" fill="#FFFFFF">Bearing: 90° E</text>
+		<text x="1090" y="395" font-family="Arial" font-size="14" fill="#FFFFFF">88%</text>
+		<text x="1090" y="420" font-family="Arial" font-size="14" fill="#FFFFFF">AUTHORIZED</text>
         
         <!-- Signal Details -->
         <rect x="950" y="450" width="240" height="340" fill="#272E3F" rx="5" />
@@ -234,9 +241,10 @@
         <text x="970" y="565" font-family="Arial" font-size="14" fill="#AAAAAA">Protocol:</text>
         <text x="1050" y="565" font-family="Arial" font-size="14" fill="#FFFFFF">OcuSync 2.0</text>
         
-        <text x="970" y="590" font-family="Arial" font-size="14" fill="#AAAAAA">Signal Strength:</text>
-        <rect x="1050" y="580" width="120" height="10" fill="#333333" rx="5" />
-        <rect x="1050" y="580" width="95" height="10" fill="#FF5722" rx="5" />
+				<!-- Signal Strength Indicator with Fixed Text Position -->
+				<!-- Signal Strength with Text Only -->
+		<text x="970" y="590" font-family="Arial" font-size="14" fill="#AAAAAA">Signal Strength:</text>
+		<text x="1070" y="590" font-family="Arial" font-size="14" fill="#FFFFFF">79%</text>
         
         <text x="970" y="615" font-family="Arial" font-size="14" fill="#AAAAAA">First Detected:</text>
         <text x="1070" y="615" font-family="Arial" font-size="14" fill="#FFFFFF">12:37:22</text>
@@ -255,86 +263,239 @@
         <text x="1025" y="740" font-family="Arial" font-size="14" fill="#FFFFFF">EXPORT DATA</text>
         
         <!-- Main Map View -->
-        <rect x="260" y="60" width="680" height="500" fill="#1A2334" rx="5" />
-        
-        <!-- Map Elements -->
-        <!-- Topographic Base Map (simplified representation) -->
-        <rect x="260" y="60" width="680" height="500" fill="#263238" rx="5" />
-        
-        <!-- Grid lines -->
-        <line x1="310" y1="60" x2="310" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="410" y1="60" x2="410" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="510" y1="60" x2="510" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="610" y1="60" x2="610" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="710" y1="60" x2="710" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="810" y1="60" x2="810" y2="560" stroke="#37474F" stroke-width="1" />
-        <line x1="910" y1="60" x2="910" y2="560" stroke="#37474F" stroke-width="1" />
-        
-        <line x1="260" y1="110" x2="940" y2="110" stroke="#37474F" stroke-width="1" />
-        <line x1="260" y1="210" x2="940" y2="210" stroke="#37474F" stroke-width="1" />
-        <line x1="260" y1="310" x2="940" y2="310" stroke="#37474F" stroke-width="1" />
-        <line x1="260" y1="410" x2="940" y2="410" stroke="#37474F" stroke-width="1" />
-        <line x1="260" y1="510" x2="940" y2="510" stroke="#37474F" stroke-width="1" />
-        
-        <!-- Range Rings -->
-        <circle cx="600" cy="310" r="80" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
-        <circle cx="600" cy="310" r="160" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
-        <circle cx="600" cy="310" r="240" fill="none" stroke="#37474F" stroke-width="1" stroke-dasharray="5,5" />
-        
-        <!-- Detection Center Point -->
-        <circle cx="600" cy="310" r="10" fill="#3F88C5" />
-        
-        <!-- Detected Drones -->
-        <!-- Drone 1 (High Priority) -->
-        <circle cx="700" cy="210" r="40" fill="rgba(255, 87, 34, 0.1)" />
-        <circle cx="700" cy="210" r="6" fill="#FF5722" />
-        <line x1="700" y1="210" x2="720" y2="190" stroke="#FF5722" stroke-width="2" />
-        <polygon points="720,190 725,188 723,193" fill="#FF5722" />
-        
-        <!-- Drone 2 -->
-        <circle cx="450" cy="450" r="30" fill="rgba(63, 136, 197, 0.1)" />
-        <circle cx="450" cy="450" r="5" fill="#3F88C5" />
-        <line x1="450" y1="450" x2="435" y2="465" stroke="#3F88C5" stroke-width="2" />
-        <polygon points="435,465 432,470 430,465" fill="#3F88C5" />
-        
-        <!-- Drone 3 -->
-        <circle cx="750" cy="150" r="25" fill="rgba(63, 136, 197, 0.1)" />
-        <circle cx="750" cy="150" r="5" fill="#3F88C5" />
-        <line x1="750" y1="150" x2="765" y2="140" stroke="#3F88C5" stroke-width="2" />
-        <polygon points="765,140 770,138 768,143" fill="#3F88C5" />
-        
-        <!-- Flight Paths -->
-        <path d="M 680,240 L 690,225 L 700,210" fill="none" stroke="#FF5722" stroke-width="2" stroke-dasharray="5,3" />
-        <path d="M 700,210 L 710,190 L 720,180" fill="none" stroke="#FF5722" stroke-width="2" />
-        
-        <path d="M 470,430 L 460,440 L 450,450" fill="none" stroke="#3F88C5" stroke-width="2" stroke-dasharray="5,3" />
-        <path d="M 450,450 L 440,460 L 435,465" fill="none" stroke="#3F88C5" stroke-width="2" />
-        
-        <path d="M 730,165 L 740,158 L 750,150" fill="none" stroke="#3F88C5" stroke-width="2" stroke-dasharray="5,3" />
-        <path d="M 750,150 L 760,145 L 765,140" fill="none" stroke="#3F88C5" stroke-width="2" />
-        
-        <!-- Map Controls -->
-        <circle cx="910" cy="90" r="15" fill="#272E3F" />
-        <text x="907" y="95" font-family="Arial" font-size="20" fill="#FFFFFF">+</text>
-        
-        <circle cx="910" cy="130" r="15" fill="#272E3F" />
-        <text x="907" y="135" font-family="Arial" font-size="20" fill="#FFFFFF">−</text>
-        
-        <rect x="895" y="170" width="30" height="30" fill="#272E3F" rx="5" />
-        <text x="903" y="192" font-family="Arial" font-size="20" fill="#FFFFFF">⟳</text>
-        
-        <!-- Map Legend -->
-        <rect x="270" y="70" width="150" height="80" fill="rgba(39, 46, 63, 0.8)" rx="5" />
-        <circle cx="285" cy="90" r="5" fill="#FF5722" />
-        <text x="295" y="95" font-family="Arial" font-size="12" fill="#FFFFFF">High Priority</text>
-        <circle cx="285" cy="115" r="5" fill="#3F88C5" />
-        <text x="295" y="120" font-family="Arial" font-size="12" fill="#FFFFFF">Detected Drone</text>
-        <circle cx="285" cy="140" r="5" fill="#4CAF50" />
-        <text x="295" y="145" font-family="Arial" font-size="12" fill="#FFFFFF">Authorized</text>
-        
-        <!-- Coordinates Display -->
-        <rect x="780" y="525" width="150" height="25" fill="rgba(39, 46, 63, 0.8)" rx="5" />
-        <text x="790" y="543" font-family="Arial" font-size="12" fill="#FFFFFF">40.7128° N, 74.0060° W</text>
+       <!-- Main Map View -->
+<rect x="260" y="60" width="680" height="500" fill="#0A1520" rx="5" />
+
+<!-- Radar Background with Gradient -->
+<radialGradient id="radarGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+  <stop offset="0%" style="stop-color:#0F2535;stop-opacity:1" />
+  <stop offset="100%" style="stop-color:#051015;stop-opacity:1" />
+</radialGradient>
+<rect x="260" y="60" width="680" height="500" fill="url(#radarGradient)" rx="5" />
+
+<!-- Terrain Features - Simplified Topographic Elements -->
+<path d="M 300 340 Q 340 320 380 350 Q 420 370 460 330 Q 500 300 540 340 Q 580 365 620 330 Q 660 310 700 340 Q 740 360 780 330 Q 820 310 860 340 L 900 340 L 900 500 L 300 500 Z" fill="#132A36" opacity="0.6" />
+<path d="M 350 380 Q 390 360 430 390 Q 470 410 510 370 Q 550 340 590 380 Q 630 405 670 370 Q 710 350 750 380 Q 790 400 830 370 L 870 380 L 870 500 L 350 500 Z" fill="#0A1A22" opacity="0.7" />
+
+<!-- Urban Areas - Small City/Town Indicators -->
+<circle cx="450" cy="350" r="15" fill="#1E3540" opacity="0.8" />
+<circle cx="700" cy="320" r="20" fill="#1E3540" opacity="0.8" />
+<circle cx="550" cy="400" r="12" fill="#1E3540" opacity="0.8" />
+
+<!-- Radar Grid -->
+<!-- Grid lines - More subdued and professional -->
+<line x1="260" y1="310" x2="940" y2="310" stroke="#193040" stroke-width="1" />
+<line x1="600" y1="60" x2="600" y2="560" stroke="#193040" stroke-width="1" />
+
+<!-- Range Rings with Better Styling -->
+<circle cx="600" cy="310" r="80" fill="none" stroke="#1A4060" stroke-width="1" stroke-dasharray="3,3" />
+<circle cx="600" cy="310" r="160" fill="none" stroke="#1A4060" stroke-width="1" stroke-dasharray="3,3" />
+<circle cx="600" cy="310" r="240" fill="none" stroke="#1A4060" stroke-width="1" stroke-dasharray="3,3" />
+
+<!-- Radar Sweep Animation -->
+<linearGradient id="sweepGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+  <stop offset="0%" style="stop-color:#3F88C5;stop-opacity:0.7" />
+  <stop offset="100%" style="stop-color:#3F88C5;stop-opacity:0" />
+</linearGradient>
+
+<path id="radarSweep" d="M 600 310 L 600 70 A 240 240 0 0 1 840 310 Z" fill="url(#sweepGradient)" opacity="0.5">
+  <animateTransform 
+    attributeName="transform" 
+    type="rotate" 
+    from="0 600 310" 
+    to="360 600 310" 
+    dur="4s" 
+    repeatCount="indefinite" />
+</path>
+
+<!-- Detection Center Point -->
+<circle cx="600" cy="310" r="5" fill="#3F88C5" />
+<circle cx="600" cy="310" r="8" fill="none" stroke="#3F88C5" stroke-width="1">
+  <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
+  <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+</circle>
+
+<!-- Cardinal Directions -->
+<text x="600" y="75" font-family="Arial" font-size="12" fill="#AAAAAA" text-anchor="middle">N</text>
+<text x="600" y="550" font-family="Arial" font-size="12" fill="#AAAAAA" text-anchor="middle">S</text>
+<text x="925" y="310" font-family="Arial" font-size="12" fill="#AAAAAA" text-anchor="middle">E</text>
+<text x="275" y="310" font-family="Arial" font-size="12" fill="#AAAAAA" text-anchor="middle">W</text>
+
+<!-- Range Indicators -->
+<text x="600" y="225" font-family="Arial" font-size="10" fill="#8A9BA8" text-anchor="middle">1km</text>
+<text x="600" y="145" font-family="Arial" font-size="10" fill="#8A9BA8" text-anchor="middle">2km</text>
+<text x="600" y="65" font-family="Arial" font-size="10" fill="#8A9BA8" text-anchor="middle">3km</text>
+
+<!-- Detected Drones with Better Styling -->
+<!-- Drone 1 (High Priority) -->
+<!-- High Priority Drone (DJI Mavic) -->
+<g transform="translate(700,210) rotate(135)"> <!-- Rotate to match direction of flight (NE, 47°) -->
+  <!-- Drone body -->
+  <rect x="-6" y="-6" width="12" height="12" fill="#FF5722" rx="2" />
+  
+  <!-- Drone arms -->
+  <line x1="-6" y1="-6" x2="-12" y2="-12" stroke="#FF5722" stroke-width="2" />
+  <line x1="6" y1="-6" x2="12" y2="-12" stroke="#FF5722" stroke-width="2" />
+  <line x1="-6" y1="6" x2="-12" y2="12" stroke="#FF5722" stroke-width="2" />
+  <line x1="6" y1="6" x2="12" y2="12" stroke="#FF5722" stroke-width="2" />
+  
+  <!-- Propellers (animated) -->
+  <circle cx="-12" cy="-12" r="3" fill="none" stroke="#FF5722" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.7s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="12" cy="-12" r="3" fill="none" stroke="#FF5722" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.7s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="-12" cy="12" r="3" fill="none" stroke="#FF5722" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.7s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="12" cy="12" r="3" fill="none" stroke="#FF5722" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.7s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Detection circle (pulsing) -->
+  <circle cx="0" cy="0" r="25" fill="rgba(255, 87, 34, 0.1)">
+    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" repeatCount="indefinite" />
+  </circle>
+</g>
+
+<!-- Drone 2 (Autel Evo) -->
+<g transform="translate(450,450) rotate(225)"> <!-- Rotate to match SW (210°) direction -->
+  <!-- Drone body -->
+  <rect x="-5" y="-5" width="10" height="10" fill="#3F88C5" rx="2" />
+  
+  <!-- Drone arms -->
+  <line x1="-5" y1="-5" x2="-10" y2="-10" stroke="#3F88C5" stroke-width="1.5" />
+  <line x1="5" y1="-5" x2="10" y2="-10" stroke="#3F88C5" stroke-width="1.5" />
+  <line x1="-5" y1="5" x2="-10" y2="10" stroke="#3F88C5" stroke-width="1.5" />
+  <line x1="5" y1="5" x2="10" y2="10" stroke="#3F88C5" stroke-width="1.5" />
+  
+  <!-- Propellers (animated) -->
+  <circle cx="-10" cy="-10" r="2.5" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.8s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="10" cy="-10" r="2.5" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="-10" cy="10" r="2.5" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="10" cy="10" r="2.5" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.8s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Detection circle (pulsing) -->
+  <circle cx="0" cy="0" r="20" fill="rgba(63, 136, 197, 0.1)">
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="3s" repeatCount="indefinite" />
+  </circle>
+</g>
+
+<!-- Drone 3 (Unknown) -->
+<g transform="translate(750,150) rotate(315)"> <!-- Rotate to match NW (315°) direction -->
+  <!-- Drone body (different shape for unknown type) -->
+  <polygon points="0,-6 6,6 -6,6" fill="#3F88C5" />
+  
+  <!-- Simplified arms for unknown drone type -->
+  <line x1="-4" y1="4" x2="-8" y2="8" stroke="#3F88C5" stroke-width="1.5" />
+  <line x1="4" y1="4" x2="8" y2="8" stroke="#3F88C5" stroke-width="1.5" />
+  
+  <!-- Propellers (animated) -->
+  <circle cx="-8" cy="8" r="2" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.9s" repeatCount="indefinite" />
+  </circle>
+  <circle cx="8" cy="8" r="2" fill="none" stroke="#3F88C5" stroke-width="1">
+    <animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.9s" repeatCount="indefinite" />
+  </circle>
+  
+  <!-- Detection circle (pulsing) -->
+  <circle cx="0" cy="0" r="18" fill="rgba(63, 136, 197, 0.1)">
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.5s" repeatCount="indefinite" />
+  </circle>
+</g>
+
+	<!-- Friendly/Authorized Drone - Add this after your other drone definitions -->
+	<!-- Position this where you want the friendly drone to appear on the radar -->
+	<g transform="translate(500,250) rotate(90)"> <!-- Position and rotation (90° = heading East) -->
+	  <!-- Drone body -->
+	  <rect x="-5" y="-5" width="10" height="10" fill="#4CAF50" rx="2" />
+	  
+	  <!-- Drone arms -->
+	  <line x1="-5" y1="-5" x2="-10" y2="-10" stroke="#4CAF50" stroke-width="1.5" />
+	  <line x1="5" y1="-5" x2="10" y2="-10" stroke="#4CAF50" stroke-width="1.5" />
+	  <line x1="-5" y1="5" x2="-10" y2="10" stroke="#4CAF50" stroke-width="1.5" />
+	  <line x1="5" y1="5" x2="10" y2="10" stroke="#4CAF50" stroke-width="1.5" />
+	  
+	  <!-- Propellers (animated) -->
+	  <circle cx="-10" cy="-10" r="2.5" fill="none" stroke="#4CAF50" stroke-width="1">
+		<animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.8s" repeatCount="indefinite" />
+	  </circle>
+	  <circle cx="10" cy="-10" r="2.5" fill="none" stroke="#4CAF50" stroke-width="1">
+		<animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+	  </circle>
+	  <circle cx="-10" cy="10" r="2.5" fill="none" stroke="#4CAF50" stroke-width="1">
+		<animate attributeName="stroke-opacity" values="0.4;1;0.4" dur="0.8s" repeatCount="indefinite" />
+	  </circle>
+	  <circle cx="10" cy="10" r="2.5" fill="none" stroke="#4CAF50" stroke-width="1">
+		<animate attributeName="stroke-opacity" values="1;0.4;1" dur="0.8s" repeatCount="indefinite" />
+	  </circle>
+	  
+	  <!-- Detection circle (pulsing) -->
+	  <circle cx="0" cy="0" r="20" fill="rgba(76, 175, 80, 0.1)">
+		<animate attributeName="opacity" values="0.5;0.2;0.5" dur="3s" repeatCount="indefinite" />
+	  </circle>
+	</g>
+
+	<!-- Direction Label for Friendly Drone -->
+	<text x="520" y="230" font-family="Arial" font-size="10" fill="#FFFFFF">90° E</text>
+
+	<!-- Flight Path for Friendly Drone -->
+	<path d="M 480,250 L 490,250 L 500,250" fill="none" stroke="#4CAF50" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" />
+	<path d="M 500,250 L 510,250 L 520,250" fill="none" stroke="#4CAF50" stroke-width="2" />
+
+
+<!-- Direction Labels (Optional) - can be removed if cluttering -->
+<text x="720" y="190" font-family="Arial" font-size="10" fill="#FFFFFF">47° NE</text>
+<text x="430" y="470" font-family="Arial" font-size="10" fill="#FFFFFF">210° SW</text>
+<text x="770" y="130" font-family="Arial" font-size="10" fill="#FFFFFF">315° NW</text>
+
+<!-- Flight Paths - Enhanced with Dotted History and Fading -->
+<!-- Drone 1 Flight Path -->
+<path d="M 680,240 L 690,225 L 700,210" fill="none" stroke="#FF5722" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6" />
+<path d="M 700,210 L 710,190 L 720,180" fill="none" stroke="#FF5722" stroke-width="2" />
+
+<!-- Drone 2 Flight Path -->
+<path d="M 470,430 L 460,440 L 450,450" fill="none" stroke="#3F88C5" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" />
+<path d="M 450,450 L 440,460 L 435,465" fill="none" stroke="#3F88C5" stroke-width="2" />
+
+<!-- Drone 3 Flight Path -->
+<path d="M 730,165 L 740,158 L 750,150" fill="none" stroke="#3F88C5" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.5" />
+<path d="M 750,150 L 760,145 L 765,140" fill="none" stroke="#3F88C5" stroke-width="2" />
+
+<!-- Interception Course (optional) -->
+<path d="M 600,310 Q 650,260 700,210" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-dasharray="5,5" opacity="0.3" />
+
+<!-- Map Controls -->
+<circle cx="910" cy="90" r="15" fill="#272E3F" />
+<text x="907" y="95" font-family="Arial" font-size="20" fill="#FFFFFF">+</text>
+
+<circle cx="910" cy="130" r="15" fill="#272E3F" />
+<text x="907" y="135" font-family="Arial" font-size="20" fill="#FFFFFF">−</text>
+
+<rect x="895" y="170" width="30" height="30" fill="#272E3F" rx="5" />
+<text x="903" y="192" font-family="Arial" font-size="20" fill="#FFFFFF">⟳</text>
+
+<!-- Improved Map Legend -->
+<rect x="270" y="70" width="150" height="80" fill="rgba(10, 21, 32, 0.8)" rx="5" stroke="#1A4060" stroke-width="1" />
+<circle cx="285" cy="90" r="5" fill="#FF5722" />
+<text x="295" y="95" font-family="Arial" font-size="12" fill="#FFFFFF">High Priority</text>
+<circle cx="285" cy="115" r="5" fill="#3F88C5" />
+<text x="295" y="120" font-family="Arial" font-size="12" fill="#FFFFFF">Detected Drone</text>
+<circle cx="285" cy="140" r="5" fill="#4CAF50" />
+<text x="295" y="145" font-family="Arial" font-size="12" fill="#FFFFFF">Authorized</text>
+
+<!-- Coordinates Display -->
+<rect x="780" y="525" width="150" height="25" fill="rgba(10, 21, 32, 0.8)" rx="5" stroke="#1A4060" stroke-width="1" />
+<text x="790" y="543" font-family="Arial" font-size="12" fill="#FFFFFF">40.7128° N, 74.0060° W</text>
         
         <!-- Bottom Spectrum Display -->
         <rect x="260" y="570" width="680" height="220" fill="#272E3F" rx="5" />
@@ -348,27 +509,79 @@
         <text x="840" y="625" font-family="Arial" font-size="10" fill="#AAAAAA">2.55 GHz</text>
         
         <!-- Waterfall Display -->
-        <rect x="270" y="630" width="660" height="150" fill="#1A2334" />
-        
-        <!-- Simplified Waterfall Content -->
-        <linearGradient id="waterfall1" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" style="stop-color:#1A2334;stop-opacity:1" />
-          <stop offset="20%" style="stop-color:#3F88C5;stop-opacity:0.7" />
-          <stop offset="40%" style="stop-color:#1A2334;stop-opacity:1" />
-          <stop offset="60%" style="stop-color:#1A2334;stop-opacity:1" />
-          <stop offset="80%" style="stop-color:#FF5722;stop-opacity:0.7" />
-          <stop offset="100%" style="stop-color:#1A2334;stop-opacity:1" />
-        </linearGradient>
-        
-        <rect x="270" y="630" width="660" height="150" fill="url(#waterfall1)" />
-        
-        <!-- Signal Markers -->
-        <rect x="460" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.3" />
-        <rect x="690" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.3" />
-        
-        <!-- Current Signal Indicator -->
-        <rect x="690" y="630" width="60" height="150" stroke="#FF5722" stroke-width="2" fill="none" />
-        <text x="695" y="645" font-family="Arial" font-size="12" fill="#FF5722">DJI</text>
+        <defs>
+  <!-- Signal pattern gradients -->
+  <linearGradient id="signalGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" style="stop-color:#051015;stop-opacity:1" />
+    <stop offset="20%" style="stop-color:#3F88C5;stop-opacity:0.7" />
+    <stop offset="40%" style="stop-color:#051015;stop-opacity:1" />
+    <stop offset="70%" style="stop-color:#FF5722;stop-opacity:0.7" />
+    <stop offset="100%" style="stop-color:#051015;stop-opacity:1" />
+  </linearGradient>
+  
+  <!-- Animation definitions -->
+  <animate id="signalPulse1" attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite" />
+  <animate id="signalPulse2" attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite" />
+  
+  <!-- Wave patterns -->
+  <pattern id="signalPattern1" x="0" y="0" width="100" height="150" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0" width="100" height="150" fill="url(#signalGradient1)" />
+    <animate attributeName="x" values="0;-100;0" dur="8s" repeatCount="indefinite" />
+  </pattern>
+  
+  <pattern id="signalPattern2" x="0" y="0" width="150" height="150" patternUnits="userSpaceOnUse">
+    <rect x="0" y="0" width="150" height="150" fill="url(#signalGradient1)" opacity="0.8"/>
+    <animate attributeName="x" values="0;-150;0" dur="12s" repeatCount="indefinite" />
+  </pattern>
+</defs>
+
+<!-- Base waterfall background -->
+<rect x="270" y="630" width="660" height="150" fill="#051015" />
+
+<!-- Animated signal patterns -->
+<rect x="270" y="630" width="660" height="150" fill="url(#signalPattern1)" opacity="0.7">
+  <animate attributeName="opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite" />
+</rect>
+
+<rect x="270" y="630" width="660" height="150" fill="url(#signalPattern2)" opacity="0.5">
+  <animate attributeName="opacity" values="0.5;0.7;0.5" dur="6s" repeatCount="indefinite" />
+</rect>
+
+<!-- Primary DJI signal -->
+<rect x="690" y="630" width="60" height="150" fill="#FF5722" opacity="0.1">
+  <animate attributeName="opacity" values="0.1;0.3;0.1" dur="0.8s" repeatCount="indefinite" />
+</rect>
+
+<!-- Secondary signals -->
+<rect x="460" y="630" width="40" height="150" fill="#3F88C5" opacity="0.1">
+  <animate attributeName="opacity" values="0.1;0.2;0.1" dur="1.2s" repeatCount="indefinite" />
+</rect>
+
+<!-- Signal markers with animations -->
+<rect x="460" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.3">
+  <animate attributeName="fill-opacity" values="0.3;0.5;0.3" dur="3s" repeatCount="indefinite" />
+</rect>
+
+<rect x="690" y="630" width="4" height="150" fill="#FFFFFF" fill-opacity="0.4">
+  <animate attributeName="fill-opacity" values="0.4;0.7;0.4" dur="1.5s" repeatCount="indefinite" />
+</rect>
+
+<!-- Current Signal Indicator -->
+<rect x="690" y="630" width="60" height="150" stroke="#FF5722" stroke-width="2" fill="none">
+  <animate attributeName="stroke-opacity" values="0.8;1;0.8" dur="1s" repeatCount="indefinite" />
+</rect>
+<text x="695" y="645" font-family="Arial" font-size="12" fill="#FF5722">DJI</text>
+
+<!-- Frequency animation effect - small pulses across the spectrum -->
+<rect x="320" y="680" width="2" height="50" fill="#3F88C5" opacity="0.5">
+  <animate attributeName="x" values="270;930;270" dur="8s" repeatCount="indefinite" />
+  <animate attributeName="opacity" values="0;0.7;0" dur="8s" repeatCount="indefinite" />
+</rect>
+
+<rect x="320" y="660" width="3" height="90" fill="#FF5722" opacity="0.5">
+  <animate attributeName="x" values="930;270;930" dur="12s" repeatCount="indefinite" />
+  <animate attributeName="opacity" values="0;0.6;0" dur="12s" repeatCount="indefinite" />
+</rect>
         
         <!-- Time Indicators -->
         <text x="935" y="640" font-family="Arial" font-size="10" fill="#AAAAAA">NOW</text>
@@ -376,13 +589,55 @@
         <text x="935" y="750" font-family="Arial" font-size="10" fill="#AAAAAA">-60s</text>
         
         <!-- Alert Panel -->
-        <rect x="0" y="50" width="1200" height="60" fill="#FF5722" fill-opacity="0.0">
-          <animate attributeName="fill-opacity" values="0;0.7;0;0.7;0" dur="2s" repeatCount="indefinite" />
-        </rect>
-        <text x="600" y="85" font-family="Arial" font-size="16" fill="#FFFFFF" text-anchor="middle" opacity="0">
-          ALERT: HIGH PRIORITY DRONE DETECTED - DJI MAVIC PRO - DISTANCE: 1.2KM - BEARING: 47° NE
-          <animate attributeName="opacity" values="0;1;0;1;0" dur="2s" repeatCount="indefinite" />
-        </text>
+        <!-- Alert Panel -->
+		<!-- Alert Background with Gradient -->
+		<linearGradient id="alertGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+		  <stop offset="0%" style="stop-color:#b71c1c;stop-opacity:1" />
+		  <stop offset="50%" style="stop-color:#f44336;stop-opacity:1" />
+		  <stop offset="100%" style="stop-color:#b71c1c;stop-opacity:1" />
+		</linearGradient>
+
+		<!-- Alert Banner Base -->
+		<rect x="0" y="50" width="1200" height="60" fill="url(#alertGradient)" fill-opacity="0.0">
+		  <animate attributeName="fill-opacity" values="0;0.85;0.7;0.85;0" dur="2s" repeatCount="indefinite" />
+		</rect>
+
+		<!-- Animated Border Effect -->
+		<rect x="0" y="50" width="1200" height="60" fill="none" stroke="#FF5722" stroke-width="2" stroke-opacity="0">
+		  <animate attributeName="stroke-opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+		</rect>
+
+		<!-- Alert Icon -->
+		<g transform="translate(280, 80) scale(0.8)">
+		  <!-- Warning Triangle -->
+		  <polygon points="0,-15 15,15 -15,15" fill="#FFFFFF" opacity="0">
+			<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+		  </polygon>
+		  <!-- Exclamation Mark -->
+		  <rect x="-2" y="-5" width="4" height="12" fill="#FF5722" opacity="0">
+			<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+		  </rect>
+		  <circle cx="0" cy="12" r="2" fill="#FF5722" opacity="0">
+			<animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+		  </circle>
+		</g>
+
+		<!-- Alert Text with Better Animation -->
+		<text x="310" y="85" font-family="Arial" font-size="18" font-weight="bold" fill="#FFFFFF" text-anchor="start" opacity="0">
+		  HIGH PRIORITY DRONE DETECTED - DJI MAVIC PRO - DISTANCE: 1.2KM - BEARING: 47° NE
+		  <animate attributeName="opacity" values="0;1;0.8;1;0" dur="2s" repeatCount="indefinite" />
+		</text>
+
+		<!-- Secondary Alert Indicator Dots -->
+		<circle cx="1080" cy="80" r="4" fill="#FFFFFF" opacity="0">
+		  <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" />
+		</circle>
+		<circle cx="1095" cy="80" r="4" fill="#FFFFFF" opacity="0">
+		  <animate attributeName="opacity" values="0;0;1;0" dur="2s" repeatCount="indefinite" />
+		</circle>
+		<circle cx="1110" cy="80" r="4" fill="#FFFFFF" opacity="0">
+		  <animate attributeName="opacity" values="0;0;0;1;0" dur="2s" repeatCount="indefinite" />
+		</circle>
       </svg>
     </div>
   </div>
