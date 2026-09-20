@@ -44,13 +44,47 @@
   @keyframes blink{50%{opacity:.15}}
   .toggle{position:absolute;right:12px;top:12px;display:flex;gap:6px}
   .toggle button{padding:6px 9px;font-size:9.5px}
-  @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.toggle{top:8px;right:8px}}
+  @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}.toggle{top:8px;right:8px}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
+  .assets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .asset{flex:1 1 30%;min-width:104px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:7px 9px}
+  .asset b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--ink)}
+  .asset i{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dim);font-style:normal;margin-top:3px}
+  .asset.live{border-color:var(--blue)}.asset.live i{color:var(--blue)}
+  .asset.hot{border-color:var(--red)}.asset.hot i{color:#F2A0A4}
+  .asset.gone{opacity:.45}.asset.gone i{color:var(--dim)}
+  .asset.addressed{box-shadow:0 0 0 1px var(--red) inset}
+  .tracks{margin-top:10px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:9px 10px}
+  .tracks h3{margin:0 0 7px;font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--dim);font-weight:400;display:flex;justify-content:space-between}
+  .trk{display:grid;grid-template-columns:auto 42px 1fr auto;gap:4px 8px;align-items:center;padding:4px 5px;border-radius:2px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#AEB7C3}
+  .trk+.trk{margin-top:2px}
+  .trk b{color:var(--ink);font-weight:600}
+  .trk.sel{background:#181B21;box-shadow:0 0 0 1px var(--red) inset}.trk.sel b{color:#F2A0A4}
+  .trk .st{font-size:8.5px;letter-spacing:.14em;color:var(--dim)}
+  .trk.low .cf{color:var(--amber)}
+  .decide{margin-top:10px;border:1px solid var(--amber);border-left-width:3px;border-radius:2px;background:#191409;padding:9px 10px}
+  .decide h4{margin:0 0 7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--amber);font-weight:400}
+  .opts{display:flex;gap:6px;flex-wrap:wrap}
+  .opt{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;border:1px solid var(--line);border-radius:2px;padding:6px 8px;color:var(--ink);background:#101318}
+  .opt.go{border-color:var(--green);color:#8FD3AE}
+  .opt.kill{border-color:var(--red);color:#F2A0A4}
+  .opt.off{opacity:.5;border-style:dashed;color:var(--dim)}
+  .opt.chosen{background:#241014;border-color:var(--red);color:#fff}
+  .opt em{display:block;font-style:normal;font-size:8px;letter-spacing:.1em;color:var(--dim);margin-top:3px}
+  .say{margin-top:7px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dim)}
+  .say b{color:#CFE0F8;font-weight:400}
+  .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .lb{position:absolute;transform:translate(-50%,-50%);font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:#EAEEF4;white-space:nowrap;
+    border:1px solid rgba(234,238,244,.45);border-radius:2px;padding:2px 4px;background:rgba(9,10,12,.55)}
+  .lb.tgt{color:#F2A0A4;border-color:var(--red)}
+  .lb.sel{background:#241014;border-color:var(--red)}
+  .branch{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+  .branch button{font-size:9px;padding:6px 8px}
   .voice{margin-top:10px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:10px 12px}
   .vtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .vwake{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--ink);border:1px solid var(--red);border-radius:2px;padding:3px 7px}
   .vstate{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);min-width:86px}
-  .vstate.listen{color:var(--blue)}.vstate.speak{color:var(--red)}
+  .vstate.listen{color:var(--blue)}.vstate.speak{color:var(--red)}.vstate.hot{color:var(--amber)}
   .vwave{display:flex;align-items:center;gap:2px;height:16px;flex:1 1 90px;min-width:90px}
   .vwave i{display:block;width:2px;height:2px;background:#2b3440;border-radius:1px}
   .vtag{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:3px 6px}
@@ -80,8 +114,8 @@
     <div class="brand">T<span class="a">A</span>CT<span class="a">I</span>X <span class="g">GLOBAL</span></div>
     <div class="kicker">How it works · 3D · illustrative, not to scale</div>
   </header>
-  <h1>One AI runs the camera, the drones and the sensors. You just talk to it.</h1>
-  <p class="lede">The kit bolts onto any patrol, police or military vehicle. It scans while you drive, speaks up when something needs attention, and acts on your word. Everything runs on the vehicle: no cloud, no network needed.</p>
+  <h1>One system runs Sentry One, Eagle One and Eagle Two. You talk to them by name.</h1>
+  <p class="lede">The kit bolts onto any patrol, police or military vehicle. Sentry One scans while you drive, the sensors cue it when they hear something first, and everything they find is labelled in the cab so you can name it out loud. Eagle One and Eagle Two launch off the roof on your word. It all runs on the vehicle: no cloud, no network needed.</p>
   <div class="tabs" role="group" aria-label="Select mission"></div>
   <div class="stage" id="stage">
     <canvas id="c" aria-label="3D view of a TactixGlobal equipped SUV scanning 360 degrees with recon and interceptor drones, a refinery site, a fence line and a command centre"></canvas>
@@ -90,20 +124,25 @@
     <div class="mission" id="mission" hidden></div>
     <div class="toggle" role="group" aria-label="PTZ feed mode"><button id="btn-th" aria-pressed="true">Thermal</button><button id="btn-eo" aria-pressed="false">Day</button></div>
     <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
-      <div class="tl" id="feed-tl">PTZ · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
+      <div class="tl" id="feed-tl">SENTRY 1 · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
       <div class="ch"></div><div class="box" id="feed-box"><i id="feed-lab">PERSON · 0.91</i></div>
       <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT −04°</div>
     </div>
+    <div class="labels" id="labels"></div>
     <div class="hint">DRAG TO ORBIT · SCROLL TO ZOOM</div>
     <div class="prog"><i id="prog"></i></div>
   </div>
+  <div class="assets" id="assets"></div>
+  <div class="tracks" id="tracks" hidden><h3><span>TRACKS · IN CAB</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
   <div class="voice" id="voice">
     <div class="vtop">
-      <span class="vwake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
+      <span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
       <span class="vwave" id="v-wave"></span>
       <span class="vtag">IN-CAB</span><span class="vtag">ON-VEHICLE · NO CLOUD</span>
     </div>
     <div class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></div>
+    <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
+    <div class="branch" id="branch" hidden></div>
     <div class="vline"><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
     <div class="vlog" id="v-log"></div>
   </div>
@@ -248,6 +287,27 @@
     G.castShadow=true; return G;
   }
 
+  // ---------- Eagle Two: an interceptor, so it is shaped like one ----------
+  var FWD=new THREE.Vector3(0,0,1);
+  function aimAlong(o,v){ o.quaternion.setFromUnitVectors(FWD,v.clone().normalize()); }
+  function interceptor(mat){
+    var G=new THREE.Group();
+    var body=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.13,0.9,14),M.steel);
+    body.rotation.x=Math.PI/2; body.userData.heat=0.55; G.add(body);
+    var nose=new THREE.Mesh(new THREE.ConeGeometry(0.10,0.34,14),mat);
+    nose.rotation.x=Math.PI/2; nose.position.z=0.62; nose.userData.heat=0.7; G.add(nose);
+    [0,Math.PI/2,Math.PI,-Math.PI/2].forEach(function(a){
+      var fin=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.30,0.22),M.black);
+      fin.position.set(Math.sin(a)*0.12,Math.cos(a)*0.12,-0.32); fin.rotation.z=-a; fin.userData.heat=0.5; G.add(fin); });
+    var flame=new THREE.Mesh(new THREE.ConeGeometry(0.08,0.44,12),
+      new THREE.MeshBasicMaterial({color:0x9fd8ff,transparent:true,opacity:0,depthWrite:false}));
+    flame.rotation.x=-Math.PI/2; flame.position.z=-0.68; flame.userData.heat=1; G.add(flame);
+    G.userData.flame=flame; G.add(new THREE.PointLight(mat.color.getHex(),0.45,8));
+    G.traverse(function(o){ if(o.isMesh) o.castShadow=true; });
+    return G;
+  }
+
+
   // ---------- scene objects ----------
   var host=suv({color:0x1c2230,rack:true,lightbar:true}); scene.add(host);
   var eagle1Dock=drone(M.blue); eagle1Dock.scale.setScalar(0.55); eagle1Dock.position.set(-1.35,2.12,0.35); host.add(eagle1Dock);
@@ -304,6 +364,21 @@
   function sector(r,alpha,op){ var m=new THREE.Mesh(new THREE.RingGeometry(0.4,r,64,1,0,alpha),new THREE.MeshBasicMaterial({color:0x3e75c3,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.y=0.03; return m; }
   var sw1=sector(12,Math.PI/7,0.32), sw2=sector(12,Math.PI/7,0.16), sw3=sector(12,Math.PI/7,0.07); sweepG.add(sw1,sw2,sw3);
   // acoustic direction-of-arrival lobe: what the array heard, before any camera sees it
+  function altLine(col){
+    var g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+    var l=new THREE.Line(g,new THREE.LineDashedMaterial({color:col,dashSize:0.5,gapSize:0.4,transparent:true,opacity:0.45}));
+    l.visible=false; scene.add(l);
+    var r=new THREE.Mesh(new THREE.RingGeometry(0.34,0.5,24),
+      new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.45,side:THREE.DoubleSide,depthWrite:false}));
+    r.rotation.x=-Math.PI/2; r.visible=false; scene.add(r); return {line:l,ring:r};
+  }
+  var altHx=altLine(0xd7262e), altE2=altLine(0x39c07a), altE1=altLine(0x3e75c3);
+  function altUpdate(a,o){
+    var v=o.visible&&o.position.y>0.8; a.line.visible=v; a.ring.visible=v; if(!v) return;
+    var q=a.line.geometry.attributes.position;
+    q.setXYZ(0,o.position.x,o.position.y,o.position.z); q.setXYZ(1,o.position.x,0.05,o.position.z);
+    q.needsUpdate=true; a.line.computeLineDistances(); a.ring.position.set(o.position.x,0.06,o.position.z);
+  }
   var doaG=new THREE.Group(); doaG.visible=false; scene.add(doaG);
   var doa=new THREE.Mesh(new THREE.RingGeometry(1.2,16,48,1,-Math.PI/10,Math.PI/5),
     new THREE.MeshBasicMaterial({color:0xe0a33e,transparent:true,opacity:0.22,side:THREE.DoubleSide,depthWrite:false}));
@@ -326,61 +401,102 @@
 
   // flying drones
   var e1=drone(M.blue); e1.visible=false; scene.add(e1);
-  var e2=drone(M.green); e2.visible=false; scene.add(e2);
+  var e2=interceptor(M.green); e2.visible=false; scene.add(e2);
   var hx=drone(M.red); hx.visible=false; scene.add(hx);
+  // a strobe and a bigger airframe, so an unknown aircraft reads at night
+  var strobe=new THREE.Mesh(new THREE.SphereGeometry(0.13,10,8),
+    new THREE.MeshBasicMaterial({color:0xff3b3b,transparent:true,opacity:1}));
+  strobe.position.set(0,-0.16,0); strobe.userData.heat=0.6; hx.add(strobe); hx.scale.setScalar(1.7);
+  var flash=new THREE.Mesh(new THREE.SphereGeometry(0.8,16,12),
+    new THREE.MeshBasicMaterial({color:0xffd9a0,transparent:true,opacity:0,depthWrite:false}));
+  flash.visible=false; scene.add(flash);
+
 
   // ---------- missions ----------
+  // the intercept offers different options depending on what is known: two variants, one scene
+  var V_ID=[
+    [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · UNKNOWN AIRCRAFT · BRG 312°',select:'DRONE 1'}],
+    [4800,'SENTRY 1','Got it. Acoustic signature and camera agree: small quad. Drone one, zero point nine one.',
+      {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
+    [10500,'SENTRY 1','Drone one is identified, so engagement is available. Eagle Two is the only interceptor you carry.',
+      {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
+        opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
+        say:'SAY: “Hey Eagle Two, engage drone one” · “follow drone one” · “leave it”'}}],
+    [16500,'OPERATOR','Hey Eagle Two, engage drone one.',{to:'eagle2',choose:'ENGAGE',confirm:5}],
+    [21000,'OPERATOR','Confirm engage.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
+    [26000,'SENTRY 1','Drone one is down. Eagle Two is expended — no interceptor left on this vehicle.',{tstate:{'DRONE 1':'DEFEATED'}}]
+  ];
+  var V_UNID=[
+    [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · UNKNOWN AIRCRAFT · BRG 312°',select:'DRONE 1'}],
+    [4800,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
+      {feed:1,ptz:'track',conf:{'DRONE 1':0.38},lab:'DRONE 1 · 0.38'}],
+    [10500,'SENTRY 1','That is below the eight-tenths threshold, so engagement stays locked. I can send Eagle Two for a closer look.',
+      {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
+        opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
+        say:'SAY: “Hey Eagle Two, follow drone one” · “leave it”'}}],
+    [16500,'OPERATOR','Hey Eagle Two, follow drone one.',
+      {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
+    [22500,'EAGLE 2','Holding standoff. Commercial quad, no visible payload. Drone one, zero point nine four.',
+      {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
+       decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
+        opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
+        say:'SAY: “Hey Eagle Two, engage” · “Hey Eagle Two, come home”'}}],
+    [29000,'OPERATOR','Hey Eagle Two, come home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
+    [33500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
+  ];
+
   var MODES=[
-    {label:'Night patrol',h:'1 · Night patrol · PTZ detection',
-     p:'On patrol after dark the camera sweeps a full 360° while the crew drives. Thermal picks a person out of cover that headlights and the naked eye go straight past. The system speaks up inside the cab, and the crew decides what happens next.',
+    {label:'Night patrol',h:'1 · Night patrol · Sentry One',
+     p:'On patrol after dark Sentry One sweeps a full 360° while the crew drives. Thermal picks a person out of cover that headlights and the naked eye go straight past. Everything it finds is labelled in the cab, so the crew can name it out loud.',
+     legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
-     legend:[['#3E75C3','PTZ 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
-     feed:{target:'walker',lab:'PERSON · 0.91',bl:'THERMAL · CONTACT',fov:13},
-     d:[[0,'SYSTEM','Movement, two o’clock, forty metres. Person in the treeline, not moving.',
-         {alert:'PERSON · 2 O’CLOCK · 40 m',ptz:'slew',target:'walker'}],
-        [4200,'OPERATOR','Show me.',{feed:1}],
-        [6600,'SYSTEM','On screen, thermal. One person, crouched behind the hedge. No vehicle with them.',{}],
-        [11800,'OPERATOR','Mark it. Keep the camera on him.',{ptz:'track',bl:'TRACK COMMANDED'}]]},
-    {label:'Recon search',h:'2 · Recon drone search',
-     p:'When the crew needs eyes somewhere they cannot drive, Eagle 1 launches from the roof on a word and searches for the vehicle they describe. It reports what it finds with a confidence, and rules out what it is not.',
+     list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
+     feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
+     d:[[0,'SENTRY 1','Movement, three o’clock, forty metres. Person in the treeline, not moving. Logged as person one.',
+         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO-CUE · THERMAL · PERSON 1 · BRG 109°',select:'PERSON 1'}],
+        [5600,'OPERATOR','Hey Sentry One, show me person one.',{to:'sentry',feed:1}],
+        [8600,'SENTRY 1','On screen, thermal. One person, crouched behind the hedge. No vehicle with them.',{}],
+        [14000,'OPERATOR','Hey Sentry One, keep the camera on person one.',
+         {to:'sentry',ptz:'track',bl:'TRACK COMMANDED',tstate:{'PERSON 1':'TRACKING'}}]]},
+    {label:'Recon search',h:'2 · Eagle One · search by description',
+     p:'When the crew needs eyes somewhere they cannot drive, Eagle One launches off the roof on a word and searches for whatever they describe. Its feed comes back into the cab, and what it finds joins the same track list.',
      legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
      show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
      orbit:{cx:-17,cz:-2,r:7.5,y:6.5,speed:0.5},look:[-15,-2],
-     feed:{from:'e1',target:'candA',lab:'SEDAN · NOT A MATCH',bl:'EAGLE 1 · SEARCHING',fov:24},
-     d:[[0,'OPERATOR','Eagle 1, launch. Search the yard for a white four-by-four.',
-         {launch:'e1',mission:'MISSION · SEARCH YARD · WHITE 4X4'}],
-        [3600,'SYSTEM','Eagle 1 up. Searching the yard now.',{feed:1}],
-        [7000,'SYSTEM','Two vehicles down there. The first is a dark sedan, not a match.',
-         {feedTarget:'candA',lab:'SEDAN · NOT A MATCH'}],
-        [12000,'SYSTEM','Second one matches, eighty percent. White four-by-four, north side of the yard.',
-         {feedTarget:'candB',lab:'4X4 · MATCH 0.80',alert:'MATCH 0.80 · WHITE 4X4',bl:'EAGLE 1 · HOLDING'}],
-        [17500,'OPERATOR','Hold overhead. Send me the clip.',{}]]},
-    {label:'Detect & intercept',h:'3 · Acoustic detect, then intercept',
-     p:'The acoustic array hears an aircraft no camera has seen yet and gives a bearing. The camera turns to it, acquires and classifies. The crew is told, and the crew decides: follow at standoff, or let it go.',
-     legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2 · STANDOFF']],
+     list0:[{id:'VEHICLE 1',obj:'candA',conf:0.44,state:'CHECKING'},{id:'VEHICLE 2',obj:'candB',conf:0.31,state:'QUEUED'}],
+     feed:{from:'e1',target:'candA',lab:'VEHICLE 1 · CHECKING',bl:'EAGLE 1 · SEARCHING',fov:24},
+     d:[[0,'OPERATOR','Hey Eagle One, launch. Search the yard for a white four-by-four.',
+         {to:'eagle1',launch:'e1',mission:'MISSION · SEARCH YARD · WHITE 4X4'}],
+        [4600,'EAGLE 1','Up and searching. My feed is in the cab.',{feed:1}],
+        [8800,'EAGLE 1','Vehicle one is a dark sedan. Not a match.',
+         {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
+        [14000,'EAGLE 1','Vehicle two matches your description. White four-by-four, zero point eight eight.',
+         {feedTarget:'candB',select:'VEHICLE 2',lab:'VEHICLE 2 · MATCH 0.88',conf:{'VEHICLE 2':0.88},tstate:{'VEHICLE 2':'MATCH'},
+          alert:'MATCH 0.88 · VEHICLE 2 · WHITE 4X4',bl:'EAGLE 1 · HOLDING'}],
+        [20000,'OPERATOR','Hey Eagle One, hold overhead and send me the clip.',{to:'eagle1'}]]},
+    {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
+     p:'The acoustic array hears an aircraft no camera has seen yet, and Sentry One turns onto the bearing without being asked. What the crew is offered then depends on what is known: engagement unlocks at an identification of 0.80, and it expends Eagle Two — the only interceptor the vehicle carries.',
+     legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
-     fly:{hx:{from:[-34,9,-30],to:[-4,7,-4],dur:13000}},
-     feed:{target:'hx',lab:'SMALL QUAD · 0.84',bl:'ACOUSTIC CUE',fov:11},
-     d:[[0,'SYSTEM','Aircraft heard, bearing three-one-two, closing.',
-         {alert:'ACOUSTIC · DOA 312° · 68 dB',acoustic:11000}],
-        [3800,'OPERATOR','Point the camera at it.',{ptz:'slew',target:'hx'}],
-        [6400,'SYSTEM','Camera on it. Small quad, four hundred metres out, ninety up.',{feed:1,ptz:'track'}],
-        [11200,'OPERATOR','Follow it.',{launch:'e2',mission:'MISSION · FOLLOW AT STANDOFF',bl:'EAGLE 2 · SHADOWING'}],
-        [15000,'SYSTEM','Eagle 2 airborne, shadowing at standoff. Commercial quad, no visible payload.',{}],
-        [20000,'OPERATOR','Recall.',{recall:'e2',bl:'EAGLE 2 · RETURNING'}]]},
+     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:17000}},
+     list0:[{id:'DRONE 1',obj:'hx',conf:0.22,state:'UNIDENTIFIED'}],
+     feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
+     variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
     {label:'Connected fleet',h:'4 · Connected fleet',
      p:'Every vehicle works alone with no network. When a link is available, a whole fleet shares one picture: vehicles pass clips and alerts to each other and to a command centre, and take instructions back.',
      legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE']],
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
      feed:{target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
-     d:[[0,'SYSTEM','Clip and position sent to the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
-        [4200,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
+     d:[[0,'SENTRY 1','Clip and position sent to the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
+        [4600,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
   var ptzCam=new THREE.PerspectiveCamera(22,16/9,0.6,300);
   var feedEl=document.getElementById('feed'), feedTL=document.getElementById('feed-tl'), feedBox=document.getElementById('feed-box'), feedLab=document.getElementById('feed-lab'), feedBL=document.getElementById('feed-bl'), feedBR=document.getElementById('feed-br');
-  document.getElementById('btn-th').addEventListener('click',function(){ thermalOn=true; this.setAttribute('aria-pressed','true'); document.getElementById('btn-eo').setAttribute('aria-pressed','false'); feedTL.textContent='PTZ · THERMAL'; });
-  document.getElementById('btn-eo').addEventListener('click',function(){ thermalOn=false; this.setAttribute('aria-pressed','true'); document.getElementById('btn-th').setAttribute('aria-pressed','false'); feedTL.textContent='PTZ · DAY / EO'; });
+  document.getElementById('btn-th').addEventListener('click',function(){ thermalOn=true; this.setAttribute('aria-pressed','true'); document.getElementById('btn-eo').setAttribute('aria-pressed','false'); feedTL.textContent='SENTRY 1 · THERMAL'; });
+  document.getElementById('btn-eo').addEventListener('click',function(){ thermalOn=false; this.setAttribute('aria-pressed','true'); document.getElementById('btn-th').setAttribute('aria-pressed','false'); feedTL.textContent='SENTRY 1 · DAY / EO'; });
   var tabs=document.querySelector('.tabs');
   MODES.forEach(function(m,i){ var b=document.createElement('button'); b.textContent=(i+1)+' · '+m.label; b.setAttribute('aria-pressed',i===0?'true':'false'); b.addEventListener('click',function(){ setMode(i,true); }); tabs.appendChild(b); m.btn=b; });
   var allTracks=[trkContact,trkSearch,trkYard,trkHostile].concat(mesh);
@@ -400,6 +516,7 @@
     var lg=document.querySelector('.legend'); lg.innerHTML='';
     (m.legend||[]).forEach(function(r){ var sp=document.createElement('span');
       sp.innerHTML='<b style="background:'+r[0]+'"></b>'+r[1]; lg.appendChild(sp); });
+    renderBranch(m);
     if(manual){ paused=true; clearTimeout(setMode._t);
       setMode._t=setTimeout(function(){ paused=false; },DUR+1200); }
   }
@@ -428,51 +545,146 @@
   var DUR=9500, ptzAngle=0, last=performance.now();
   // ---------- in-cab voice loop: what is said drives what the kit does ----------
   var beatIx=-1, ptzMode='scan', ptzTgt=null, feedOn=false, feedTgt=null, launched={}, recalled={}, doaUntil=0;
+  var e2Mode='idle', selectedId=null, addressed=null, decideState=null, confirmUntil=0, cueStart=0, cueMs=0, lastUi=0, flashT=0;
+  var assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'}, labelEls={}, RANGE=3.4;
   var vState=document.getElementById('v-state'), vWho=document.getElementById('v-who'), vText=document.getElementById('v-text'),
       vLog=document.getElementById('v-log'), vAlert=document.getElementById('v-alert'), vAlertT=document.getElementById('v-alert-t'),
-      missionEl=document.getElementById('mission'), waveBars=[];
+      missionEl=document.getElementById('mission'), vWake=document.getElementById('v-wake'), waveBars=[];
+  var ASSET={sentry:'SENTRY 1',eagle1:'EAGLE 1',eagle2:'EAGLE 2'};
   (function(){ var w=document.getElementById('v-wave');
     for(var i=0;i<16;i++){ var b=document.createElement('i'); w.appendChild(b); waveBars.push(b); } })();
   var OBJ={walker:walker,hx:hx,candA:candA,candB:candB,cmd:cmd,e1:e1,e2:e2};
   function aimAngle(o){ var p=new THREE.Vector3(); o.getWorldPosition(p); return Math.atan2(p.z-host.position.z,p.x-host.position.x); }
   function wrapPi(a){ while(a>Math.PI)a-=Math.PI*2; while(a<-Math.PI)a+=Math.PI*2; return a; }
+  function fmtBrg(a){ return ('00'+Math.round(((a*180/Math.PI)+360)%360)).slice(-3)+'°'; }
+  function trackById(m,id){ var r=null; (m.list||[]).forEach(function(t){ if(t.id===id) r=t; }); return r; }
+  function boom(now,m){
+    flash.position.copy(hx.position); flash.visible=true; flashT=now;
+    hx.visible=false; e2.visible=false; e2Mode='expended'; assets.eagle2='EXPENDED'; decideState=null;
+    var tk=trackById(m,selectedId); if(tk){ tk.state='DEFEATED'; }
+  }
+  function renderAssets(){
+    var sig=assets.sentry+assets.eagle1+assets.eagle2+addressed, box=document.getElementById('assets');
+    if(box.dataset.sig===sig) return; box.dataset.sig=sig; box.innerHTML='';
+    [['sentry','SENTRY 1'],['eagle1','EAGLE 1'],['eagle2','EAGLE 2']].forEach(function(a){
+      var st=assets[a[0]], d=document.createElement('div'), cls='asset';
+      if(st==='EXPENDED'||st==='NONE') cls+=' gone'; else if(st==='CUED'||st==='ENGAGING') cls+=' hot'; else if(st!=='DOCKED') cls+=' live';
+      if(addressed===a[0]) cls+=' addressed';
+      d.className=cls; d.innerHTML='<b>'+a[1]+'</b><i>'+st+'</i>'; box.appendChild(d);
+    });
+  }
+  function renderTracks(m){
+    var box=document.getElementById('tracks'), rows=document.getElementById('trk-rows');
+    if(!m.list||!m.list.length){ box.hidden=true; return; }
+    box.hidden=false; rows.innerHTML='';
+    m.list.forEach(function(tk){
+      var o=OBJ[tk.obj], p=new THREE.Vector3(); if(o) o.getWorldPosition(p);
+      var d=document.createElement('div');
+      d.className='trk'+(tk.id===selectedId?' sel':'')+(tk.conf<0.8?' low':'');
+      d.innerHTML='<b>'+tk.id+'</b><span class="cf">'+tk.conf.toFixed(2)+'</span><span>BRG '+
+        (o?fmtBrg(aimAngle(o)):'---')+' · '+(o?Math.round(p.distanceTo(host.position)*RANGE):0)+' m</span>'+
+        '<span class="st">'+tk.state+'</span>';
+      rows.appendChild(d);
+    });
+  }
+  function updateLabels(m){
+    var box=document.getElementById('labels'), rect=canvas.getBoundingClientRect(), want={};
+    (m.list||[]).forEach(function(tk){
+      var o=OBJ[tk.obj]; if(!o||!o.visible) return;
+      var p=new THREE.Vector3(); o.getWorldPosition(p); p.y+=(tk.obj==='walker'?1.6:1.1); p.project(camera);
+      if(p.z>1) return;
+      var el=labelEls[tk.id];
+      if(!el){ el=document.createElement('div'); box.appendChild(el); labelEls[tk.id]=el; }
+      el.textContent=tk.id+' · '+tk.conf.toFixed(2);
+      el.className='lb'+(tk.conf<0.8?' tgt':'')+(tk.id===selectedId?' sel tgt':'');
+      el.style.left=((p.x+1)/2*rect.width)+'px'; el.style.top=((1-p.y)/2*rect.height-16)+'px';
+      el.hidden=false; want[tk.id]=1;
+    });
+    Object.keys(labelEls).forEach(function(k){ if(!want[k]) labelEls[k].hidden=true; });
+  }
+  function renderDecide(m,now){
+    var box=document.getElementById('decide');
+    if(!decideState){ box.hidden=true; return; }
+    box.hidden=false; document.getElementById('decide-h').textContent=decideState.h;
+    var o=document.getElementById('decide-o'); o.innerHTML='';
+    decideState.opts.forEach(function(op){
+      var tk=op.needs?trackById(m,op.track):null, locked=op.needs&&(!tk||tk.conf<op.needs), b=document.createElement('span');
+      b.className='opt '+(op.cls||'')+(locked?' off':'')+(decideState.chosen===op.k?' chosen':'');
+      b.innerHTML=op.k+(locked?'<em>NEEDS '+op.needs.toFixed(2)+' · NOW '+(tk?tk.conf.toFixed(2):'--')+'</em>'
+                              :(op.cost?'<em>'+op.cost+'</em>':''));
+      o.appendChild(b);
+    });
+    document.getElementById('decide-s').innerHTML = confirmUntil>now
+      ? 'SAY <b>“Confirm engage”</b> · '+Math.ceil((confirmUntil-now)/1000)+' s'
+      : (decideState.say||'');
+  }
+  function renderBranch(m){
+    var box=document.getElementById('branch');
+    if(!m.variants){ box.hidden=true; return; }
+    box.hidden=false; box.innerHTML='';
+    m.variants.forEach(function(v,i){
+      var b=document.createElement('button'); b.textContent=v.name; b.setAttribute('aria-pressed',String((m.vi||0)===i));
+      b.addEventListener('click',function(){ m.vi=i; m.d=v.d; t0=performance.now(); restartScene(m); renderBranch(m);
+        paused=true; clearTimeout(setMode._t); setMode._t=setTimeout(function(){ paused=false; },DUR+1200); });
+      box.appendChild(b);
+    });
+  }
   // a drone the operator launches later starts the scene on its dock
   function restartScene(m){
     var pend={}; m.d.forEach(function(b){ if(b[3]&&b[3].launch) pend[b[3].launch]=true; });
-    e1.visible=!!m.show.e1&&!pend.e1; e2.visible=!!m.show.e2&&!pend.e2;
+    e1.visible=!!m.show.e1&&!pend.e1; e2.visible=!!m.show.e2&&!pend.e2; hx.visible=!!m.show.hx;
     eagle1Dock.visible=!e1.visible; eagle2Dock.visible=!e2.visible;
+    m.list=m.list0?JSON.parse(JSON.stringify(m.list0)):null;
     resetVoice(m);
   }
   function resetVoice(m){
     beatIx=-1; feedOn=false; feedTgt=null; ptzMode='scan'; ptzTgt=null; launched={}; recalled={}; doaUntil=0;
+    e2Mode='idle'; selectedId=null; addressed=null; decideState=null; confirmUntil=0; cueStart=0; cueMs=0; flashT=0; flash.visible=false;
+    assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'};
     DUR=m.d[m.d.length-1][0]+5200;
     vAlert.hidden=true; missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
-    vState.className='vstate'; vState.textContent='STANDING BY';
+    vState.className='vstate'; vState.textContent='STANDING BY'; vWake.textContent='TACTIX';
+    Object.keys(labelEls).forEach(function(k){ labelEls[k].hidden=true; });
+    renderTracks(m); renderAssets(); renderDecide(m,performance.now());
   }
   function applyBeat(m,i,now){
     var b=m.d[i], a=b[3]||{}, op=b[1]==='OPERATOR';
     vWho.className='vwho '+(op?'op':'sys'); vWho.textContent=b[1];
     vText.className='vtext '+(op?'op':'');
-    vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING';
+    if(a.auto){ vState.className='vstate hot'; vState.textContent='AUTO-CUE ← '+a.auto; }
+    else { vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING'; }
     vLog.innerHTML=''; m.d.slice(Math.max(0,i-2),i).forEach(function(r){
       var d=document.createElement('div'); d.textContent=r[1]+' · '+r[2]; vLog.appendChild(d); });
+    if(a.to) addressed=a.to;
+    vWake.textContent = op ? (a.to?'HEY '+ASSET[a.to]:'TACTIX') : (ASSET[addressed]===b[1]?b[1]:b[1]);
     if(a.alert){ vAlertT.textContent=a.alert; vAlert.hidden=false; }
     if(a.mission){ missionEl.textContent=a.mission; missionEl.hidden=false; }
+    if(a.cue){ ptzMode='slew'; ptzTgt=OBJ[a.cue.target]; cueStart=now; }
     if(a.ptz){ ptzMode=a.ptz; if(a.target) ptzTgt=OBJ[a.target]; }
     if(a.feed) feedOn=true;
     if(a.feedTarget) feedTgt=a.feedTarget;
     if(a.lab) feedLab.textContent=a.lab;
     if(a.bl) feedBL.textContent=a.bl;
     if(a.acoustic) doaUntil=now+a.acoustic;
+    if(a.conf) Object.keys(a.conf).forEach(function(id){ var tk=trackById(m,id); if(tk) tk.conf=a.conf[id]; });
+    if(a.tstate) Object.keys(a.tstate).forEach(function(id){ var tk=trackById(m,id); if(tk) tk.state=a.tstate[id]; });
+    if(a.select) selectedId=a.select;
+    if(a.decide) decideState=a.decide;
+    if(a.choose&&decideState) decideState.chosen=a.choose;
+    if(a.confirm) confirmUntil=now+a.confirm*1000;
+    if(a.confirmed){ confirmUntil=0; decideState=null; }
     if(a.launch){ launched[a.launch]=now; OBJ[a.launch].visible=true;
-      if(a.launch==='e1') eagle1Dock.visible=false; else eagle2Dock.visible=false; }
-    if(a.recall) recalled[a.recall]=now;
+      if(a.launch==='e1'){ eagle1Dock.visible=false; assets.eagle1='AIRBORNE'; }
+      else { eagle2Dock.visible=false; assets.eagle2='AIRBORNE'; e2Mode=a.engage?'engage':'follow'; } }
+    if(a.engage){ e2Mode='engage'; assets.eagle2='ENGAGING'; }
+    if(a.recall){ recalled[a.recall]=now; e2Mode='recall'; }
   }
   function speakVoice(m,t,now){
     if(beatIx<0) return;
     var b=m.d[beatIx], full=b[2], dur=Math.min(4600,300+full.length*44), k=Math.max(0,Math.min(1,(t-b[0])/dur)), live=k<1;
     vText.textContent=full.slice(0,Math.round(full.length*k));
-    if(!live && vState.textContent!=='STANDING BY'){ vState.className='vstate'; vState.textContent='STANDING BY'; }
+    if(!live && vState.textContent.indexOf('AUTO-CUE')<0 && vState.textContent!=='STANDING BY'){
+      vState.className='vstate'; vState.textContent='STANDING BY'; }
     for(var i=0;i<waveBars.length;i++){
       var amp=live?3+12*Math.abs(Math.sin(now*0.006+i*0.8)*Math.sin(now*0.0019+i*0.4)):1.4;
       waveBars[i].style.height=(2+amp).toFixed(1)+'px';
@@ -510,15 +722,34 @@
       else { orbitPhase+=dt*m.orbit.speed;
         var ob=new THREE.Vector3(m.orbit.cx+Math.cos(orbitPhase)*m.orbit.r,m.orbit.y+Math.sin(now*0.003)*0.1,m.orbit.cz+Math.sin(orbitPhase)*m.orbit.r);
         e1.position.lerp(ob,Math.min(1,dt*1.6)); e1.rotation.y=-orbitPhase; } }
-    // Eagle 2: climb, close on the target, hold standoff, come home on the word
-    if(launched.e2){ var home=new THREE.Vector3(-1.35,2.4,-0.45), ms2=now-launched.e2;
-      if(recalled.e2){ var back=new THREE.Vector3().subVectors(home,e2.position), db=back.length();
-        if(db<0.4){ e2.visible=false; eagle2Dock.visible=true; }
-        else { e2.position.addScaledVector(back.normalize(),Math.min(11*dt,db)); e2.rotation.y=Math.atan2(back.x,back.z); } }
-      else if(ms2<1100){ e2.position.set(-1.35,2.4+ms2/1100*2.2,-0.45); }
-      else { var to=new THREE.Vector3().subVectors(hx.position,e2.position), dd=to.length();
-        e2.position.addScaledVector(to.normalize(),Math.min((dd>3.4?12:4)*dt,Math.max(0,dd-3.4)));
-        e2.rotation.y=Math.atan2(to.x,to.z); } }
+    // Eagle Two: boost off the roof, then shadow at standoff or run it down
+    if(launched.e2&&e2Mode!=='expended'){
+      var home=new THREE.Vector3(-1.35,2.4,-0.45), ms2=now-launched.e2, vv=new THREE.Vector3();
+      if(ms2<1000){ e2.position.set(-1.35,2.4+ms2/1000*2.8,-0.45); vv.set(0,1,0.001); }
+      else if(e2Mode==='recall'){ vv.subVectors(home,e2.position); var db=vv.length();
+        if(db<0.4){ e2.visible=false; eagle2Dock.visible=true; assets.eagle2='DOCKED'; }
+        else { e2.position.addScaledVector(vv.clone().normalize(),Math.min(13*dt,db)); assets.eagle2='RETURNING'; } }
+      else { vv.subVectors(hx.position,e2.position); var dd=vv.length();
+        var stand=(e2Mode==='engage')?0:3.4, spd=(e2Mode==='engage')?26:13;
+        e2.position.addScaledVector(vv.clone().normalize(),Math.min(spd*dt,Math.max(0,dd-stand)));
+        assets.eagle2=(e2Mode==='engage')?'ENGAGING':'SHADOWING';
+        if(e2Mode==='engage'&&dd<1.0) boom(now,m); }
+      if(vv.lengthSq()>1e-6) aimAlong(e2,vv);
+      if(e2.userData.flame) e2.userData.flame.material.opacity=(ms2<1000?0.9:0.3+0.35*Math.abs(Math.sin(now*0.02)));
+    }
+    // the flash, and what it costs: one interceptor, and the vehicle has one
+    if(flashT){ var ft=(now-flashT)/700;
+      if(ft>=1){ flash.visible=false; flashT=0; } else { flash.scale.setScalar(1+ft*7); flash.material.opacity=0.9*(1-ft); } }
+    // an airborne object is unreadable without a line to the ground
+    altUpdate(altHx,hx); altUpdate(altE2,e2); altUpdate(altE1,e1);
+    if(strobe.parent) strobe.material.opacity=(Math.sin(now*0.009)>0.4)?1:0.05;
+    // the cab display: what it sees, and which asset is doing what
+    updateLabels(m);
+    assets.sentry=(ptzMode==='scan')?'SCANNING':(ptzMode==='slew'?(cueStart?'CUED':'SLEWING'):'TRACKING');
+    if(cueStart&&ptzMode==='track'){ cueMs=now-cueStart; cueStart=0;
+      if(!vAlert.hidden) vAlertT.textContent+=' · ON TARGET '+(cueMs/1000).toFixed(1)+'s'; }
+    if(m.orbit&&launched.e1) assets.eagle1='SEARCHING'; else if(launched.e1) assets.eagle1='AIRBORNE';
+    if(now-lastUi>150){ lastUi=now; renderTracks(m); renderAssets(); renderDecide(m,now); }
     e1.children.forEach(function(c,i){ if(i>0&&c.geometry&&c.geometry.type==='CylinderGeometry') c.rotation.y+=dt*40; });
     // the figure in cover stays put: only a slight settle in the limbs
     if(walker.visible){ var ph=now*0.0016; walker.userData.limbs.forEach(function(l,i){ l.rotation.z=Math.sin(ph+(i%2?Math.PI:0))*0.07; }); }
