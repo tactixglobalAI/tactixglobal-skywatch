@@ -175,7 +175,7 @@
       <div class="ch"></div><div class="box" id="feed-box"><i id="feed-lab">PERSON · 0.91</i></div>
       <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT DOWN 04°</div>
     </div>
-    <button class="snd" id="btn-snd" aria-pressed="false" title="Hear the exchange out loud">SOUND OFF</button>
+    <button class="snd" id="btn-snd" aria-pressed="false" title="Hear the exchange out loud. Some embedded viewers block audio, in which case open the page in its own tab.">SOUND OFF</button>
     <div class="labels" id="labels"></div>
     <div class="ovtop"><span class="mission" id="mission" hidden></span>
       <span class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></span></div>
@@ -677,8 +677,11 @@
   function pickVoices(){ if(!synth) return; var v=synth.getVoices()||[];
     var en=v.filter(function(x){ return /^en/i.test(x.lang||''); }); sndVoices=en.length?en:v; }
   if(synth){ pickVoices(); synth.onvoiceschanged=pickVoices; }
+  function sndNote(t){ var b=document.getElementById('btn-snd'); b.textContent=t;
+    clearTimeout(sndNote._t); sndNote._t=setTimeout(function(){ b.textContent=soundOn?'SOUND ON':'SOUND OFF'; },4000); }
   function utter(text,op){
     var u=new SpeechSynthesisUtterance(text);
+    u.onerror=function(e){ if(e&&(e.error==='not-allowed'||e.error==='blocked')) sndNote('SOUND BLOCKED HERE'); };
     u.rate=op?1.04:0.97; u.pitch=op?1.06:0.88;
     if(sndVoices.length) u.voice=op?sndVoices[0]:(sndVoices[1]||sndVoices[0]);
     return u;
@@ -689,8 +692,8 @@
     setTimeout(function(){ try{ synth.speak(utter(text,op)); }catch(e){} },60);
   }
   (function(){ var btn=document.getElementById('btn-snd');
-    if(!synth){ btn.style.display='none'; return; }
     btn.addEventListener('click',function(){
+      if(!synth){ sndNote('SOUND BLOCKED HERE'); return; }   // embedded viewers often withhold it
       soundOn=!soundOn; btn.setAttribute('aria-pressed',String(soundOn));
       btn.textContent=soundOn?'SOUND ON':'SOUND OFF';
       if(!soundOn){ synth.cancel(); return; }
