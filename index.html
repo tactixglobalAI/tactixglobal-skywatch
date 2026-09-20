@@ -145,7 +145,7 @@
     <div class="kicker">How it works · interactive 3D</div>
   </header>
   <h1>Every sensor and every drone on one vehicle, under voice command.</h1>
-  <p class="lede">A camera that sees heat, microphones that hear an aircraft before it is visible, and drones that launch from the roof. The system scans while the crew drives, reports what it finds in the cab, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
+  <p class="lede">A camera that sees heat, microphones that hear an aircraft before it is visible, and drones that launch from the roof. The system scans while the crew drives, reports what it finds on the screen inside the vehicle, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
   <div class="cast">
     <span><b>SENTRY 1</b>camera and mics</span>
     <span><b>EAGLE 1</b>drone that looks</span>
@@ -173,7 +173,7 @@
     <div class="prog"><i id="prog"></i></div>
   </div>
   <div class="assets" id="assets"></div>
-  <div class="tracks" id="tracks" hidden><h3><span>TRACKS · IN CAB</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
+  <div class="tracks" id="tracks" hidden><h3><span>TRACKS · INSIDE THE VEHICLE</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
   <div class="voice" id="voice">
     <div class="vtop"><span class="vtag">VOICE OR TOUCH</span><span class="vtag">ON VEHICLE · NO CLOUD</span></div>
     <div class="branch" id="branch" hidden></div>
@@ -187,9 +187,9 @@
   </div>
   <div class="details">
     <div><h3>One system, every asset</h3><p>A camera and a set of microphones on the mast, a drone that goes and takes a closer look, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
-    <div><h3>Every detection is named in the cab</h3><p>Anything the system spots is listed in the cab in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
+    <div><h3>Every detection is named on screen</h3><p>Anything the system spots is listed on the screen inside the vehicle in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
     <div><h3>It turns to look without being asked</h3><p>When the microphones or a drone notice something first, the camera turns onto it on its own and tells the crew what it has found. Deciding what to do about it stays with the crew.</p></div>
-    <div><h3>Voice first, not voice only</h3><p>Anything the crew can say, they can also do on the touchscreen in the cab. Speaking is the quickest way in when their hands are busy, not the only way in. The options the system offers can be tapped as readily as spoken.</p></div>
+    <div><h3>Voice first, not voice only</h3><p>Anything the crew can say, they can also do on the touchscreen inside the vehicle. Speaking is the quickest way in when their hands are busy, not the only way in. The options the system offers can be tapped as readily as spoken.</p></div>
     <div><h3>Nothing leaves the vehicle</h3><p>The kit fits on any patrol, police or military vehicle, and all of it runs on board. It needs no connection to anything else to do its job.</p></div>
   </div>
   <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the workflow from end to end are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
@@ -511,7 +511,7 @@
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
      sub:'The camera turns all the way round while the crew drives, and it sees heat rather than light, so it finds someone lying still in the dark that the headlights never reach. It speaks up before anyone thinks to look.',
-     p:'After dark the camera keeps turning while the crew drives. Because it sees heat instead of light, a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number in the cab, so the crew can simply say which one they mean.',
+     p:'After dark the camera keeps turning while the crew drives. Because it sees heat instead of light, a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
@@ -531,7 +531,7 @@
      feed:{from:'e1',target:'candA',lab:'VEHICLE 1 · CHECKING',bl:'EAGLE 1 · SEARCHING',fov:24},
      d:[[0,'OPERATOR','There is a white four by four somewhere in that yard. Find it.',{mission:'TASK · FIND WHITE 4X4'}],
         [3400,'TACTIX','Nothing on the ground camera from here. Putting Eagle One up.',{to:'eagle1',launch:'e1'}],
-        [6800,'EAGLE 1','Airborne. Searching the yard, my feed is in the cab.',{feed:1}],
+        [6800,'EAGLE 1','Airborne. Searching the yard, and you have my picture on screen.',{feed:1}],
         [11000,'EAGLE 1','Vehicle one is a dark sedan. Not what you want.',
          {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
         [15800,'EAGLE 1','Vehicle two is your four by four. White, north side of the yard, zero point eight eight.',
