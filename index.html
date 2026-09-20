@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>TactixGlobal — How it works (3D)</title>
+<title>TactixGlobal · How it works (3D)</title>
 <style>
   :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
     --bg:#090A0C;--panel:#101318;--ink:#EAEEF4;--dim:#8A93A1;--line:#222831;--red:#D7262E;--blue:#3E75C3;--green:#39C07A;--amber:#E0A33E;
@@ -35,6 +35,9 @@
   .hint{position:absolute;right:12px;top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
   .feed{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;width:30%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
   .feed .sl{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+  .feed.eo .sl{background:repeating-linear-gradient(0deg,rgba(0,0,0,.34) 0 1px,transparent 1px 3px)}
+  .feed.eo::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:screen;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.5'/></svg>")}
   .feed .vg{position:absolute;inset:0;background:radial-gradient(80% 80% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%)}
   .feed .tl{position:absolute;left:8px;top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#EAEEF4;max-width:58%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .feed .tr{position:absolute;right:8px;top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#8A93A1;max-width:36%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -144,7 +147,7 @@
     <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
       <div class="tl" id="feed-tl">SENTRY 1 · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
       <div class="ch"></div><div class="box" id="feed-box"><i id="feed-lab">PERSON · 0.91</i></div>
-      <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT −04°</div>
+      <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT DOWN 04°</div>
     </div>
     <div class="labels" id="labels"></div>
     <div class="ovtop"><span class="mission" id="mission" hidden></span>
@@ -427,7 +430,7 @@
   var trkContact=track([[0,0.06,0],[-4.2,0.06,12.05]],0xd7262e);
   var trkSearch=track([[0,0.06,0],[-8,0.06,-3],[-14,0.06,-6],[-17,0.06,-2]],0x3e75c3);
   var trkYard=circleTrack(-17,-2,7.5,6.5,0x3e75c3);
-  var trkHostile=track([[-34,9,-30],[-4,7,-4]],0xd7262e);
+  var trkHostile=track([[-46,13,-40],[-5,7,-5]],0xd7262e);
   var mesh=[[-16,-10],[-13,12],[11,13],[15,-7],[20,8]].map(function(p){ return track([[0,2.2,0],[p[0],2.2,p[1]]],0x39c07a,0.6); });
   mesh.push(track([[-16,2.2,-10],[-13,2.2,12]],0x39c07a,0.4)); mesh.push(track([[15,2.2,-7],[20,2.2,8]],0x39c07a,0.4));
 
@@ -750,6 +753,12 @@
     doaG.visible=now<doaUntil;
     if(doaG.visible){ doaG.position.set(host.position.x,0.06,host.position.z); doaG.rotation.y=-aimAngle(hx);
       doa.material.opacity=0.10+0.16*Math.abs(Math.sin(now*0.004)); }
+    // the inbound track is drawn to where the aircraft actually is, and goes when it does
+    if(m.fly&&m.fly.hx&&hx.visible){ var tp=trkHostile.geometry.attributes.position;
+      tp.setXYZ(0,m.fly.hx.from[0],m.fly.hx.from[1],m.fly.hx.from[2]);
+      tp.setXYZ(1,hx.position.x,hx.position.y,hx.position.z); tp.needsUpdate=true;
+      trkHostile.geometry.computeBoundingSphere(); trkHostile.computeLineDistances(); trkHostile.visible=true; }
+    else if(!hx.visible) trkHostile.visible=false;
     // the hostile flies its own track; our drones move only once told to
     if(m.fly){ Object.keys(m.fly).forEach(function(k){ var f=m.fly[k], o=OBJ[k];
       var ms=(k==='hx')?t:(launched[k]?now-launched[k]:-1); if(ms<0) return; var u=ease(Math.min(1,ms/f.dur));
@@ -805,6 +814,8 @@
     // the cab always has a picture: on the target once asked for it, otherwise the live sweep
     feedEl.style.display='block';
     var onTgt=!!(m.feed&&feedOn), fromE1=onTgt&&m.feed.from==='e1'&&e1.visible;
+    if(onTgt){ var t0o=OBJ[feedTgt||m.feed.target]; if(t0o&&!t0o.visible) onTgt=false; }
+    feedEl.className=thermalOn?'feed':'feed eo';
     {
       var fname=onTgt?(feedTgt||m.feed.target):null, tgt=fname?OBJ[fname]:null;
       var eye=new THREE.Vector3(), at=new THREE.Vector3(), hideE1=false;
@@ -822,14 +833,16 @@
       var fx=Math.round(rect.left-sr.left), fy=Math.round(sr.bottom-rect.bottom), fw=Math.round(rect.width), fh=Math.round(rect.height);
       ptzCam.aspect=fw/fh; ptzCam.updateProjectionMatrix();
       var bearing=Math.round(((Math.atan2(at.x-eye.x,at.z-eye.z)*180/Math.PI)+360)%360), tilt=Math.round(Math.atan2(at.y-eye.y,Math.hypot(at.x-eye.x,at.z-eye.z))*180/Math.PI);
-      feedBR.textContent='PAN '+String(bearing).padStart(3,'0')+'° TILT '+(tilt<0?'\u2212':'+')+String(Math.abs(tilt)).padStart(2,'0')+'°';
+      feedBR.textContent='PAN '+String(bearing).padStart(3,'0')+'° TILT '+(tilt<0?'DOWN ':'UP ')+String(Math.abs(tilt)).padStart(2,'0')+'°';
       renderer.setScissorTest(true); renderer.setScissor(fx,fy,fw,fh); renderer.setViewport(fx,fy,fw,fh);
-      var bg=scene.background, fog=scene.fog;
+      var bg=scene.background, fog=scene.fog, expo=renderer.toneMappingExposure;
+      if(!thermalOn) renderer.toneMappingExposure=expo*0.32;   // an EO camera at night sees very little
       if(thermalOn){ swapToThermal(); scene.background=new THREE.Color(0x06070a); scene.fog=new THREE.FogExp2(0x06070a,0.006); sweepG.visible=false; ping.visible=false; }
       if(hideE1){ e1.visible=false; }
       renderer.clear(); renderer.render(scene,ptzCam);
       if(hideE1){ e1.visible=true; }
       if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=(ptzMode==='scan'); ping.visible=true; }
+      renderer.toneMappingExposure=expo;
       renderer.setScissorTest(false); renderer.setViewport(0,0,W,H);
     }
     requestAnimationFrame(frame);
