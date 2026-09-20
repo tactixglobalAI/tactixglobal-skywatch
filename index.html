@@ -107,7 +107,7 @@
   .vwake{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--ink);border:1px solid var(--red);border-radius:2px;padding:3px 7px}
   .vstate{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);min-width:86px}
   .vstate.listen{color:var(--blue)}.vstate.speak{color:var(--red)}.vstate.hot{color:var(--amber)}
-  .vwave{display:flex;align-items:center;gap:2px;height:14px;flex:0 0 auto;width:58px}
+  .vwave{display:flex;align-items:center;gap:2px;height:15px;flex:0 0 auto;width:66px}
   .vwave i{display:block;width:2px;height:2px;background:#2b3440;border-radius:1px}
   .vtag{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:3px 6px}
   .valert{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--red);border-left-width:3px;border-radius:2px;background:rgba(26,16,18,.9);padding:4px 8px}
@@ -125,9 +125,15 @@
   .ovtop{position:absolute;left:10px;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
   @media (max-width:720px){.ovtop{left:8px;top:8px;right:8px}}
   .mission{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;border-radius:2px;padding:4px 7px}
-  .cap{display:flex;gap:7px;align-items:center}
-  .cap .vstate,.cap .vwho{display:none}
-  .cap .vtext{flex:1 1 auto;font-size:12.5px;line-height:1.4;max-height:36px;overflow:hidden}
+  .cap{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+  .cap .vwho{display:none}
+  .cap .ic{display:none;width:14px;height:14px;flex:0 0 auto}
+  .cap.op .ic-mic{display:block;fill:var(--blue)}
+  .cap.sys .ic-spk{display:block;fill:var(--red)}
+  .cap .vtext{flex:1 1 100%;font-size:12.5px;line-height:1.4;max-height:36px;overflow:hidden}
+  .cap .vtext:not(:empty)::before{content:'\201C'}
+  .cap .vtext:not(:empty)::after{content:'\201D'}
+  @media (max-width:720px){.cap .vstate{display:none}}
   @media (max-width:720px){.ovl{padding:22px 8px 8px}.cap .vtext{font-size:12px}}
   @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}
     .voice{border:none;background:none;padding:0;margin-top:8px}}
@@ -171,7 +177,7 @@
       <span class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></span></div>
     <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
     <div class="ovl">
-      <div class="cap"><span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
+      <div class="cap" id="cap"><svg class="ic ic-mic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg><svg class="ic ic-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5zm11.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg><span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
         <span class="vwave" id="v-wave"></span><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
     </div>
     <div class="prog"><i id="prog"></i></div>
@@ -620,7 +626,8 @@
   var assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'}, labelEls={}, RANGE=3.4;
   var vState=document.getElementById('v-state'), vWho=document.getElementById('v-who'), vText=document.getElementById('v-text'),
       vLog=document.getElementById('v-log'), vAlert=document.getElementById('v-alert'), vAlertT=document.getElementById('v-alert-t'),
-      missionEl=document.getElementById('mission'), vWake=document.getElementById('v-wake'), waveBars=[];
+      missionEl=document.getElementById('mission'), vWake=document.getElementById('v-wake'),
+      capEl=document.getElementById('cap'), waveBars=[];
   var ASSET={sentry:'SENTRY 1',eagle1:'EAGLE 1',eagle2:'EAGLE 2'};
   (function(){ var w=document.getElementById('v-wave');
     for(var i=0;i<16;i++){ var b=document.createElement('i'); w.appendChild(b); waveBars.push(b); } })();
@@ -760,13 +767,14 @@
     assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'};
     DUR=m.d[m.d.length-1][0]+5200;
     vAlert.hidden=true; missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
-    vState.className='vstate'; vState.textContent='STANDING BY'; vWake.textContent='TACTIX';
+    vState.className='vstate'; vState.textContent='STANDING BY'; vWake.textContent='TACTIX'; capEl.className='cap';
     Object.keys(labelEls).forEach(function(k){ labelEls[k].hidden=true; });
     renderTracks(m); renderAssets(); renderDecide(m,performance.now());
   }
   function applyBeat(m,i,now){
     var b=m.d[i], a=b[3]||{}, op=b[1]==='OPERATOR';
     vWho.className='vwho '+(op?'op':'sys'); vWho.textContent=b[1];
+    capEl.className='cap '+(op?'op':'sys');
     vText.className='vtext '+(op?'op':'');
     if(a.auto){ vState.className='vstate hot'; vState.textContent='AUTO CUE ← '+a.auto; }
     else { vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING'; }
