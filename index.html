@@ -28,8 +28,8 @@
   .dlg{margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;align-items:start}
   .dlg .w{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);padding-top:3px}
   .dlg .s{font-size:12.5px;line-height:1.45;color:#C6CEDA;font-style:italic}.dlg .o{font-size:12.5px;line-height:1.45;color:#F2A0A4;font-weight:650}
-  .hint{position:absolute;left:14px;bottom:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
-  .feed{position:absolute;right:12px;bottom:14px;width:34%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
+  .hint{position:absolute;right:12px;top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
+  .feed{position:absolute;right:12px;top:52px;width:31%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
   .feed .sl{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
   .feed .vg{position:absolute;inset:0;background:radial-gradient(80% 80% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%)}
   .feed .tl{position:absolute;left:8px;top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#EAEEF4;max-width:58%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -44,7 +44,7 @@
   @keyframes blink{50%{opacity:.15}}
   .toggle{position:absolute;right:12px;top:12px;display:flex;gap:6px}
   .toggle button{padding:6px 9px;font-size:9.5px}
-  @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}.toggle{top:8px;right:8px}}
+  @media (max-width:720px){.feed{width:36%;top:40px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}.toggle{top:8px;right:8px}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
   .assets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
   .asset{flex:1 1 30%;min-width:104px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:7px 9px}
@@ -62,16 +62,17 @@
   .trk.sel{background:#181B21;box-shadow:0 0 0 1px var(--red) inset}.trk.sel b{color:#F2A0A4}
   .trk .st{font-size:8.5px;letter-spacing:.14em;color:var(--dim)}
   .trk.low .cf{color:var(--amber)}
-  .decide{margin-top:10px;border:1px solid var(--amber);border-left-width:3px;border-radius:2px;background:#191409;padding:9px 10px}
-  .decide h4{margin:0 0 7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--amber);font-weight:400}
+  .decide{margin-top:7px;border:1px solid var(--amber);border-left-width:3px;border-radius:2px;background:rgba(25,20,9,.92);padding:6px 8px}
+  .decide h4{margin:0 0 5px;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--amber);font-weight:400}
   .opts{display:flex;gap:6px;flex-wrap:wrap}
-  .opt{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;border:1px solid var(--line);border-radius:2px;padding:6px 8px;color:var(--ink);background:#101318}
+  .opt{font-family:var(--mono);font-size:9px;letter-spacing:.1em;border:1px solid var(--line);border-radius:2px;padding:4px 7px;color:var(--ink);background:#101318}
   .opt.go{border-color:var(--green);color:#8FD3AE}
   .opt.kill{border-color:var(--red);color:#F2A0A4}
   .opt.off{opacity:.5;border-style:dashed;color:var(--dim)}
   .opt.chosen{background:#241014;border-color:var(--red);color:#fff}
   .opt em{display:block;font-style:normal;font-size:8px;letter-spacing:.1em;color:var(--dim);margin-top:3px}
-  .say{margin-top:7px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dim)}
+  .say{margin-top:4px;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--dim);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .say b{color:#CFE0F8;font-weight:400}
   .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
   .lb{position:absolute;transform:translate(-50%,-50%);font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:#EAEEF4;white-space:nowrap;
@@ -85,13 +86,12 @@
   .vwake{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--ink);border:1px solid var(--red);border-radius:2px;padding:3px 7px}
   .vstate{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);min-width:86px}
   .vstate.listen{color:var(--blue)}.vstate.speak{color:var(--red)}.vstate.hot{color:var(--amber)}
-  .vwave{display:flex;align-items:center;gap:2px;height:16px;flex:1 1 90px;min-width:90px}
+  .vwave{display:flex;align-items:center;gap:2px;height:14px;flex:0 0 auto;width:58px}
   .vwave i{display:block;width:2px;height:2px;background:#2b3440;border-radius:1px}
   .vtag{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:3px 6px}
-  .valert{display:flex;align-items:center;gap:8px;margin-top:9px;border:1px solid var(--red);border-left-width:3px;border-radius:2px;background:#1a1012;padding:7px 9px}
-  .valert b{font-family:var(--mono);font-size:11px;color:var(--red)}
-  .valert span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#F2A0A4}
-  .vline{margin-top:9px;display:flex;gap:9px;align-items:baseline;min-height:34px}
+  .valert{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--red);border-left-width:3px;border-radius:2px;background:rgba(26,16,18,.9);padding:4px 8px}
+  .valert b{font-family:var(--mono);font-size:9px;color:var(--red)}
+  .valert span{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:#F2A0A4}
   .vwho{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);flex:0 0 auto;padding-top:2px}
   .vwho.op{color:var(--blue)}.vwho.sys{color:var(--red)}
   .vtext{font-size:13.5px;line-height:1.5;color:#E2E8F0}
@@ -99,13 +99,20 @@
   .vcur{display:inline-block;width:7px;height:14px;background:var(--dim);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
   .vlog{margin-top:6px;display:grid;gap:3px}
   .vlog div{font-size:11.5px;line-height:1.4;color:#5F6875;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mission{position:absolute;left:14px;top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;background:rgba(9,10,12,.7);border-radius:2px;padding:5px 8px;pointer-events:none}
+  .ovl{position:absolute;left:0;right:0;bottom:0;padding:24px 10px 8px;pointer-events:none;
+    background:linear-gradient(to top,rgba(6,7,9,.92) 60%,rgba(6,7,9,0))}
+  .ovtop{position:absolute;left:10px;top:10px;right:38%;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
+  .mission{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;border-radius:2px;padding:4px 7px}
+  .cap{display:flex;gap:7px;align-items:center;margin-top:6px}
+  .cap .vstate,.cap .vwho{display:none}
+  .cap .vtext{flex:1 1 auto;font-size:12.5px;line-height:1.4;max-height:36px;overflow:hidden}
+  @media (max-width:720px){.ovl{padding:22px 8px 8px}.cap .vtext{font-size:12px}}
   @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
   .legend b{display:inline-block;width:16px;height:2px;margin-right:6px;vertical-align:middle;border-radius:2px}
   .foot{margin-top:12px;font-size:10.5px;line-height:1.6;color:#6C7581;max-width:920px}
   .fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:var(--dim);font-size:13px;padding:20px;text-align:center}
-  @media (max-width:720px){.hud{position:static;max-width:none;border:none;background:none;backdrop-filter:none;padding:12px 12px 0}.stage{aspect-ratio:4/3;min-height:0}.hint{display:none}}
+  @media (max-width:720px){.hud{position:static;max-width:none;border:none;background:none;backdrop-filter:none;padding:12px 12px 0}.stage{aspect-ratio:1/1;min-height:0}.hint{display:none}}
 </style>
 </head>
 <body>
@@ -121,7 +128,6 @@
     <canvas id="c" aria-label="3D view of a TactixGlobal equipped SUV scanning 360 degrees with recon and interceptor drones, a refinery site, a fence line and a command centre"></canvas>
     <div class="fallback" id="fallback">This view needs WebGL. Please open it in a current browser.</div>
     <div class="hud"><h2 id="hud-h"></h2><p id="hud-p"></p></div>
-    <div class="mission" id="mission" hidden></div>
     <div class="toggle" role="group" aria-label="PTZ feed mode"><button id="btn-th" aria-pressed="true">Thermal</button><button id="btn-eo" aria-pressed="false">Day</button></div>
     <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
       <div class="tl" id="feed-tl">SENTRY 1 · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
@@ -129,21 +135,20 @@
       <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT −04°</div>
     </div>
     <div class="labels" id="labels"></div>
-    <div class="hint">DRAG TO ORBIT · SCROLL TO ZOOM</div>
+    <div class="ovtop"><span class="mission" id="mission" hidden></span>
+      <span class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></span></div>
+    <div class="ovl">
+      <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
+      <div class="cap"><span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
+        <span class="vwave" id="v-wave"></span><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
+    </div>
     <div class="prog"><i id="prog"></i></div>
   </div>
   <div class="assets" id="assets"></div>
   <div class="tracks" id="tracks" hidden><h3><span>TRACKS · IN CAB</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
   <div class="voice" id="voice">
-    <div class="vtop">
-      <span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
-      <span class="vwave" id="v-wave"></span>
-      <span class="vtag">IN-CAB</span><span class="vtag">ON-VEHICLE · NO CLOUD</span>
-    </div>
-    <div class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></div>
-    <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
+    <div class="vtop"><span class="vtag">IN-CAB</span><span class="vtag">ON-VEHICLE · NO CLOUD</span></div>
     <div class="branch" id="branch" hidden></div>
-    <div class="vline"><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
     <div class="vlog" id="v-log"></div>
   </div>
   <div class="legend">
@@ -404,9 +409,9 @@
   var e2=interceptor(M.green); e2.visible=false; scene.add(e2);
   var hx=drone(M.red); hx.visible=false; scene.add(hx);
   // a strobe and a bigger airframe, so an unknown aircraft reads at night
-  var strobe=new THREE.Mesh(new THREE.SphereGeometry(0.13,10,8),
+  var strobe=new THREE.Mesh(new THREE.SphereGeometry(0.2,10,8),
     new THREE.MeshBasicMaterial({color:0xff3b3b,transparent:true,opacity:1}));
-  strobe.position.set(0,-0.16,0); strobe.userData.heat=0.6; hx.add(strobe); hx.scale.setScalar(1.7);
+  strobe.position.set(0,-0.18,0); strobe.userData.heat=0.6; hx.add(strobe); hx.scale.setScalar(2.4);
   var flash=new THREE.Mesh(new THREE.SphereGeometry(0.8,16,12),
     new THREE.MeshBasicMaterial({color:0xffd9a0,transparent:true,opacity:0,depthWrite:false}));
   flash.visible=false; scene.add(flash);
@@ -416,35 +421,35 @@
   // the intercept offers different options depending on what is known: two variants, one scene
   var V_ID=[
     [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
-      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · UNKNOWN AIRCRAFT · BRG 312°',select:'DRONE 1'}],
-    [4800,'SENTRY 1','Got it. Acoustic signature and camera agree: small quad. Drone one, zero point nine one.',
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}],
+    [3400,'SENTRY 1','Got it. Acoustic signature and camera agree: small quad. Drone one, zero point nine one.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
-    [10500,'SENTRY 1','Drone one is identified, so engagement is available. Eagle Two is the only interceptor you carry.',
+    [7200,'SENTRY 1','Drone one is identified, so engagement is available. Eagle Two is the only interceptor you carry.',
       {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
         say:'SAY: “Hey Eagle Two, engage drone one” · “follow drone one” · “leave it”'}}],
-    [16500,'OPERATOR','Hey Eagle Two, engage drone one.',{to:'eagle2',choose:'ENGAGE',confirm:5}],
-    [21000,'OPERATOR','Confirm engage.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
-    [26000,'SENTRY 1','Drone one is down. Eagle Two is expended — no interceptor left on this vehicle.',{tstate:{'DRONE 1':'DEFEATED'}}]
+    [10800,'OPERATOR','Hey Eagle Two, engage drone one.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
+    [14400,'OPERATOR','Confirm engage.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
+    [18600,'SENTRY 1','Drone one is down. Eagle Two is expended — no interceptor left on this vehicle.',{tstate:{'DRONE 1':'DEFEATED'}}]
   ];
   var V_UNID=[
     [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
-      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · UNKNOWN AIRCRAFT · BRG 312°',select:'DRONE 1'}],
-    [4800,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}],
+    [3400,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.38},lab:'DRONE 1 · 0.38'}],
-    [10500,'SENTRY 1','That is below the eight-tenths threshold, so engagement stays locked. I can send Eagle Two for a closer look.',
+    [7200,'SENTRY 1','That is below the eight-tenths threshold, so engagement stays locked. I can send Eagle Two for a closer look.',
       {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
         say:'SAY: “Hey Eagle Two, follow drone one” · “leave it”'}}],
-    [16500,'OPERATOR','Hey Eagle Two, follow drone one.',
+    [11200,'OPERATOR','Hey Eagle Two, follow drone one.',
       {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
-    [22500,'EAGLE 2','Holding standoff. Commercial quad, no visible payload. Drone one, zero point nine four.',
+    [15800,'EAGLE 2','Holding standoff. Commercial quad, no visible payload. Drone one, zero point nine four.',
       {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
        decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
         opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
         say:'SAY: “Hey Eagle Two, engage” · “Hey Eagle Two, come home”'}}],
-    [29000,'OPERATOR','Hey Eagle Two, come home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
-    [33500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
+    [21500,'OPERATOR','Hey Eagle Two, come home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
+    [25500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
   ];
 
   var MODES=[
@@ -455,7 +460,7 @@
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
      feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
      d:[[0,'SENTRY 1','Movement, three o’clock, forty metres. Person in the treeline, not moving. Logged as person one.',
-         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO-CUE · THERMAL · PERSON 1 · BRG 109°',select:'PERSON 1'}],
+         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO-CUE · THERMAL · BRG 109°',select:'PERSON 1'}],
         [5600,'OPERATOR','Hey Sentry One, show me person one.',{to:'sentry',feed:1}],
         [8600,'SENTRY 1','On screen, thermal. One person, crouched behind the hedge. No vehicle with them.',{}],
         [14000,'OPERATOR','Hey Sentry One, keep the camera on person one.',
@@ -474,13 +479,13 @@
          {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
         [14000,'EAGLE 1','Vehicle two matches your description. White four-by-four, zero point eight eight.',
          {feedTarget:'candB',select:'VEHICLE 2',lab:'VEHICLE 2 · MATCH 0.88',conf:{'VEHICLE 2':0.88},tstate:{'VEHICLE 2':'MATCH'},
-          alert:'MATCH 0.88 · VEHICLE 2 · WHITE 4X4',bl:'EAGLE 1 · HOLDING'}],
+          alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
         [20000,'OPERATOR','Hey Eagle One, hold overhead and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
      p:'The acoustic array hears an aircraft no camera has seen yet, and Sentry One turns onto the bearing without being asked. What the crew is offered then depends on what is known: engagement unlocks at an identification of 0.80, and it expends Eagle Two — the only interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
-     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:17000}},
+     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:10500}},
      list0:[{id:'DRONE 1',obj:'hx',conf:0.22,state:'UNIDENTIFIED'}],
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
@@ -575,7 +580,7 @@
   }
   function renderTracks(m){
     var box=document.getElementById('tracks'), rows=document.getElementById('trk-rows');
-    if(!m.list||!m.list.length){ box.hidden=true; return; }
+    if(!m.list||!m.list.length){ box.hidden=true; rows.innerHTML=''; return; }
     box.hidden=false; rows.innerHTML='';
     m.list.forEach(function(tk){
       var o=OBJ[tk.obj], p=new THREE.Vector3(); if(o) o.getWorldPosition(p);
@@ -605,7 +610,9 @@
   function renderDecide(m,now){
     var box=document.getElementById('decide');
     if(!decideState){ box.hidden=true; return; }
-    box.hidden=false; document.getElementById('decide-h').textContent=decideState.h;
+    // the decision carries the context, so the cue banner steps aside
+    box.hidden=false; vAlert.hidden=true;
+    document.getElementById('decide-h').textContent=decideState.h;
     var o=document.getElementById('decide-o'); o.innerHTML='';
     decideState.opts.forEach(function(op){
       var tk=op.needs?trackById(m,op.track):null, locked=op.needs&&(!tk||tk.conf<op.needs), b=document.createElement('span');
@@ -656,7 +663,7 @@
     vLog.innerHTML=''; m.d.slice(Math.max(0,i-2),i).forEach(function(r){
       var d=document.createElement('div'); d.textContent=r[1]+' · '+r[2]; vLog.appendChild(d); });
     if(a.to) addressed=a.to;
-    vWake.textContent = op ? (a.to?'HEY '+ASSET[a.to]:'TACTIX') : (ASSET[addressed]===b[1]?b[1]:b[1]);
+    vWake.textContent = op ? (addressed?'HEY '+ASSET[addressed]:'TACTIX') : b[1];
     if(a.alert){ vAlertT.textContent=a.alert; vAlert.hidden=false; }
     if(a.mission){ missionEl.textContent=a.mission; missionEl.hidden=false; }
     if(a.cue){ ptzMode='slew'; ptzTgt=OBJ[a.cue.target]; cueStart=now; }
@@ -725,24 +732,24 @@
     // Eagle Two: boost off the roof, then shadow at standoff or run it down
     if(launched.e2&&e2Mode!=='expended'){
       var home=new THREE.Vector3(-1.35,2.4,-0.45), ms2=now-launched.e2, vv=new THREE.Vector3();
-      if(ms2<1000){ e2.position.set(-1.35,2.4+ms2/1000*2.8,-0.45); vv.set(0,1,0.001); }
+      if(ms2<650){ e2.position.set(-1.35,2.4+ms2/650*2.6,-0.45); vv.set(0,1,0.001); }
       else if(e2Mode==='recall'){ vv.subVectors(home,e2.position); var db=vv.length();
         if(db<0.4){ e2.visible=false; eagle2Dock.visible=true; assets.eagle2='DOCKED'; }
         else { e2.position.addScaledVector(vv.clone().normalize(),Math.min(13*dt,db)); assets.eagle2='RETURNING'; } }
       else { vv.subVectors(hx.position,e2.position); var dd=vv.length();
-        var stand=(e2Mode==='engage')?0:3.4, spd=(e2Mode==='engage')?26:13;
+        var stand=(e2Mode==='engage')?0:3.4, spd=(e2Mode==='engage')?11:15;
         e2.position.addScaledVector(vv.clone().normalize(),Math.min(spd*dt,Math.max(0,dd-stand)));
         assets.eagle2=(e2Mode==='engage')?'ENGAGING':'SHADOWING';
         if(e2Mode==='engage'&&dd<1.0) boom(now,m); }
       if(vv.lengthSq()>1e-6) aimAlong(e2,vv);
-      if(e2.userData.flame) e2.userData.flame.material.opacity=(ms2<1000?0.9:0.3+0.35*Math.abs(Math.sin(now*0.02)));
+      if(e2.userData.flame) e2.userData.flame.material.opacity=(ms2<650?0.95:0.3+0.35*Math.abs(Math.sin(now*0.02)));
     }
     // the flash, and what it costs: one interceptor, and the vehicle has one
-    if(flashT){ var ft=(now-flashT)/700;
+    if(flashT){ var ft=(now-flashT)/900;
       if(ft>=1){ flash.visible=false; flashT=0; } else { flash.scale.setScalar(1+ft*7); flash.material.opacity=0.9*(1-ft); } }
     // an airborne object is unreadable without a line to the ground
     altUpdate(altHx,hx); altUpdate(altE2,e2); altUpdate(altE1,e1);
-    if(strobe.parent) strobe.material.opacity=(Math.sin(now*0.009)>0.4)?1:0.05;
+    if(strobe.parent) strobe.material.opacity=(Math.sin(now*0.009)>0.4)?1:0.3;
     // the cab display: what it sees, and which asset is doing what
     updateLabels(m);
     assets.sentry=(ptzMode==='scan')?'SCANNING':(ptzMode==='slew'?(cueStart?'CUED':'SLEWING'):'TRACKING');
