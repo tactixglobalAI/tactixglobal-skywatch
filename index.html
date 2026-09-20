@@ -40,7 +40,10 @@
   .dlg{margin-top:10px;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;align-items:start}
   .dlg .w{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);padding-top:3px}
   .dlg .s{font-size:12.5px;line-height:1.45;color:#C6CEDA;font-style:italic}.dlg .o{font-size:12.5px;line-height:1.45;color:#F2A0A4;font-weight:650}
-  .hint{position:absolute;right:12px;top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
+  .snd{position:absolute;right:12px;top:12px;padding:6px 9px;font-size:9.5px}
+  .snd[aria-pressed="true"]{color:var(--ink);border-color:var(--red);background:#181B21}
+  @media (max-width:720px){.snd{right:8px;top:8px}}
+  .hint{position:absolute;right:12px;top:44px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
   .feed{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;width:30%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
   .feed .map{position:absolute;inset:0;width:100%;height:100%;display:none}
   .feed.map .map{display:block}
@@ -122,8 +125,8 @@
   .vlog div{font-size:11.5px;line-height:1.4;color:#5F6875;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ovl{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 8px;pointer-events:none;
     background:linear-gradient(to top,rgba(6,7,9,.92) 55%,rgba(6,7,9,0))}
-  .ovtop{position:absolute;left:10px;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
-  @media (max-width:720px){.ovtop{left:8px;top:8px;right:8px}}
+  .ovtop{position:absolute;left:10px;top:10px;right:108px;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
+  @media (max-width:720px){.ovtop{left:8px;top:8px;right:100px}}
   .mission{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;border-radius:2px;padding:4px 7px}
   .cap{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
   .cap .vwho{display:none}
@@ -172,6 +175,7 @@
       <div class="ch"></div><div class="box" id="feed-box"><i id="feed-lab">PERSON · 0.91</i></div>
       <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT DOWN 04°</div>
     </div>
+    <button class="snd" id="btn-snd" aria-pressed="false" title="Hear the exchange out loud">SOUND OFF</button>
     <div class="labels" id="labels"></div>
     <div class="ovtop"><span class="mission" id="mission" hidden></span>
       <span class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></span></div>
@@ -520,8 +524,8 @@
 
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
-     sub:'The camera turns all the way round while the crew drives, and after dark the thermal sensor finds what the headlights never reach.',
-     p:'After dark the camera keeps turning while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
+     sub:'The camera looks all around while the crew drives, and after dark the thermal sensor finds what the headlights never reach.',
+     p:'After dark the camera keeps looking all around while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.86,lookY:-2.2,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
@@ -668,6 +672,34 @@
     g.strokeStyle='#39C07A'; g.lineWidth=1.2; g.strokeRect(cc[0]-4,cc[1]-4,8,8);
     g.fillStyle='rgba(143,211,174,0.95)'; g.fillText('CONTROL',cc[0]+7,cc[1]+3);
   }
+  // the exchange can be heard as well as read: the browser speaks it, nothing leaves the machine
+  var synth=('speechSynthesis' in window)?window.speechSynthesis:null, soundOn=false, sndVoices=[];
+  function pickVoices(){ if(!synth) return; var v=synth.getVoices()||[];
+    var en=v.filter(function(x){ return /^en/i.test(x.lang||''); }); sndVoices=en.length?en:v; }
+  if(synth){ pickVoices(); synth.onvoiceschanged=pickVoices; }
+  function utter(text,op){
+    var u=new SpeechSynthesisUtterance(text);
+    u.rate=op?1.04:0.97; u.pitch=op?1.06:0.88;
+    if(sndVoices.length) u.voice=op?sndVoices[0]:(sndVoices[1]||sndVoices[0]);
+    return u;
+  }
+  function say(text,op){
+    if(!synth||!soundOn||!text) return;
+    synth.cancel();
+    setTimeout(function(){ try{ synth.speak(utter(text,op)); }catch(e){} },60);
+  }
+  (function(){ var btn=document.getElementById('btn-snd');
+    if(!synth){ btn.style.display='none'; return; }
+    btn.addEventListener('click',function(){
+      soundOn=!soundOn; btn.setAttribute('aria-pressed',String(soundOn));
+      btn.textContent=soundOn?'SOUND ON':'SOUND OFF';
+      if(!soundOn){ synth.cancel(); return; }
+      var m=MODES[cur];
+      if(m&&beatIx>=0){ var b0=m.d[beatIx];
+        try{ synth.speak(utter(b0[2],b0[1]==='OPERATOR')); }catch(e){} }
+    });
+    document.addEventListener('visibilitychange',function(){ if(document.hidden&&synth) synth.cancel(); });
+  })();
   function aimAngle(o){ var p=new THREE.Vector3(); o.getWorldPosition(p); return Math.atan2(p.z-host.position.z,p.x-host.position.x); }
   function wrapPi(a){ while(a>Math.PI)a-=Math.PI*2; while(a<-Math.PI)a+=Math.PI*2; return a; }
   function fmtBrg(a){ return ('00'+Math.round(((a*180/Math.PI)+360)%360)).slice(-3)+'°'; }
@@ -766,6 +798,7 @@
     e2Mode='idle'; selectedId=null; addressed=null; decideState=null; confirmUntil=0; cueStart=0; cueMs=0; flashT=0; flash.visible=false;
     assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'};
     DUR=m.d[m.d.length-1][0]+5200;
+    if(synth) synth.cancel();
     vAlert.hidden=true; missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
     vState.className='vstate'; vState.textContent='STANDING BY'; vWake.textContent='TACTIX'; capEl.className='cap';
     Object.keys(labelEls).forEach(function(k){ labelEls[k].hidden=true; });
@@ -774,7 +807,7 @@
   function applyBeat(m,i,now){
     var b=m.d[i], a=b[3]||{}, op=b[1]==='OPERATOR';
     vWho.className='vwho '+(op?'op':'sys'); vWho.textContent=b[1];
-    capEl.className='cap '+(op?'op':'sys');
+    capEl.className='cap '+(op?'op':'sys'); say(b[2],op);
     vText.className='vtext '+(op?'op':'');
     if(a.auto){ vState.className='vstate hot'; vState.textContent='AUTO CUE ← '+a.auto; }
     else { vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING'; }
