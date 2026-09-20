@@ -44,7 +44,7 @@
   .snd[aria-pressed="true"]{color:var(--ink);border-color:var(--red);background:#181B21}
   @media (max-width:720px){.snd{right:8px;top:8px}}
   .hint{position:absolute;right:12px;top:44px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
-  .feed{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;width:30%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
+  .feed{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;width:30%;transition:bottom .25s ease;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
   .feed .map{position:absolute;inset:0;width:100%;height:100%;display:none}
   .feed.map .map{display:block}
   .feed.map .box,.feed.map .ch{display:none}
@@ -82,21 +82,17 @@
   .trk.sel{background:#181B21;box-shadow:0 0 0 1px var(--red) inset}.trk.sel b{color:#F2A0A4}
   .trk .st{font-size:8.5px;letter-spacing:.14em;color:var(--dim)}
   .trk.low .cf{color:var(--amber)}
-  .decide{position:absolute;left:10px;right:10px;top:48px;border:1px solid var(--amber);border-left-width:3px;
-    border-radius:2px;background:rgba(25,20,9,.94);padding:6px 8px}
-  @media (max-width:720px){.decide{left:8px;right:8px;top:44px}}
-  .decide h4{margin:0 0 5px;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--amber);font-weight:400}
-  .opts{display:flex;gap:6px;flex-wrap:wrap}
+  .opts{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px}
   .opt.tap{pointer-events:auto;cursor:pointer}
   .opt.tap:hover{border-color:var(--ink)}
-  .opt{font-family:var(--mono);font-size:9px;letter-spacing:.1em;border:1px solid var(--line);border-radius:2px;padding:4px 7px;color:var(--ink);background:#101318}
+  .opt{font-size:11.5px;border:1px solid var(--line);border-radius:14px;padding:4px 10px;color:var(--ink);background:rgba(16,19,24,.9)}
+  .opt::before{content:'\201C'}.opt::after{content:'\201D'}
   .opt.go{border-color:var(--green);color:#8FD3AE}
   .opt.kill{border-color:var(--red);color:#F2A0A4}
   .opt.off{opacity:.5;border-style:dashed;color:var(--dim)}
   .opt.chosen{background:#241014;border-color:var(--red);color:#fff}
-  .opt em{display:block;font-style:normal;font-size:8px;letter-spacing:.1em;color:var(--dim);margin-top:3px}
-  .say{margin-top:4px;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;color:var(--dim);
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .opt em{font-style:normal;font-size:9.5px;color:var(--dim)}
+  .opt em::before{content:' \00b7 '}
   .say b{color:#CFE0F8;font-weight:400}
   .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
   .lb{position:absolute;transform:translate(-50%,-50%);font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:#EAEEF4;white-space:nowrap;
@@ -176,8 +172,8 @@
     <div class="labels" id="labels"></div>
     <div class="ovtop"><span class="mission" id="mission" hidden></span>
       </div>
-    <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
     <div class="ovl">
+      <div class="opts" id="opts" hidden></div>
       <div class="cap" id="cap"><svg class="ic ic-mic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg><svg class="ic ic-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5zm11.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg><span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
         <span class="vwave" id="v-wave"></span><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
     </div>
@@ -468,7 +464,7 @@
   var trkContact=track([[0,0.06,0],[-4.2,0.06,12.05]],0xd7262e);
   var trkSearch=track([[0,0.06,0],[-8,0.06,-3],[-14,0.06,-6],[-17,0.06,-2]],0x3e75c3);
   var trkYard=circleTrack(-17,-2,7.5,6.5,0x3e75c3);
-  var trkHostile=track([[-46,13,-40],[-5,7,-5]],0xd7262e);
+  var trkHostile=track([[-24,9,-20],[-5,7,-5]],0xd7262e);
   var mesh=[[-16,-10],[-13,12],[11,13],[15,-7],[20,8]].map(function(p){ return track([[0,2.2,0],[p[0],2.2,p[1]]],0x39c07a,0.6); });
   mesh.push(track([[-16,2.2,-10],[-13,2.2,12]],0x39c07a,0.4)); mesh.push(track([[15,2.2,-7],[20,2.2,8]],0x39c07a,0.4));
 
@@ -494,9 +490,8 @@
     [5600,'SENTRY 1','Acoustic and camera agree. Small quad. Drone one, zero point nine one.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
     [9400,'TACTIX','That is a clean identification, so engaging is open to you. Eagle Two is the only interceptor on board.',
-      {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
-        opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY OR TAP: “take it down” · “just follow it” · “leave it”'}}],
+      {decide:{opts:[{k:'ENGAGE',phrase:'take it down',cls:'kill',needs:0.8,track:'DRONE 1',cost:'uses your only interceptor'},
+        {k:'FOLLOW',phrase:'just follow it',cls:'go'},{k:'IGNORE',phrase:'leave it'}]}}],
     [13000,'OPERATOR','Take it down.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
     [16600,'OPERATOR','Confirmed.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
     [20800,'SENTRY 1','Drone one is down. Eagle Two is expended. You have no interceptor left on board.',{tstate:{'DRONE 1':'DEFEATED'}}]
@@ -505,16 +500,15 @@
     [5600,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.38},lab:'DRONE 1 · 0.38'}],
     [9400,'TACTIX','Not enough to engage on. I can put Eagle Two alongside it for a closer look.',
-      {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
-        opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY OR TAP: “go and look” · “leave it”'}}],
+      {decide:{opts:[{k:'FOLLOW',phrase:'go and look',cls:'go'},
+        {k:'ENGAGE',phrase:'take it down',cls:'kill',needs:0.8,track:'DRONE 1',cost:'uses your only interceptor'},
+        {k:'IGNORE',phrase:'leave it'}]}}],
     [13400,'OPERATOR','Go and look.',
       {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
     [18000,'EAGLE 2','Alongside at standoff. Commercial quad, nothing slung under it. Drone one, zero point nine four.',
       {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
-       decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
-        opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
-        say:'SAY OR TAP: “take it down” · “bring it home”'}}],
+       decide:{opts:[{k:'ENGAGE',phrase:'take it down',cls:'kill',needs:0.8,track:'DRONE 1',cost:'uses your only interceptor'},
+        {k:'RECALL',phrase:'bring it home',cls:'go'}]}}],
     [23700,'OPERATOR','Bring it home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
     [27700,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
   ];
@@ -541,20 +535,20 @@
      list0:[{id:'VEHICLE 1',obj:'candA',conf:0.44,state:'CHECKING'},{id:'VEHICLE 2',obj:'candB',conf:0.31,state:'QUEUED'}],
      feed:{from:'e1',target:'candA',lab:'VEHICLE 1 · CHECKING',bl:'EAGLE 1 · SEARCHING',fov:24},
      d:[[0,'OPERATOR','There is a white four by four somewhere in that yard. Find it.',{mission:'TASK · FIND WHITE 4X4'}],
-        [3400,'TACTIX','Nothing on the ground camera from here. Putting Eagle One up.',{to:'eagle1',launch:'e1'}],
-        [6800,'EAGLE 1','Airborne. Searching the yard, and you have my picture on screen.',{feed:1}],
-        [11000,'EAGLE 1','Vehicle one is a dark sedan. Not what you want.',
+        [2200,'TACTIX','Nothing on the ground camera from here. Putting Eagle One up.',{to:'eagle1',launch:'e1'}],
+        [5000,'EAGLE 1','Airborne. Searching the yard, and you have my picture on screen.',{feed:1}],
+        [9200,'EAGLE 1','Vehicle one is a dark sedan. Not what you want.',
          {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
-        [15800,'EAGLE 1','Vehicle two is your four by four. White, north side of the yard, zero point eight eight.',
+        [14000,'EAGLE 1','Vehicle two is your four by four. White, north side of the yard, zero point eight eight.',
          {feedTarget:'candB',select:'VEHICLE 2',lab:'VEHICLE 2 · MATCH 0.88',conf:{'VEHICLE 2':0.88},tstate:{'VEHICLE 2':'MATCH'},
           bl:'EAGLE 1 · HOLDING'}],
-        [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
+        [19200,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
      sub:'The microphones hear unusual activity, a gunshot or a drone for example, and the camera swings onto the bearing by itself.',
      p:'The microphones listen for unusual activity, whether that is a gunshot, a drone or something else that does not belong. Here they pick up an aircraft no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
-     show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
-     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:12500}},
+     show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],zoom:1.12,
+     fly:{hx:{from:[-24,9,-20],to:[-5,7,-5],dur:6000}},
      list0:[{id:'DRONE 1',obj:'hx',conf:0.22,state:'UNIDENTIFIED'}],
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
@@ -750,12 +744,16 @@
     Object.keys(labelEls).forEach(function(k){ if(!want[k]) labelEls[k].hidden=true; });
   }
   function renderDecide(m,now){
-    var box=document.getElementById('decide');
-    if(!decideState){ box.hidden=true; return; }
-    // the decision carries the context, so the cue banner steps aside
-    box.hidden=false;
-    document.getElementById('decide-h').textContent=decideState.h;
-    var o=document.getElementById('decide-o'); o.innerHTML='';
+    var o=document.getElementById('opts'), ovl=document.querySelector('.ovl');
+    if(!decideState){ o.hidden=true; o.innerHTML=''; feedEl.style.bottom=''; return; }
+    o.hidden=false; o.innerHTML='';
+    if(confirmUntil>now){   // the gate on anything irreversible, in the same row
+      var c=document.createElement('span'); c.className='opt kill tap chosen';
+      c.innerHTML='confirm<em>'+Math.ceil((confirmUntil-now)/1000)+' s</em>';
+      for(var cb=beatIx+1;cb<m.d.length;cb++){ if(m.d[cb][3]&&m.d[cb][3].confirmed){
+        (function(jt){ c.addEventListener('click',function(){ t0=performance.now()-jt; }); })(m.d[cb][0]); break; } }
+      o.appendChild(c); return;
+    }
     decideState.opts.forEach(function(op){
       var tk=op.needs?trackById(m,op.track):null, locked=op.needs&&(!tk||tk.conf<op.needs), b=document.createElement('span');
       b.className='opt '+(op.cls||'')+(locked?' off':'')+(decideState.chosen===op.k?' chosen':'');
@@ -764,13 +762,10 @@
       for(var bq=beatIx+1;bq<m.d.length;bq++){ var aq=m.d[bq][3]; if(aq&&aq.choose===op.k){ jumpT=m.d[bq][0]; break; } }
       if(!locked&&jumpT>=0&&!decideState.chosen){ b.classList.add('tap');
         (function(jt){ b.addEventListener('click',function(){ t0=performance.now()-jt; }); })(jumpT); }
-      b.innerHTML=op.k+(locked?'<em>NEEDS '+op.needs.toFixed(2)+' · NOW '+(tk?tk.conf.toFixed(2):'--')+'</em>'
-                              :(op.cost?'<em>'+op.cost+'</em>':''));
+      b.innerHTML=(op.phrase||op.k)+(locked?'<em>not identified yet</em>':(op.cost?'<em>'+op.cost+'</em>':''));
       o.appendChild(b);
     });
-    document.getElementById('decide-s').innerHTML = confirmUntil>now
-      ? 'SAY <b>“confirm”</b> · '+Math.ceil((confirmUntil-now)/1000)+' s'
-      : (decideState.say||'');
+    feedEl.style.bottom=Math.round(ovl.offsetHeight-10)+'px';
   }
   function renderBranch(m){
     var box=document.getElementById('branch');
@@ -885,10 +880,10 @@
       o.rotation.y=Math.atan2(f.to[0]-f.from[0],f.to[2]-f.from[2]); }); }
     // Eagle 1: climb off the roof, then fly the search pattern
     if(m.orbit&&launched.e1){ var ms1=now-launched.e1;
-      if(ms1<1400){ e1.position.set(-1.35,2.4+ms1/1400*2.6,0.35); }
+      if(ms1<900){ e1.position.set(-1.35,2.4+ms1/900*2.8,0.35); }
       else { orbitPhase+=dt*m.orbit.speed;
         var ob=new THREE.Vector3(m.orbit.cx+Math.cos(orbitPhase)*m.orbit.r,m.orbit.y+Math.sin(now*0.003)*0.1,m.orbit.cz+Math.sin(orbitPhase)*m.orbit.r);
-        e1.position.lerp(ob,Math.min(1,dt*1.6)); e1.rotation.y=-orbitPhase; } }
+        e1.position.lerp(ob,Math.min(1,dt*2.6)); e1.rotation.y=-orbitPhase; } }
     // every vehicle puts its own drone up, and the drones carry the link between them
     if(fleetUpT){
       var fu=(now-fleetUpT)/1000;
