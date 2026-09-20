@@ -145,7 +145,7 @@
     <div class="kicker">How it works · interactive 3D</div>
   </header>
   <h1>Every sensor and every drone on one vehicle, under voice command.</h1>
-  <p class="lede">A camera that sees heat, microphones that hear an aircraft before it is visible, and drones that launch from the roof. The system scans while the crew drives, reports what it finds on the screen inside the vehicle, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
+  <p class="lede">A camera that sees in colour and in heat, microphones that pick up a gunshot or an aircraft before anyone sees it, and drones that carry the same pair of cameras. The system scans while the crew drives, reports what it finds on the screen inside the vehicle, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
   <div class="cast">
     <span><b>SENTRY 1</b>camera and mics</span>
     <span><b>EAGLE 1</b>drone that looks</span>
@@ -186,7 +186,7 @@
     <span><b style="background:#D7262E"></b>SUBJECT / THREAT</span><span><b style="background:#39C07A"></b>EAGLE 2 · LINK</span>
   </div>
   <div class="details">
-    <div><h3>One system, every asset</h3><p>A camera and a set of microphones on the mast, a drone that goes and takes a closer look, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
+    <div><h3>One system, every asset</h3><p>On the mast, a camera with a colour sensor and a thermal one, and microphones that listen for gunshots, aircraft and anything else out of place. On the roof, a drone that goes and takes a closer look, carrying the same pair of cameras, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
     <div><h3>Every detection is named on screen</h3><p>Anything the system spots is listed on the screen inside the vehicle in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
     <div><h3>It turns to look without being asked</h3><p>When the microphones or a drone notice something first, the camera turns onto it on its own and tells the crew what it has found. Deciding what to do about it stays with the crew.</p></div>
     <div><h3>Voice first, not voice only</h3><p>Anything the crew can say, they can also do on the touchscreen inside the vehicle. Speaking is the quickest way in when their hands are busy, not the only way in. The options the system offers can be tapped as readily as spoken.</p></div>
@@ -477,53 +477,53 @@
   // ---------- missions ----------
   // the intercept offers different options depending on what is known: two variants, one scene
   // the operator says what they want; the system works out which asset does it
-  var CUE0=[0,'SENTRY 1','Aircraft, bearing three one two, closing. I have turned onto it.',
+  var CUE0=[2200,'SENTRY 1','Aircraft, bearing three one two, closing. I have turned onto it.',
       {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}];
   var V_ID=[CUE0,
-    [3400,'SENTRY 1','Acoustic and camera agree. Small quad. Drone one, zero point nine one.',
+    [5600,'SENTRY 1','Acoustic and camera agree. Small quad. Drone one, zero point nine one.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
-    [7200,'TACTIX','That is a clean identification, so engaging is open to you. Eagle Two is the only interceptor on board.',
+    [9400,'TACTIX','That is a clean identification, so engaging is open to you. Eagle Two is the only interceptor on board.',
       {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
         say:'SAY OR TAP: “take it down” · “just follow it” · “leave it”'}}],
-    [10800,'OPERATOR','Take it down.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
-    [14400,'OPERATOR','Confirmed.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
-    [18600,'SENTRY 1','Drone one is down. Eagle Two is expended. You have no interceptor left on board.',{tstate:{'DRONE 1':'DEFEATED'}}]
+    [13000,'OPERATOR','Take it down.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
+    [16600,'OPERATOR','Confirmed.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
+    [20800,'SENTRY 1','Drone one is down. Eagle Two is expended. You have no interceptor left on board.',{tstate:{'DRONE 1':'DEFEATED'}}]
   ];
   var V_UNID=[CUE0,
-    [3400,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
+    [5600,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.38},lab:'DRONE 1 · 0.38'}],
-    [7200,'TACTIX','Not enough to engage on. I can put Eagle Two alongside it for a closer look.',
+    [9400,'TACTIX','Not enough to engage on. I can put Eagle Two alongside it for a closer look.',
       {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
         say:'SAY OR TAP: “go and look” · “leave it”'}}],
-    [11200,'OPERATOR','Go and look.',
+    [13400,'OPERATOR','Go and look.',
       {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
-    [15800,'EAGLE 2','Alongside at standoff. Commercial quad, nothing slung under it. Drone one, zero point nine four.',
+    [18000,'EAGLE 2','Alongside at standoff. Commercial quad, nothing slung under it. Drone one, zero point nine four.',
       {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
        decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
         opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
         say:'SAY OR TAP: “take it down” · “bring it home”'}}],
-    [21500,'OPERATOR','Bring it home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
-    [25500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
+    [23700,'OPERATOR','Bring it home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
+    [27700,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
   ];
 
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
-     sub:'The camera turns all the way round while the crew drives, and it sees heat rather than light, so it finds someone lying still in the dark that the headlights never reach. It speaks up before anyone thinks to look.',
-     p:'After dark the camera keeps turning while the crew drives. Because it sees heat instead of light, a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
+     sub:'The camera turns all the way round while the crew drives. After dark it is the thermal sensor doing the work, so it finds someone lying still in cover that the headlights never reach, and it speaks up before anyone thinks to look.',
+     p:'After dark the camera keeps turning while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
      feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
-     d:[[0,'SENTRY 1','Movement in the treeline, three o’clock, forty metres. One person, not moving. I have them as person one.',
+     d:[[2800,'SENTRY 1','Movement in the treeline, three o’clock, forty metres. One person, not moving. I have them as person one.',
          {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO CUE · THERMAL · BRG 109°',select:'PERSON 1'}],
-        [5600,'OPERATOR','Sentry One, let me see them.',{to:'sentry',feed:1}],
-        [8600,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
-        [14000,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
+        [8000,'OPERATOR','Sentry One, let me see them.',{to:'sentry',feed:1}],
+        [11000,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
+        [16400,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
     {label:'Recon search',h:'2 · Eagle One · search by description',
      sub:'The crew says what they are looking for. The system works out that a drone is the quickest way to find it, sends one up itself, and reports back what matches and what does not.',
-     p:'The crew describes what they want found. Nobody has to say which piece of kit to use for it: the system decides the drone is the way to do the job, launches it off the roof, flies the search, and reports what it sees, including the vehicles it has ruled out along the way.',
+     p:'The crew describes what they want found. Nobody has to say which piece of kit to use for it: the system decides the drone is the way to do the job, launches it off the roof, flies the search, and reports what it sees through the same colour and thermal pair the mast camera carries, including the vehicles it has ruled out along the way.',
      legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
      show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
      orbit:{cx:-17,cz:-2,r:7.5,y:6.5,speed:0.5},look:[-15,-2],
@@ -539,11 +539,11 @@
           alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
         [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
-     sub:'The microphones hear an aircraft before anyone sees it, and the camera swings onto it by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
-     p:'The microphones on the roof pick up an aircraft that no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
+     sub:'The microphones listen for gunshots, aircraft and anything else out of place. They hear this one before anyone sees it and the camera swings onto the bearing by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
+     p:'The microphones listen for gunshots, aircraft and other sounds that do not belong. Here they pick up an aircraft no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
-     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:10500}},
+     fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:12500}},
      list0:[{id:'DRONE 1',obj:'hx',conf:0.22,state:'UNIDENTIFIED'}],
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
@@ -819,7 +819,8 @@
     if(ptzMode==='scan'){ ptzAngle+=dt*0.9; }
     else if(ptzTgt){ var want=aimAngle(ptzTgt), off=wrapPi(want-ptzAngle);
       if(ptzMode==='slew'){ ptzAngle+=off*Math.min(1,dt*3); if(Math.abs(off)<0.04) ptzMode='track'; } else { ptzAngle=want; } }
-    sw1.rotation.z=ptzAngle; sw2.rotation.z=ptzAngle-0.18; sw3.rotation.z=ptzAngle-0.36; sweepG.visible=(ptzMode==='scan');
+    var fanA=-ptzAngle-Math.PI/14;   // half the sector's width, so the centre lands on the bearing
+    sw1.rotation.z=fanA; sw2.rotation.z=fanA+0.18; sw3.rotation.z=fanA+0.36; sweepG.visible=true;
     for(var fr=0;fr<fleetRigs.length;fr++){ var R=fleetRigs[fr];
       for(var fj=0;fj<3;fj++) R.fan[fj].rotation.z=ptzAngle*0.85+R.ph-fj*0.18; }
     if(host.userData.ptz){ host.userData.ptz.rotation.y=-ptzAngle+Math.PI/2; host.userData.ptz.children[1].rotation.z=Math.sin(now*0.0009)*0.35; }
@@ -934,7 +935,7 @@
       if(hideE1){ e1.visible=false; }
       renderer.clear(); renderer.render(scene,ptzCam);
       if(hideE1){ e1.visible=true; }
-      if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=(ptzMode==='scan'); ping.visible=true; }
+      if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=true; ping.visible=true; }
       renderer.setScissorTest(false); renderer.setViewport(0,0,W,H);
     }
     requestAnimationFrame(frame);
