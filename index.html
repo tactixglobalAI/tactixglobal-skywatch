@@ -145,7 +145,7 @@
     <div class="kicker">How it works · interactive 3D</div>
   </header>
   <h1>Every sensor and every drone on one vehicle, under voice command.</h1>
-  <p class="lede">A camera that sees in colour and in heat, microphones that pick up a gunshot or an aircraft before anyone sees it, and drones that carry the same pair of cameras. The system scans while the crew drives, reports what it finds on the screen inside the vehicle, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
+  <p class="lede">A camera that sees in colour and in heat, microphones that hear unusual activity such as a gunshot or a drone, and drones that carry the same cameras. The system scans while the crew drives, reports what it finds on screen, and acts on spoken instruction. Nothing is sent off the vehicle.</p>
   <div class="cast">
     <span><b>SENTRY 1</b>camera and mics</span>
     <span><b>EAGLE 1</b>drone that looks</span>
@@ -186,7 +186,7 @@
     <span><b style="background:#D7262E"></b>SUBJECT / THREAT</span><span><b style="background:#39C07A"></b>EAGLE 2 · LINK</span>
   </div>
   <div class="details">
-    <div><h3>One system, every asset</h3><p>On the mast, a camera with a colour sensor and a thermal one, and microphones that listen for gunshots, aircraft and anything else out of place. On the roof, a drone that goes and takes a closer look, carrying the same pair of cameras, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
+    <div><h3>One system, every asset</h3><p>On the mast, a camera with a colour sensor and a thermal one, and microphones that listen for unusual activity, a gunshot or a drone for example. On the roof, a drone that goes and takes a closer look, carrying the same pair of cameras, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
     <div><h3>Every detection is named on screen</h3><p>Anything the system spots is listed on the screen inside the vehicle in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
     <div><h3>It turns to look without being asked</h3><p>When the microphones or a drone notice something first, the camera turns onto it on its own and tells the crew what it has found. Deciding what to do about it stays with the crew.</p></div>
     <div><h3>Voice first, not voice only</h3><p>Anything the crew can say, they can also do on the touchscreen inside the vehicle. Speaking is the quickest way in when their hands are busy, not the only way in. The options the system offers can be tapped as readily as spoken.</p></div>
@@ -510,7 +510,7 @@
 
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
-     sub:'The camera turns all the way round while the crew drives. After dark it is the thermal sensor doing the work, so it finds someone lying still in cover that the headlights never reach, and it speaks up before anyone thinks to look.',
+     sub:'The camera turns all the way round while the crew drives, looking for anything out of the ordinary. After dark it is the thermal sensor that finds someone lying still in cover, where the headlights never reach, and it speaks up before anyone thinks to look.',
      p:'After dark the camera keeps turning while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
@@ -539,8 +539,8 @@
           alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
         [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
-     sub:'The microphones listen for gunshots, aircraft and anything else out of place. They hear this one before anyone sees it and the camera swings onto the bearing by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
-     p:'The microphones listen for gunshots, aircraft and other sounds that do not belong. Here they pick up an aircraft no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
+     sub:'The microphones listen for unusual activity, a gunshot or a drone for example. They hear this one before anyone sees it and the camera swings onto the bearing by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
+     p:'The microphones listen for unusual activity, whether that is a gunshot, a drone or something else that does not belong. Here they pick up an aircraft no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
      fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:12500}},
