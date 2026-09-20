@@ -20,6 +20,7 @@
   button{font:inherit;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:8px 11px}
   button[aria-pressed="true"]{color:var(--ink);border-color:var(--red);background:#181B21}
   button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .cabwrap{position:relative}
   .stage{position:relative;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#090A0C;aspect-ratio:16/9;min-height:320px}
   canvas{display:block;width:100%;height:100%}
   .hud{position:absolute;left:14px;top:12px;max-width:min(380px,58%);pointer-events:none;background:rgba(9,10,12,.55);backdrop-filter:blur(6px);padding:10px 12px;border:1px solid rgba(34,40,49,.8);border-radius:3px}
@@ -110,6 +111,10 @@
   @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
   .legend b{display:inline-block;width:16px;height:2px;margin-right:6px;vertical-align:middle;border-radius:2px}
+  .details{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 26px;margin-top:16px;padding-top:15px;border-top:1px solid var(--line)}
+  .details h3{margin:0 0 5px;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);font-weight:400}
+  .details p{margin:0;font-size:12.5px;line-height:1.55;color:#8A93A1}
+  @media (max-width:720px){.details{grid-template-columns:1fr;gap:13px}}
   .foot{margin-top:12px;font-size:10.5px;line-height:1.6;color:#6C7581;max-width:920px}
   .fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:var(--dim);font-size:13px;padding:20px;text-align:center}
   @media (max-width:720px){.hud{position:static;max-width:none;border:none;background:none;backdrop-filter:none;padding:12px 12px 0}.stage{aspect-ratio:1/1;min-height:0}.hint{display:none}}
@@ -121,13 +126,13 @@
     <div class="brand">T<span class="a">A</span>CT<span class="a">I</span>X <span class="g">GLOBAL</span></div>
     <div class="kicker">How it works · 3D · illustrative, not to scale</div>
   </header>
-  <h1>One system runs Sentry One, Eagle One and Eagle Two. You talk to them by name.</h1>
-  <p class="lede">The kit bolts onto any patrol, police or military vehicle. Sentry One scans while you drive, the sensors cue it when they hear something first, and everything they find is labelled in the cab so you can name it out loud. Eagle One and Eagle Two launch off the roof on your word. It all runs on the vehicle: no cloud, no network needed.</p>
+  <h1>Sentry One watches. Eagle One looks. Eagle Two intercepts.</h1>
+  <p class="lede">You talk to them by name. It all runs on the vehicle — no cloud, no network.</p>
   <div class="tabs" role="group" aria-label="Select mission"></div>
+  <div class="cabwrap">
   <div class="stage" id="stage">
     <canvas id="c" aria-label="3D view of a TactixGlobal equipped SUV scanning 360 degrees with recon and interceptor drones, a refinery site, a fence line and a command centre"></canvas>
     <div class="fallback" id="fallback">This view needs WebGL. Please open it in a current browser.</div>
-    <div class="hud"><h2 id="hud-h"></h2><p id="hud-p"></p></div>
     <div class="toggle" role="group" aria-label="PTZ feed mode"><button id="btn-th" aria-pressed="true">Thermal</button><button id="btn-eo" aria-pressed="false">Day</button></div>
     <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
       <div class="tl" id="feed-tl">SENTRY 1 · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
@@ -151,9 +156,17 @@
     <div class="branch" id="branch" hidden></div>
     <div class="vlog" id="v-log"></div>
   </div>
+  <div class="hud"><h2 id="hud-h"></h2><p id="hud-p"></p></div>
+  </div>
   <div class="legend">
     <span><b style="background:#3E75C3"></b>PTZ SCAN · EAGLE 1</span><span><b style="background:#E0A33E"></b>ACOUSTIC</span>
     <span><b style="background:#D7262E"></b>SUBJECT / THREAT</span><span><b style="background:#39C07A"></b>EAGLE 2 · LINK</span>
+  </div>
+  <div class="details">
+    <div><h3>One system, three assets</h3><p>Sentry One is the mast camera and the acoustic array. Eagle One is the recon drone and Eagle Two the interceptor; both launch off the roof on your word.</p></div>
+    <div><h3>Everything it finds is labelled</h3><p>Detections are numbered in the cab — person one, vehicle one, drone one — so the crew selects what to track or target by saying the label out loud.</p></div>
+    <div><h3>It cues itself</h3><p>When the acoustic array or a drone camera picks something up first, Sentry One turns onto the bearing on its own and tells the crew. The decision stays with the operator.</p></div>
+    <div><h3>Nothing leaves the vehicle</h3><p>The kit bolts onto any patrol, police or military vehicle, and every part of this runs on board: no cloud, no network needed.</p></div>
   </div>
   <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the end-to-end workflow are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
 </div>
