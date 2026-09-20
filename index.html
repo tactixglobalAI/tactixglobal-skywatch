@@ -60,7 +60,7 @@
   .feed .rec{position:absolute;right:8px;top:20px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#F2A0A4}
   .feed .rec::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#D7262E;margin-right:5px;animation:blink 1.2s steps(1) infinite}
   @keyframes blink{50%{opacity:.15}}
-  @media (max-width:720px){.feed{width:48%;bottom:38px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}}
+  @media (max-width:720px){.feed{width:42%;bottom:38px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
   .assets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
   .asset{flex:1 1 30%;min-width:104px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:7px 9px}
@@ -523,7 +523,7 @@
      sub:'The camera turns all the way round while the crew drives, and after dark the thermal sensor finds what the headlights never reach.',
      p:'After dark the camera keeps turning while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
-     show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
+     show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.86,lookY:-2.2,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
      feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
      d:[[2800,'SENTRY 1','Movement in the treeline, three o’clock, forty metres. One person, not moving. I have them as person one.',
@@ -586,7 +586,7 @@
     restartScene(m);
     feedLab.textContent=(m.feed&&m.feed.lab)||''; feedBL.textContent=(m.feed&&m.feed.bl)||''; feedBox.style.display='none';
     allTracks.forEach(function(t){ t.visible=false; }); (m.tracks||[]).forEach(function(t){ t.visible=true; });
-    lookT.set((m.look||[0,0])[0]*0.35,1,(m.look||[0,0])[1]*0.35); zoomT=m.zoom||1;
+    lookT.set((m.look||[0,0])[0]*0.35,(m.lookY===undefined?1:m.lookY),(m.look||[0,0])[1]*0.35); zoomT=m.zoom||1;
     document.getElementById('hud-h').textContent=m.h; document.getElementById('hud-p').textContent=m.p;
     document.getElementById('tagline').textContent=m.sub;
     var lg=document.querySelector('.legend'); lg.innerHTML='';
