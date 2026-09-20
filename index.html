@@ -665,22 +665,33 @@
   }
   // the exchange can be heard as well as read: the browser speaks it, nothing leaves the machine
   var synth=('speechSynthesis' in window)?window.speechSynthesis:null, soundOn=false, opVoice=null, sysVoice=null;
-  var FEMALE=/(female|woman|hazel|libby|sonia|serena|kate|martha|amy|emma|joanna|karen|moira|tessa|fiona|samantha|victoria|zira|google uk english female)/i;
-  var MALE=/(male|daniel|arthur|george|oliver|ryan|brian|alex|fred|david|mark|guy|thomas|google uk english male)/i;
+  var FEMALE=/(female|woman|hazel|libby|sonia|serena|kate|martha|amy|emma|joanna|karen|moira|tessa|fiona|samantha|victoria|zira|x-gba|x-gbc|x-iol|x-tpc|x-sfg)/i;
+  var MALE=/(male|daniel|arthur|george|oliver|ryan|brian|alex|fred|david|mark|guy|thomas|x-gbb|x-gbd|x-rjs|x-iom|x-tpd)/i;
+  var opIsMale=false;
+  function vScore(v,wantFemale){
+    var t=(v.name||'')+' '+(v.voiceURI||''), sc=0;
+    if(/en[-_]GB/i.test(v.lang||'')) sc+=40; else if(/^en/i.test(v.lang||'')) sc+=10;
+    if(/natural|neural|online|premium|enhanced/i.test(t)) sc+=30;   // the ones that sound least like a robot
+    if(/google/i.test(t)) sc+=12;
+    var fem=FEMALE.test(t), male=!fem&&MALE.test(t);
+    if(wantFemale) sc+=fem?50:(male?-70:0); else sc+=male?50:(fem?-70:0);
+    return sc;
+  }
+  function best(list,wantFemale,notThis){
+    var top=null, topScore=-1e9;
+    for(var i=0;i<list.length;i++){ if(list[i]===notThis) continue;
+      var sc=vScore(list[i],wantFemale); if(sc>topScore){ topScore=sc; top=list[i]; } }
+    return top;
+  }
   function pickVoices(){
     if(!synth) return;
     var v=synth.getVoices()||[]; if(!v.length) return;
     var en=v.filter(function(x){ return /^en/i.test(x.lang||''); }); if(!en.length) en=v;
-    var gb=en.filter(function(x){ return /en[-_]GB/i.test(x.lang||''); });
-    function pick(list,t){ for(var i=0;i<list.length;i++){ if(t(list[i])) return list[i]; } return null; }
-    function fem(x){ return FEMALE.test(x.name||''); }
-    function male(x){ return !fem(x) && MALE.test(x.name||''); }
-    sysVoice=pick(gb,fem)||gb[0]||pick(en,fem)||en[0]||v[0];
-    opVoice=pick(gb,male)||pick(en,male);
-    if(!opVoice||opVoice===sysVoice){ for(var i=0;i<en.length;i++){ if(en[i]!==sysVoice){ opVoice=en[i]; break; } } }
-    if(!opVoice) opVoice=sysVoice;
+    sysVoice=best(en,true,null);
+    opVoice=best(en,false,sysVoice)||sysVoice;
+    var t=(opVoice.name||'')+' '+(opVoice.voiceURI||'');
+    opIsMale=!FEMALE.test(t)&&MALE.test(t);
   }
-  if(synth){ pickVoices(); synth.onvoiceschanged=pickVoices; }
   function sndNote(t){ var b=document.getElementById('btn-snd'); b.textContent=t;
     clearTimeout(sndNote._t); sndNote._t=setTimeout(function(){ b.textContent=soundOn?'SOUND ON':'SOUND OFF'; },4000); }
   function utter(text,op){
@@ -688,13 +699,24 @@
     u.onerror=function(e){ if(e&&(e.error==='not-allowed'||e.error==='blocked')) sndNote('SOUND BLOCKED HERE'); };
     var v=op?opVoice:sysVoice;
     if(v){ try{ u.voice=v; }catch(e){} u.lang=v.lang||'en-GB'; } else { u.lang='en-GB'; }
-    u.rate=1; u.pitch=op?0.85:1.04;   // deeper for the crew if the device gives us no male voice
+    u.rate=1; u.pitch=op?(opIsMale?0.92:0.72):1.04;   // drop further when the device gives us no male voice
     return u;
+  }
+  // sentence by sentence, not comma by comma: the engine handles commas, and a break at
+  // every one of them chops the line up
+  function clauses(t){ return (t.match(/[^.!?]+[.!?]*/g)||[t]).map(function(x){ return x.trim(); }).filter(Boolean); }
+  function speakNow(text,op){
+    clauses(text).forEach(function(part,i){
+      var u=utter(part,op);
+      u.rate=(op?0.99:0.96)+(i%2?0.03:0);          // a little give and take between sentences
+      u.pitch=u.pitch+(i%2?0.03:-0.02);
+      try{ synth.speak(u); }catch(e){}
+    });
   }
   function say(text,op){
     if(!synth||!soundOn||!text) return;
     synth.cancel();
-    setTimeout(function(){ try{ synth.speak(utter(text,op)); }catch(e){} },60);
+    setTimeout(function(){ speakNow(text,op); },60);
   }
   (function(){ var btn=document.getElementById('btn-snd');
     btn.addEventListener('click',function(){
@@ -703,8 +725,7 @@
       btn.textContent=soundOn?'SOUND ON':'SOUND OFF';
       if(!soundOn){ synth.cancel(); return; }
       var m=MODES[cur];
-      if(m&&beatIx>=0){ var b0=m.d[beatIx];
-        try{ synth.speak(utter(b0[2],b0[1]==='OPERATOR')); }catch(e){} }
+      if(m&&beatIx>=0){ var b0=m.d[beatIx]; speakNow(b0[2],b0[1]==='OPERATOR'); }
     });
     document.addEventListener('visibilitychange',function(){ if(document.hidden&&synth) synth.cancel(); });
   })();
