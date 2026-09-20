@@ -17,6 +17,11 @@
   .kicker{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
   h1{font-size:clamp(20px,3.4vw,30px);line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
   .lede{margin:0 0 16px;max-width:760px;color:#B9C2CE;font-size:clamp(13px,1.6vw,15px);line-height:1.6}
+  .cast{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+  .cast span{display:flex;align-items:baseline;gap:7px;border:1px solid var(--line);border-radius:2px;padding:6px 9px;
+    font-size:12px;color:#8A93A1;background:var(--panel)}
+  .cast b{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink);font-weight:600}
+  @media (max-width:720px){.cast{display:none}}
   .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
   button{font:inherit;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:8px 11px}
   button[aria-pressed="true"]{color:var(--ink);border-color:var(--red);background:#181B21}
@@ -135,10 +140,15 @@
 <div class="wrap">
   <header>
     <div class="brand">T<span class="a">A</span>CT<span class="a">I</span>X <span class="g">GLOBAL</span></div>
-    <div class="kicker">How it works · 3D · illustrative, not to scale</div>
+    <div class="kicker">How it works · interactive 3D</div>
   </header>
-  <h1>Sentry One watches. Eagle One looks. Eagle Two intercepts.</h1>
-  <p class="lede">Sentry One is the camera and microphones on the mast. Eagle One is the drone that goes and takes a closer look. Eagle Two is the drone that can bring an aircraft down. You talk to them in plain words, and all of it runs on the vehicle itself.</p>
+  <h1>Say what you want. The vehicle does the rest.</h1>
+  <p class="lede">One system runs the camera, the microphones and two drones on a patrol vehicle, and you talk to it the way you would talk to a person. It watches while you drive, speaks up when it finds something, and acts on what you say.</p>
+  <div class="cast">
+    <span><b>SENTRY 1</b>camera and mics</span>
+    <span><b>EAGLE 1</b>drone that looks</span>
+    <span><b>EAGLE 2</b>drone that intercepts</span>
+  </div>
   <div class="tabs" role="group" aria-label="Select mission"></div>
   <p class="tagline" id="tagline"></p>
   <div class="cabwrap">
