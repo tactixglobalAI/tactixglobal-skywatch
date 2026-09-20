@@ -133,7 +133,7 @@
     <div class="kicker">How it works · 3D · illustrative, not to scale</div>
   </header>
   <h1>Sentry One watches. Eagle One looks. Eagle Two intercepts.</h1>
-  <p class="lede">You talk to them by name. It all runs on the vehicle — no cloud, no network.</p>
+  <p class="lede">You talk to them by name. It all runs on the vehicle. No cloud, no network.</p>
   <div class="tabs" role="group" aria-label="Select mission"></div>
   <p class="tagline" id="tagline"></p>
   <div class="cabwrap">
@@ -159,7 +159,7 @@
   <div class="assets" id="assets"></div>
   <div class="tracks" id="tracks" hidden><h3><span>TRACKS · IN CAB</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
   <div class="voice" id="voice">
-    <div class="vtop"><span class="vtag">IN-CAB</span><span class="vtag">ON-VEHICLE · NO CLOUD</span></div>
+    <div class="vtop"><span class="vtag">IN CAB</span><span class="vtag">ON VEHICLE · NO CLOUD</span></div>
     <div class="branch" id="branch" hidden></div>
     <div class="vlog" id="v-log"></div>
   </div>
@@ -170,12 +170,12 @@
     <span><b style="background:#D7262E"></b>SUBJECT / THREAT</span><span><b style="background:#39C07A"></b>EAGLE 2 · LINK</span>
   </div>
   <div class="details">
-    <div><h3>One system, three assets</h3><p>Sentry One is the mast camera and the acoustic array. Eagle One is the recon drone and Eagle Two the interceptor; both launch off the roof on your word.</p></div>
-    <div><h3>Everything it finds is labelled</h3><p>Detections are numbered in the cab — person one, vehicle one, drone one — so the crew selects what to track or target by saying the label out loud.</p></div>
+    <div><h3>One system, three assets</h3><p>Sentry One is the mast camera and the acoustic array. Eagle One is the recon drone and Eagle Two the interceptor. Both launch off the roof when the job needs them, without being asked asset by asset.</p></div>
+    <div><h3>Everything it finds is labelled</h3><p>Detections are numbered in the cab as person one, vehicle one or drone one, so the crew selects what to track or target by saying the label out loud.</p></div>
     <div><h3>It cues itself</h3><p>When the acoustic array or a drone camera picks something up first, Sentry One turns onto the bearing on its own and tells the crew. The decision stays with the operator.</p></div>
     <div><h3>Nothing leaves the vehicle</h3><p>The kit bolts onto any patrol, police or military vehicle, and every part of this runs on board: no cloud, no network needed.</p></div>
   </div>
-  <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the end-to-end workflow are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
+  <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the workflow from end to end are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
 </div>
 
 <script>
@@ -446,36 +446,35 @@
 
   // ---------- missions ----------
   // the intercept offers different options depending on what is known: two variants, one scene
-  var V_ID=[
-    [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
-      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}],
-    [3400,'SENTRY 1','Got it. Acoustic signature and camera agree: small quad. Drone one, zero point nine one.',
+  // the operator says what they want; the system works out which asset does it
+  var CUE0=[0,'SENTRY 1','Aircraft, bearing three one two, closing. I have turned onto it.',
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}];
+  var V_ID=[CUE0,
+    [3400,'SENTRY 1','Acoustic and camera agree. Small quad. Drone one, zero point nine one.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
-    [7200,'SENTRY 1','Drone one is identified, so engagement is available. Eagle Two is the only interceptor you carry.',
+    [7200,'TACTIX','That is a clean identification, so engaging is open to you. Eagle Two is the only interceptor on board.',
       {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY: “Hey Eagle Two, engage drone one” · “follow drone one” · “leave it”'}}],
-    [10800,'OPERATOR','Hey Eagle Two, engage drone one.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
-    [14400,'OPERATOR','Confirm engage.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
-    [18600,'SENTRY 1','Drone one is down. Eagle Two is expended — no interceptor left on this vehicle.',{tstate:{'DRONE 1':'DEFEATED'}}]
+        say:'SAY: “take it down” · “just follow it” · “leave it”'}}],
+    [10800,'OPERATOR','Take it down.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
+    [14400,'OPERATOR','Confirmed.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
+    [18600,'SENTRY 1','Drone one is down. Eagle Two is expended. You have no interceptor left on board.',{tstate:{'DRONE 1':'DEFEATED'}}]
   ];
-  var V_UNID=[
-    [0,'SENTRY 1','Aircraft heard, bearing three-one-two, closing. Turning onto it now.',
-      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO-CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}],
+  var V_UNID=[CUE0,
     [3400,'SENTRY 1','Something is there, but I cannot make it out at this range. Drone one, zero point three eight.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.38},lab:'DRONE 1 · 0.38'}],
-    [7200,'SENTRY 1','That is below the eight-tenths threshold, so engagement stays locked. I can send Eagle Two for a closer look.',
+    [7200,'TACTIX','Not enough to engage on. I can put Eagle Two alongside it for a closer look.',
       {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY: “Hey Eagle Two, follow drone one” · “leave it”'}}],
-    [11200,'OPERATOR','Hey Eagle Two, follow drone one.',
+        say:'SAY: “go and look” · “leave it”'}}],
+    [11200,'OPERATOR','Go and look.',
       {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
-    [15800,'EAGLE 2','Holding standoff. Commercial quad, no visible payload. Drone one, zero point nine four.',
+    [15800,'EAGLE 2','Alongside at standoff. Commercial quad, nothing slung under it. Drone one, zero point nine four.',
       {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
        decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
         opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
-        say:'SAY: “Hey Eagle Two, engage” · “Hey Eagle Two, come home”'}}],
-    [21500,'OPERATOR','Hey Eagle Two, come home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
+        say:'SAY: “take it down” · “bring it home”'}}],
+    [21500,'OPERATOR','Bring it home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
     [25500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
   ];
 
@@ -487,32 +486,31 @@
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
      feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
-     d:[[0,'SENTRY 1','Movement, three o’clock, forty metres. Person in the treeline, not moving. Logged as person one.',
-         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO-CUE · THERMAL · BRG 109°',select:'PERSON 1'}],
-        [5600,'OPERATOR','Hey Sentry One, show me person one.',{to:'sentry',feed:1}],
-        [8600,'SENTRY 1','On screen, thermal. One person, crouched behind the hedge. No vehicle with them.',{}],
-        [14000,'OPERATOR','Hey Sentry One, keep the camera on person one.',
-         {to:'sentry',ptz:'track',bl:'TRACK COMMANDED',tstate:{'PERSON 1':'TRACKING'}}]]},
+     d:[[0,'SENTRY 1','Movement in the treeline, three o’clock, forty metres. One person, not moving. I have them as person one.',
+         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO CUE · THERMAL · BRG 109°',select:'PERSON 1'}],
+        [5600,'OPERATOR','Sentry One, let me see them.',{to:'sentry',feed:1}],
+        [8600,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
+        [14000,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
     {label:'Recon search',h:'2 · Eagle One · search by description',
-     sub:'Eagle One launches off the roof on your word and searches for the vehicle you describe — ruling out what it is not before reporting what it is.',
-     p:'When the crew needs eyes somewhere they cannot drive, Eagle One launches off the roof on a word and searches for whatever they describe. Its feed comes back into the cab, and what it finds joins the same track list.',
+     sub:'You say what you are looking for. The system works out that Eagle One is the way to find it, puts it up, and rules out what does not match.',
+     p:'The crew describes what they want found. Nothing has to be spelled out asset by asset: the system picks Eagle One, launches it off the roof, flies the search and reports what it sees, with a confidence and with the candidates it ruled out.',
      legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
      show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
      orbit:{cx:-17,cz:-2,r:7.5,y:6.5,speed:0.5},look:[-15,-2],
      list0:[{id:'VEHICLE 1',obj:'candA',conf:0.44,state:'CHECKING'},{id:'VEHICLE 2',obj:'candB',conf:0.31,state:'QUEUED'}],
      feed:{from:'e1',target:'candA',lab:'VEHICLE 1 · CHECKING',bl:'EAGLE 1 · SEARCHING',fov:24},
-     d:[[0,'OPERATOR','Hey Eagle One, launch. Search the yard for a white four-by-four.',
-         {to:'eagle1',launch:'e1',mission:'MISSION · SEARCH YARD · WHITE 4X4'}],
-        [4600,'EAGLE 1','Up and searching. My feed is in the cab.',{feed:1}],
-        [8800,'EAGLE 1','Vehicle one is a dark sedan. Not a match.',
+     d:[[0,'OPERATOR','There is a white four by four somewhere in that yard. Find it.',{mission:'TASK · FIND WHITE 4X4'}],
+        [3400,'TACTIX','Nothing on the ground camera from here. Putting Eagle One up.',{to:'eagle1',launch:'e1'}],
+        [6800,'EAGLE 1','Airborne. Searching the yard, my feed is in the cab.',{feed:1}],
+        [11000,'EAGLE 1','Vehicle one is a dark sedan. Not what you want.',
          {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
-        [14000,'EAGLE 1','Vehicle two matches your description. White four-by-four, zero point eight eight.',
+        [15800,'EAGLE 1','Vehicle two is your four by four. White, north side of the yard, zero point eight eight.',
          {feedTarget:'candB',select:'VEHICLE 2',lab:'VEHICLE 2 · MATCH 0.88',conf:{'VEHICLE 2':0.88},tstate:{'VEHICLE 2':'MATCH'},
           alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
-        [20000,'OPERATOR','Hey Eagle One, hold overhead and send me the clip.',{to:'eagle1'}]]},
+        [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
      sub:'The array hears the aircraft first and Sentry One turns onto it unasked. What you are offered depends on what is known: engagement unlocks at 0.80, and it expends your only interceptor.',
-     p:'The acoustic array hears an aircraft no camera has seen yet, and Sentry One turns onto the bearing without being asked. What the crew is offered then depends on what is known: engagement unlocks at an identification of 0.80, and it expends Eagle Two — the only interceptor the vehicle carries.',
+     p:'The acoustic array hears an aircraft no camera has seen yet, and Sentry One turns onto the bearing without being asked. What the crew is offered then depends on what is known: engagement unlocks at an identification of 0.80, and it expends Eagle Two, the only interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
      fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:10500}},
@@ -525,7 +523,7 @@
      legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE']],
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
      feed:{target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
-     d:[[0,'SENTRY 1','Clip and position sent to the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
+     d:[[0,'TACTIX','Clip and position are with the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
         [4600,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
@@ -654,7 +652,7 @@
       o.appendChild(b);
     });
     document.getElementById('decide-s').innerHTML = confirmUntil>now
-      ? 'SAY <b>“Confirm engage”</b> · '+Math.ceil((confirmUntil-now)/1000)+' s'
+      ? 'SAY <b>“confirm”</b> · '+Math.ceil((confirmUntil-now)/1000)+' s'
       : (decideState.say||'');
   }
   function renderBranch(m){
@@ -690,7 +688,7 @@
     var b=m.d[i], a=b[3]||{}, op=b[1]==='OPERATOR';
     vWho.className='vwho '+(op?'op':'sys'); vWho.textContent=b[1];
     vText.className='vtext '+(op?'op':'');
-    if(a.auto){ vState.className='vstate hot'; vState.textContent='AUTO-CUE ← '+a.auto; }
+    if(a.auto){ vState.className='vstate hot'; vState.textContent='AUTO CUE ← '+a.auto; }
     else { vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING'; }
     vLog.innerHTML=''; m.d.slice(Math.max(0,i-2),i).forEach(function(r){
       var d=document.createElement('div'); d.textContent=r[1]+' · '+r[2]; vLog.appendChild(d); });
@@ -722,7 +720,7 @@
     if(beatIx<0) return;
     var b=m.d[beatIx], full=b[2], dur=Math.min(4600,300+full.length*44), k=Math.max(0,Math.min(1,(t-b[0])/dur)), live=k<1;
     vText.textContent=full.slice(0,Math.round(full.length*k));
-    if(!live && vState.textContent.indexOf('AUTO-CUE')<0 && vState.textContent!=='STANDING BY'){
+    if(!live && vState.textContent.indexOf('AUTO CUE')<0 && vState.textContent!=='STANDING BY'){
       vState.className='vstate'; vState.textContent='STANDING BY'; }
     for(var i=0;i<waveBars.length;i++){
       var amp=live?3+12*Math.abs(Math.sin(now*0.006+i*0.8)*Math.sin(now*0.0019+i*0.4)):1.4;
