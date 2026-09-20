@@ -113,9 +113,6 @@
   .vwave{display:flex;align-items:center;gap:2px;height:15px;flex:0 0 auto;width:66px}
   .vwave i{display:block;width:2px;height:2px;background:#2b3440;border-radius:1px}
   .vtag{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:3px 6px}
-  .valert{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--red);border-left-width:3px;border-radius:2px;background:rgba(26,16,18,.9);padding:4px 8px}
-  .valert b{font-family:var(--mono);font-size:9px;color:var(--red)}
-  .valert span{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:#F2A0A4}
   .vwho{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);flex:0 0 auto;padding-top:2px}
   .vwho.op{color:var(--blue)}.vwho.sys{color:var(--red)}
   .vtext{font-size:13.5px;line-height:1.5;color:#E2E8F0}
@@ -178,7 +175,7 @@
     <button class="snd" id="btn-snd" aria-pressed="false" title="Hear the exchange out loud. Some embedded viewers block audio, in which case open the page in its own tab.">SOUND OFF</button>
     <div class="labels" id="labels"></div>
     <div class="ovtop"><span class="mission" id="mission" hidden></span>
-      <span class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></span></div>
+      </div>
     <div class="decide" id="decide" hidden><h4 id="decide-h"></h4><div class="opts" id="decide-o"></div><div class="say" id="decide-s"></div></div>
     <div class="ovl">
       <div class="cap" id="cap"><svg class="ic ic-mic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg><svg class="ic ic-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5zm11.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg><span class="vwake" id="v-wake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
@@ -492,7 +489,7 @@
   // the intercept offers different options depending on what is known: two variants, one scene
   // the operator says what they want; the system works out which asset does it
   var CUE0=[2200,'SENTRY 1','Aircraft, bearing three one two, closing. I have turned onto it.',
-      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,alert:'AUTO CUE · ACOUSTIC · BRG 312°',select:'DRONE 1'}];
+      {auto:'ACOUSTIC',cue:{target:'hx'},acoustic:13000,select:'DRONE 1'}];
   var V_ID=[CUE0,
     [5600,'SENTRY 1','Acoustic and camera agree. Small quad. Drone one, zero point nine one.',
       {feed:1,ptz:'track',conf:{'DRONE 1':0.91},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.91'}],
@@ -531,7 +528,7 @@
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
      feed:{target:'walker',lab:'PERSON 1 · 0.91',bl:'THERMAL · CONTACT',fov:13},
      d:[[2800,'SENTRY 1','Movement in the treeline, three o’clock, forty metres. One person, not moving. I have them as person one.',
-         {auto:'THERMAL',cue:{target:'walker'},alert:'AUTO CUE · THERMAL · BRG 109°',select:'PERSON 1'}],
+         {auto:'THERMAL',cue:{target:'walker'},select:'PERSON 1'}],
         [8000,'OPERATOR','Sentry One, let me see them.',{to:'sentry',feed:1}],
         [11000,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
         [16400,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
@@ -550,7 +547,7 @@
          {feedTarget:'candA',select:'VEHICLE 1',lab:'VEHICLE 1 · NOT A MATCH',conf:{'VEHICLE 1':0.12},tstate:{'VEHICLE 1':'RULED OUT'}}],
         [15800,'EAGLE 1','Vehicle two is your four by four. White, north side of the yard, zero point eight eight.',
          {feedTarget:'candB',select:'VEHICLE 2',lab:'VEHICLE 2 · MATCH 0.88',conf:{'VEHICLE 2':0.88},tstate:{'VEHICLE 2':'MATCH'},
-          alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
+          bl:'EAGLE 1 · HOLDING'}],
         [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
      sub:'The microphones hear unusual activity, a gunshot or a drone for example, and the camera swings onto the bearing by itself.',
@@ -568,9 +565,9 @@
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
      feed:{map:1,target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
      d:[[0,'TACTIX','Clip and position are with the control room and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
-        [4800,'TACTIX','Vehicle 4 keeps dropping out behind the buildings.',{alert:'LINK WEAK · VEHICLE 4'}],
+        [4800,'TACTIX','Vehicle 4 keeps dropping out behind the buildings.',{}],
         [9000,'OPERATOR','Put everyone’s drone up and hold the link.',{fleetLaunch:1,mission:'AIR RELAY · FLEET LINKED'}],
-        [13500,'TACTIX','Every vehicle has its drone up and they are relaying through each other. Vehicle 4 is steady again.',{alertOff:1}],
+        [13500,'TACTIX','Every vehicle has its drone up and they are relaying through each other. Vehicle 4 is steady again.',{}],
         [19000,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
@@ -629,7 +626,7 @@
   var e2Mode='idle', selectedId=null, addressed=null, decideState=null, confirmUntil=0, cueStart=0, cueMs=0, lastUi=0, flashT=0;
   var assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'}, labelEls={}, RANGE=3.4;
   var vState=document.getElementById('v-state'), vWho=document.getElementById('v-who'), vText=document.getElementById('v-text'),
-      vLog=document.getElementById('v-log'), vAlert=document.getElementById('v-alert'), vAlertT=document.getElementById('v-alert-t'),
+      vLog=document.getElementById('v-log'),
       missionEl=document.getElementById('mission'), vWake=document.getElementById('v-wake'),
       capEl=document.getElementById('cap'), waveBars=[];
   var ASSET={sentry:'SENTRY 1',eagle1:'EAGLE 1',eagle2:'EAGLE 2'};
@@ -756,7 +753,7 @@
     var box=document.getElementById('decide');
     if(!decideState){ box.hidden=true; return; }
     // the decision carries the context, so the cue banner steps aside
-    box.hidden=false; vAlert.hidden=true;
+    box.hidden=false;
     document.getElementById('decide-h').textContent=decideState.h;
     var o=document.getElementById('decide-o'); o.innerHTML='';
     decideState.opts.forEach(function(op){
@@ -802,7 +799,7 @@
     assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'};
     DUR=m.d[m.d.length-1][0]+5200;
     if(synth) synth.cancel();
-    vAlert.hidden=true; missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
+    missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
     vState.className='vstate'; vState.textContent='STANDING BY'; vWake.textContent='TACTIX'; capEl.className='cap';
     Object.keys(labelEls).forEach(function(k){ labelEls[k].hidden=true; });
     renderTracks(m); renderAssets(); renderDecide(m,performance.now());
@@ -818,8 +815,6 @@
       var d=document.createElement('div'); d.textContent=r[1]+' · '+r[2]; vLog.appendChild(d); });
     if(a.to) addressed=a.to;
     vWake.textContent = op ? (addressed?'HEY '+ASSET[addressed]:'TACTIX') : b[1];
-    if(a.alert){ vAlertT.textContent=a.alert; vAlert.hidden=false; }
-    if(a.alertOff) vAlert.hidden=true;
     if(a.mission){ missionEl.textContent=a.mission; missionEl.hidden=false; }
     if(a.cue){ ptzMode='slew'; ptzTgt=OBJ[a.cue.target]; cueStart=now; }
     if(a.ptz){ ptzMode=a.ptz; if(a.target) ptzTgt=OBJ[a.target]; }
@@ -936,8 +931,7 @@
     // the cab display: what it sees, and which asset is doing what
     updateLabels(m);
     assets.sentry=(ptzMode==='scan')?'SCANNING':(ptzMode==='slew'?(cueStart?'CUED':'SLEWING'):'TRACKING');
-    if(cueStart&&ptzMode==='track'){ cueMs=now-cueStart; cueStart=0;
-      if(!vAlert.hidden) vAlertT.textContent+=' · ON TARGET '+(cueMs/1000).toFixed(1)+'s'; }
+    if(cueStart&&ptzMode==='track') cueStart=0;
     if(m.orbit&&launched.e1) assets.eagle1='SEARCHING'; else if(launched.e1) assets.eagle1='AIRBORNE';
     if(now-lastUi>150){ lastUi=now; renderTracks(m); renderAssets(); renderDecide(m,now); }
     e1.children.forEach(function(c,i){ if(i>0&&c.geometry&&c.geometry.type==='CylinderGeometry') c.rotation.y+=dt*40; });
