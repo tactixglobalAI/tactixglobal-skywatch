@@ -81,6 +81,8 @@
   @media (max-width:720px){.decide{left:8px;right:8px;top:44px}}
   .decide h4{margin:0 0 5px;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--amber);font-weight:400}
   .opts{display:flex;gap:6px;flex-wrap:wrap}
+  .opt.tap{pointer-events:auto;cursor:pointer}
+  .opt.tap:hover{border-color:var(--ink)}
   .opt{font-family:var(--mono);font-size:9px;letter-spacing:.1em;border:1px solid var(--line);border-radius:2px;padding:4px 7px;color:var(--ink);background:#101318}
   .opt.go{border-color:var(--green);color:#8FD3AE}
   .opt.kill{border-color:var(--red);color:#F2A0A4}
@@ -173,7 +175,7 @@
   <div class="assets" id="assets"></div>
   <div class="tracks" id="tracks" hidden><h3><span>TRACKS · IN CAB</span><span id="trk-src">SENTRY 1 + ACOUSTIC</span></h3><div id="trk-rows"></div></div>
   <div class="voice" id="voice">
-    <div class="vtop"><span class="vtag">IN CAB</span><span class="vtag">ON VEHICLE · NO CLOUD</span></div>
+    <div class="vtop"><span class="vtag">VOICE OR TOUCH</span><span class="vtag">ON VEHICLE · NO CLOUD</span></div>
     <div class="branch" id="branch" hidden></div>
     <div class="vlog" id="v-log"></div>
   </div>
@@ -187,6 +189,7 @@
     <div><h3>One system, every asset</h3><p>A camera and a set of microphones on the mast, a drone that goes and takes a closer look, and a drone that can bring an aircraft down. Whatever the vehicle carries takes its orders from the same system, and the crew talks to that system.</p></div>
     <div><h3>Every detection is named in the cab</h3><p>Anything the system spots is listed in the cab in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
     <div><h3>It turns to look without being asked</h3><p>When the microphones or a drone notice something first, the camera turns onto it on its own and tells the crew what it has found. Deciding what to do about it stays with the crew.</p></div>
+    <div><h3>Voice first, not voice only</h3><p>Anything the crew can say, they can also do on the touchscreen in the cab. Speaking is the quickest way in when their hands are busy, not the only way in. The options the system offers can be tapped as readily as spoken.</p></div>
     <div><h3>Nothing leaves the vehicle</h3><p>The kit fits on any patrol, police or military vehicle, and all of it runs on board. It needs no connection to anything else to do its job.</p></div>
   </div>
   <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the workflow from end to end are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
@@ -425,11 +428,11 @@
   function ringLine(r,col,dashed){ var pts=new THREE.EllipseCurve(0,0,r,r,0,Math.PI*2,false,0).getPoints(160).map(function(p){return new THREE.Vector3(p.x,0.04,p.y);});
     var geo=new THREE.BufferGeometry().setFromPoints(pts); var mat=dashed?new THREE.LineDashedMaterial({color:col,dashSize:0.5,gapSize:0.5,transparent:true,opacity:0.7}):new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.5});
     var l=new THREE.LineLoop(geo,mat); if(dashed) l.computeLineDistances(); return l; }
-  scene.add(ringLine(6,0x3e75c3,false), ringLine(9.5,0x3e75c3,false), ringLine(12,0xe0a33e,true));
+  scene.add(ringLine(9.5,0x3e75c3,false), ringLine(13,0xe0a33e,true));
   function scanRig(){
     var G=new THREE.Group(), f=[sector(7.5,Math.PI/7,0.26),sector(7.5,Math.PI/7,0.13),sector(7.5,Math.PI/7,0.06)];
     G.add(f[0],f[1],f[2]);
-    G.add(ringLine(4,0x3e75c3,false),ringLine(6.6,0x3e75c3,false),ringLine(8.2,0xe0a33e,true));
+    G.add(ringLine(7,0x3e75c3,false));
     G.userData.fan=f; return G;
   }
   var fleetRigs=fleet.map(function(c,i){ var g=scanRig(); c.add(g); return {fan:g.userData.fan,ph:i*1.7}; });
@@ -482,7 +485,7 @@
     [7200,'TACTIX','That is a clean identification, so engaging is open to you. Eagle Two is the only interceptor on board.',
       {decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.91',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY: “take it down” · “just follow it” · “leave it”'}}],
+        say:'SAY OR TAP: “take it down” · “just follow it” · “leave it”'}}],
     [10800,'OPERATOR','Take it down.',{to:'eagle2',choose:'ENGAGE',confirm:4}],
     [14400,'OPERATOR','Confirmed.',{confirmed:1,launch:'e2',engage:1,mission:'ENGAGE · DRONE 1',bl:'EAGLE 2 · TERMINAL'}],
     [18600,'SENTRY 1','Drone one is down. Eagle Two is expended. You have no interceptor left on board.',{tstate:{'DRONE 1':'DEFEATED'}}]
@@ -493,14 +496,14 @@
     [7200,'TACTIX','Not enough to engage on. I can put Eagle Two alongside it for a closer look.',
       {decide:{h:'DECISION · DRONE 1 · UNIDENTIFIED 0.38',
         opts:[{k:'FOLLOW',cls:'go'},{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'IGNORE'}],
-        say:'SAY: “go and look” · “leave it”'}}],
+        say:'SAY OR TAP: “go and look” · “leave it”'}}],
     [11200,'OPERATOR','Go and look.',
       {to:'eagle2',choose:'FOLLOW',launch:'e2',mission:'FOLLOW AT STANDOFF · DRONE 1',bl:'EAGLE 2 · SHADOWING'}],
     [15800,'EAGLE 2','Alongside at standoff. Commercial quad, nothing slung under it. Drone one, zero point nine four.',
       {conf:{'DRONE 1':0.94},tstate:{'DRONE 1':'IDENTIFIED'},lab:'DRONE 1 · 0.94',
        decide:{h:'DECISION · DRONE 1 · IDENTIFIED 0.94 · FROM EAGLE 2',
         opts:[{k:'ENGAGE',cls:'kill',needs:0.8,track:'DRONE 1',cost:'expends your only interceptor'},{k:'RECALL',cls:'go'}],
-        say:'SAY: “take it down” · “bring it home”'}}],
+        say:'SAY OR TAP: “take it down” · “bring it home”'}}],
     [21500,'OPERATOR','Bring it home.',{to:'eagle2',choose:'RECALL',confirmed:1,recall:'e2',bl:'EAGLE 2 · RETURNING'}],
     [25500,'EAGLE 2','Back on the dock. Nothing expended.',{tstate:{'DRONE 1':'TRACKING'}}]
   ];
@@ -713,6 +716,11 @@
     decideState.opts.forEach(function(op){
       var tk=op.needs?trackById(m,op.track):null, locked=op.needs&&(!tk||tk.conf<op.needs), b=document.createElement('span');
       b.className='opt '+(op.cls||'')+(locked?' off':'')+(decideState.chosen===op.k?' chosen':'');
+      // the crew can tap the option instead of saying it, so the page lets you do the same
+      var jumpT=-1;
+      for(var bq=beatIx+1;bq<m.d.length;bq++){ var aq=m.d[bq][3]; if(aq&&aq.choose===op.k){ jumpT=m.d[bq][0]; break; } }
+      if(!locked&&jumpT>=0&&!decideState.chosen){ b.classList.add('tap');
+        (function(jt){ b.addEventListener('click',function(){ t0=performance.now()-jt; }); })(jumpT); }
       b.innerHTML=op.k+(locked?'<em>NEEDS '+op.needs.toFixed(2)+' · NOW '+(tk?tk.conf.toFixed(2):'--')+'</em>'
                               :(op.cost?'<em>'+op.cost+'</em>':''));
       o.appendChild(b);
