@@ -34,10 +34,13 @@
   .dlg .s{font-size:12.5px;line-height:1.45;color:#C6CEDA;font-style:italic}.dlg .o{font-size:12.5px;line-height:1.45;color:#F2A0A4;font-weight:650}
   .hint{position:absolute;right:12px;top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:#6C7581;pointer-events:none}
   .feed{position:absolute;left:50%;transform:translateX(-50%);bottom:44px;width:30%;min-width:190px;max-width:420px;aspect-ratio:16/9;border:1px solid #2b3440;border-radius:2px;pointer-events:none;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.6),0 8px 30px rgba(0,0,0,.55)}
+  .feed .map{position:absolute;inset:0;width:100%;height:100%;display:none}
+  .feed.map .map{display:block}
+  .feed.map .box,.feed.map .ch{display:none}
   .feed .sl{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
-  .feed.eo .sl{background:repeating-linear-gradient(0deg,rgba(0,0,0,.34) 0 1px,transparent 1px 3px)}
-  .feed.eo::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:screen;
+  .feed .grain{position:absolute;inset:0;pointer-events:none;opacity:.30;mix-blend-mode:screen;
     background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.5'/></svg>")}
+  .feed.map .grain,.feed.map .sl{display:none}
   .feed .vg{position:absolute;inset:0;background:radial-gradient(80% 80% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%)}
   .feed .tl{position:absolute;left:8px;top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#EAEEF4;max-width:58%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .feed .tr{position:absolute;right:8px;top:6px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#8A93A1;max-width:36%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -49,13 +52,12 @@
   .feed .rec{position:absolute;right:8px;top:20px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#F2A0A4}
   .feed .rec::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#D7262E;margin-right:5px;animation:blink 1.2s steps(1) infinite}
   @keyframes blink{50%{opacity:.15}}
-  .toggle{position:absolute;right:12px;top:12px;display:flex;gap:6px}
-  .toggle button{padding:6px 9px;font-size:9.5px}
-  @media (max-width:720px){.feed{width:48%;bottom:38px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}.toggle{top:8px;right:8px}}
+  @media (max-width:720px){.feed{width:48%;bottom:38px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.feed .box{top:58%}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
   .assets{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
   .asset{flex:1 1 30%;min-width:104px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:7px 9px}
   .asset b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--ink)}
+  .asset em{display:block;font-size:9.5px;line-height:1.3;color:#6C7581;font-style:normal;margin-top:3px}
   .asset i{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dim);font-style:normal;margin-top:3px}
   .asset.live{border-color:var(--blue)}.asset.live i{color:var(--blue)}
   .asset.hot{border-color:var(--red)}.asset.hot i{color:#F2A0A4}
@@ -110,8 +112,8 @@
   .vlog div{font-size:11.5px;line-height:1.4;color:#5F6875;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ovl{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 8px;pointer-events:none;
     background:linear-gradient(to top,rgba(6,7,9,.92) 55%,rgba(6,7,9,0))}
-  .ovtop{position:absolute;left:10px;top:10px;right:122px;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
-  @media (max-width:720px){.ovtop{left:8px;top:8px;right:112px}}
+  .ovtop{position:absolute;left:10px;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;align-items:flex-start;pointer-events:none}
+  @media (max-width:720px){.ovtop{left:8px;top:8px;right:8px}}
   .mission{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;border-radius:2px;padding:4px 7px}
   .cap{display:flex;gap:7px;align-items:center}
   .cap .vstate,.cap .vwho{display:none}
@@ -136,15 +138,14 @@
     <div class="kicker">How it works · 3D · illustrative, not to scale</div>
   </header>
   <h1>Sentry One watches. Eagle One looks. Eagle Two intercepts.</h1>
-  <p class="lede">You talk to them by name. It all runs on the vehicle. No cloud, no network.</p>
+  <p class="lede">Sentry One is the camera and microphones on the mast. Eagle One is the drone that goes and takes a closer look. Eagle Two is the drone that can bring an aircraft down. You talk to them in plain words, and all of it runs on the vehicle itself.</p>
   <div class="tabs" role="group" aria-label="Select mission"></div>
   <p class="tagline" id="tagline"></p>
   <div class="cabwrap">
   <div class="stage" id="stage">
     <canvas id="c" aria-label="3D view of a TactixGlobal equipped SUV scanning 360 degrees with recon and interceptor drones, a refinery site, a fence line and a command centre"></canvas>
     <div class="fallback" id="fallback">This view needs WebGL. Please open it in a current browser.</div>
-    <div class="toggle" role="group" aria-label="PTZ feed mode"><button id="btn-th" aria-pressed="true">Thermal</button><button id="btn-eo" aria-pressed="false">Day</button></div>
-    <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
+    <div class="feed" id="feed"><canvas class="map" id="map"></canvas><div class="grain"></div><div class="sl"></div><div class="vg"></div>
       <div class="tl" id="feed-tl">SENTRY 1 · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
       <div class="ch"></div><div class="box" id="feed-box"><i id="feed-lab">PERSON · 0.91</i></div>
       <div class="bl" id="feed-bl">TRACK COMMANDED</div><div class="br" id="feed-br">PAN 000° TILT DOWN 04°</div>
@@ -173,10 +174,10 @@
     <span><b style="background:#D7262E"></b>SUBJECT / THREAT</span><span><b style="background:#39C07A"></b>EAGLE 2 · LINK</span>
   </div>
   <div class="details">
-    <div><h3>One system, three assets</h3><p>Sentry One is the mast camera and the acoustic array. Eagle One is the recon drone and Eagle Two the interceptor. Both launch off the roof when the job needs them, without being asked asset by asset.</p></div>
-    <div><h3>Everything it finds is labelled</h3><p>Detections are numbered in the cab as person one, vehicle one or drone one, so the crew selects what to track or target by saying the label out loud.</p></div>
-    <div><h3>It cues itself</h3><p>When the acoustic array or a drone camera picks something up first, Sentry One turns onto the bearing on its own and tells the crew. The decision stays with the operator.</p></div>
-    <div><h3>Nothing leaves the vehicle</h3><p>The kit bolts onto any patrol, police or military vehicle, and every part of this runs on board: no cloud, no network needed.</p></div>
+    <div><h3>One system, three pieces of kit</h3><p>A camera and a set of microphones on the mast, a small drone that goes and looks, and a second drone that can bring something down. All three take their orders from the same system, and the crew talks to that system.</p></div>
+    <div><h3>Everything it finds gets a name</h3><p>Anything the system spots is listed in the cab in plain words, as person one or vehicle two. The crew picks what to follow by saying that name out loud.</p></div>
+    <div><h3>It looks without being asked</h3><p>When the microphones or a drone notice something first, the camera turns onto it on its own and tells the crew what it has found. Deciding what to do about it stays with the crew.</p></div>
+    <div><h3>Nothing leaves the vehicle</h3><p>The kit fits on any patrol, police or military vehicle, and all of it runs on board. It needs no connection to anything else to do its job.</p></div>
   </div>
   <p class="foot">Illustrative 3D scene; geometry, ranges and timings are indicative only and not to scale. Every component and the workflow from end to end are in field testing. The operator directs the system by voice and makes every decision: follow, engage or recall. Anything irreversible requires a confirmation, and engagement of an aerial target occurs only where the operator is legally authorised.</p>
 </div>
@@ -483,8 +484,8 @@
 
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
-     sub:'Sentry One sweeps 360° while you drive. Thermal finds the person the headlights go straight past, and the cab is told before anyone asks.',
-     p:'On patrol after dark Sentry One sweeps a full 360° while the crew drives. Thermal picks a person out of cover that headlights and the naked eye go straight past. Everything it finds is labelled in the cab, so the crew can name it out loud.',
+     sub:'The camera turns all the way round while the crew drives, and it sees heat rather than light, so it finds someone lying still in the dark that the headlights never reach. It speaks up before anyone thinks to look.',
+     p:'After dark the camera keeps turning while the crew drives. Because it sees heat instead of light, a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number in the cab, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
      list0:[{id:'PERSON 1',obj:'walker',conf:0.91,state:'DETECTED'}],
@@ -495,8 +496,8 @@
         [8600,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
         [14000,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
     {label:'Recon search',h:'2 · Eagle One · search by description',
-     sub:'You say what you are looking for. The system works out that Eagle One is the way to find it, puts it up, and rules out what does not match.',
-     p:'The crew describes what they want found. Nothing has to be spelled out asset by asset: the system picks Eagle One, launches it off the roof, flies the search and reports what it sees, with a confidence and with the candidates it ruled out.',
+     sub:'The crew says what they are looking for. The system works out that a drone is the quickest way to find it, sends one up itself, and reports back what matches and what does not.',
+     p:'The crew describes what they want found. Nobody has to say which piece of kit to use for it: the system decides the drone is the way to do the job, launches it off the roof, flies the search, and reports what it sees, including the vehicles it has ruled out along the way.',
      legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
      show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
      orbit:{cx:-17,cz:-2,r:7.5,y:6.5,speed:0.5},look:[-15,-2],
@@ -512,8 +513,8 @@
           alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
         [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
-     sub:'The array hears the aircraft first and Sentry One turns onto it unasked. What you are offered depends on what is known: engagement unlocks at 0.80, and it expends your only interceptor.',
-     p:'The acoustic array hears an aircraft no camera has seen yet, and Sentry One turns onto the bearing without being asked. What the crew is offered then depends on what is known: engagement unlocks at an identification of 0.80, and it expends Eagle Two, the only interceptor the vehicle carries.',
+     sub:'The microphones hear an aircraft before anyone sees it, and the camera swings onto it by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
+     p:'The microphones on the roof pick up an aircraft that no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
      fly:{hx:{from:[-46,13,-40],to:[-5,7,-5],dur:10500}},
@@ -521,19 +522,17 @@
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
     {label:'Connected fleet',h:'4 · Connected fleet',
-     sub:'Every vehicle carries the same kit and scans the same way. Given a link, they share one picture with each other and with a command centre.',
-     p:'Every vehicle works alone with no network, each one sweeping its own ground. When a link is available, a whole fleet shares one picture: vehicles pass clips and alerts to each other and to a command centre, and take instructions back.',
+     sub:'Every vehicle does all of this on its own. When they can reach each other, they pass what they have seen to the rest of the fleet and to the control room.',
+     p:'Each vehicle works on its own and needs no connection to do it, every one of them watching its own patch of ground. When a link is available the whole fleet shares one picture: vehicles pass clips and alerts to each other and to a control room, and take instructions back.',
      legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE']],
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
-     feed:{target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
+     feed:{map:1,target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
      d:[[0,'TACTIX','Clip and position are with the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
         [4600,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
   var ptzCam=new THREE.PerspectiveCamera(22,16/9,0.6,300);
   var feedEl=document.getElementById('feed'), feedTL=document.getElementById('feed-tl'), feedBox=document.getElementById('feed-box'), feedLab=document.getElementById('feed-lab'), feedBL=document.getElementById('feed-bl'), feedBR=document.getElementById('feed-br');
-  document.getElementById('btn-th').addEventListener('click',function(){ thermalOn=true; this.setAttribute('aria-pressed','true'); document.getElementById('btn-eo').setAttribute('aria-pressed','false'); feedTL.textContent='SENTRY 1 · THERMAL'; });
-  document.getElementById('btn-eo').addEventListener('click',function(){ thermalOn=false; this.setAttribute('aria-pressed','true'); document.getElementById('btn-th').setAttribute('aria-pressed','false'); feedTL.textContent='SENTRY 1 · DAY / EO'; });
   var tabs=document.querySelector('.tabs');
   MODES.forEach(function(m,i){ var b=document.createElement('button'); b.textContent=(i+1)+' · '+m.label; b.setAttribute('aria-pressed',i===0?'true':'false'); b.addEventListener('click',function(){ setMode(i,true); }); tabs.appendChild(b); m.btn=b; });
   var allTracks=[trkContact,trkSearch,trkYard,trkHostile].concat(mesh);
@@ -592,6 +591,34 @@
   (function(){ var w=document.getElementById('v-wave');
     for(var i=0;i<16;i++){ var b=document.createElement('i'); w.appendChild(b); waveBars.push(b); } })();
   var OBJ={walker:walker,hx:hx,candA:candA,candB:candB,cmd:cmd,e1:e1,e2:e2};
+  // the control room sees a map, not a camera: the fleet from above, and what passes between them
+  var mapCv=document.getElementById('map'), mapCx=mapCv.getContext('2d');
+  function drawMap(now){
+    var r=mapCv.getBoundingClientRect(), dpr=Math.min(window.devicePixelRatio||1,2);
+    var W=Math.round(r.width*dpr), H=Math.round(r.height*dpr);
+    if(mapCv.width!==W||mapCv.height!==H){ mapCv.width=W; mapCv.height=H; }
+    var g=mapCx, w=r.width, h=r.height, S=30;
+    g.setTransform(dpr,0,0,dpr,0,0); g.fillStyle='#070a0e'; g.fillRect(0,0,w,h);
+    function px(x,z){ return [w/2+(x/S)*(w/2-12), h/2+(z/S)*(h/2-12)]; }
+    g.strokeStyle='rgba(62,117,195,0.12)'; g.lineWidth=1;
+    for(var i=-2;i<=2;i++){ var a=px(i*12,-S),b=px(i*12,S),c=px(-S,i*12),d=px(S,i*12);
+      g.beginPath(); g.moveTo(a[0],a[1]); g.lineTo(b[0],b[1]); g.moveTo(c[0],c[1]); g.lineTo(d[0],d[1]); g.stroke(); }
+    var nodes=[{p:host.position,n:'V1',own:true}];
+    fleet.forEach(function(c,i){ nodes.push({p:c.position,n:'V'+(i+2)}); });
+    var cc=px(20,8), t=(now*0.00035)%1;
+    nodes.forEach(function(nd){ var q=px(nd.p.x,nd.p.z);
+      g.strokeStyle='rgba(62,117,195,0.22)'; g.beginPath(); g.arc(q[0],q[1],(9/S)*(w/2-12),0,6.283); g.stroke();
+      g.strokeStyle='rgba(57,192,122,0.40)'; g.setLineDash([3,3]);
+      g.beginPath(); g.moveTo(q[0],q[1]); g.lineTo(cc[0],cc[1]); g.stroke(); g.setLineDash([]);
+      g.fillStyle='#39C07A';
+      g.beginPath(); g.arc(q[0]+(cc[0]-q[0])*t,q[1]+(cc[1]-q[1])*t,1.5,0,6.283); g.fill(); });
+    g.font='7px ui-monospace,Menlo,monospace';
+    nodes.forEach(function(nd){ var q=px(nd.p.x,nd.p.z);
+      g.fillStyle=nd.own?'#3E75C3':'#9AA3AF'; g.fillRect(q[0]-3.5,q[1]-2.5,7,5);
+      g.fillStyle=nd.own?'rgba(159,200,255,0.95)':'rgba(234,238,244,0.7)'; g.fillText(nd.n,q[0]+6,q[1]+3); });
+    g.strokeStyle='#39C07A'; g.lineWidth=1.2; g.strokeRect(cc[0]-4,cc[1]-4,8,8);
+    g.fillStyle='rgba(143,211,174,0.95)'; g.fillText('CONTROL',cc[0]+7,cc[1]+3);
+  }
   function aimAngle(o){ var p=new THREE.Vector3(); o.getWorldPosition(p); return Math.atan2(p.z-host.position.z,p.x-host.position.x); }
   function wrapPi(a){ while(a>Math.PI)a-=Math.PI*2; while(a<-Math.PI)a+=Math.PI*2; return a; }
   function fmtBrg(a){ return ('00'+Math.round(((a*180/Math.PI)+360)%360)).slice(-3)+'°'; }
@@ -604,11 +631,12 @@
   function renderAssets(){
     var sig=assets.sentry+assets.eagle1+assets.eagle2+addressed, box=document.getElementById('assets');
     if(box.dataset.sig===sig) return; box.dataset.sig=sig; box.innerHTML='';
-    [['sentry','SENTRY 1'],['eagle1','EAGLE 1'],['eagle2','EAGLE 2']].forEach(function(a){
+    [['sentry','SENTRY 1','camera and mics'],['eagle1','EAGLE 1','drone that looks'],
+     ['eagle2','EAGLE 2','drone that intercepts']].forEach(function(a){
       var st=assets[a[0]], d=document.createElement('div'), cls='asset';
       if(st==='EXPENDED'||st==='NONE') cls+=' gone'; else if(st==='CUED'||st==='ENGAGING') cls+=' hot'; else if(st!=='DOCKED') cls+=' live';
       if(addressed===a[0]) cls+=' addressed';
-      d.className=cls; d.innerHTML='<b>'+a[1]+'</b><i>'+st+'</i>'; box.appendChild(d);
+      d.className=cls; d.innerHTML='<b>'+a[1]+'</b><em>'+a[2]+'</em><i>'+st+'</i>'; box.appendChild(d);
     });
   }
   function renderTracks(m){
@@ -815,8 +843,9 @@
     feedEl.style.display='block';
     var onTgt=!!(m.feed&&feedOn), fromE1=onTgt&&m.feed.from==='e1'&&e1.visible;
     if(onTgt){ var t0o=OBJ[feedTgt||m.feed.target]; if(t0o&&!t0o.visible) onTgt=false; }
-    feedEl.className=thermalOn?'feed':'feed eo';
-    {
+    var mapMode=!!(m.feed&&m.feed.map); feedEl.className=mapMode?'feed map':'feed';
+    if(mapMode){ drawMap(now); feedTL.textContent='CONTROL ROOM \u00b7 FLEET MAP'; feedBox.style.display='none'; }
+    else {
       var fname=onTgt?(feedTgt||m.feed.target):null, tgt=fname?OBJ[fname]:null;
       var eye=new THREE.Vector3(), at=new THREE.Vector3(), hideE1=false;
       if(fromE1){ e1.getWorldPosition(eye); eye.y-=0.45; hideE1=true; if(eye.y<2.9) eye.y=2.9;
@@ -825,7 +854,7 @@
         if(tgt){ tgt.getWorldPosition(at); if(fname==='walker') at.y+=0.9; if(fname==='cmd') at.set(20,2,8); }
         else at.set(eye.x+Math.cos(ptzAngle)*24,1.1,eye.z+Math.sin(ptzAngle)*24); }
       feedBox.style.display=onTgt?'block':'none';
-      feedTL.textContent=(fromE1?'EAGLE 1':'SENTRY 1')+' \u00b7 '+(thermalOn?'THERMAL':'DAY / EO');
+      feedTL.textContent=(fromE1?'EAGLE 1':'SENTRY 1')+' \u00b7 THERMAL';
       if(!onTgt) feedBL.textContent='SENTRY 1 \u00b7 360\u00b0 SCAN';
       else if(feedBL.textContent==='SENTRY 1 \u00b7 360\u00b0 SCAN') feedBL.textContent=(m.feed&&m.feed.bl)||'';
       ptzCam.fov=onTgt?(m.feed.fov||20):38; ptzCam.position.copy(eye); ptzCam.lookAt(at);
@@ -835,14 +864,12 @@
       var bearing=Math.round(((Math.atan2(at.x-eye.x,at.z-eye.z)*180/Math.PI)+360)%360), tilt=Math.round(Math.atan2(at.y-eye.y,Math.hypot(at.x-eye.x,at.z-eye.z))*180/Math.PI);
       feedBR.textContent='PAN '+String(bearing).padStart(3,'0')+'° TILT '+(tilt<0?'DOWN ':'UP ')+String(Math.abs(tilt)).padStart(2,'0')+'°';
       renderer.setScissorTest(true); renderer.setScissor(fx,fy,fw,fh); renderer.setViewport(fx,fy,fw,fh);
-      var bg=scene.background, fog=scene.fog, expo=renderer.toneMappingExposure;
-      if(!thermalOn) renderer.toneMappingExposure=expo*0.32;   // an EO camera at night sees very little
+      var bg=scene.background, fog=scene.fog;
       if(thermalOn){ swapToThermal(); scene.background=new THREE.Color(0x06070a); scene.fog=new THREE.FogExp2(0x06070a,0.006); sweepG.visible=false; ping.visible=false; }
       if(hideE1){ e1.visible=false; }
       renderer.clear(); renderer.render(scene,ptzCam);
       if(hideE1){ e1.visible=true; }
       if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=(ptzMode==='scan'); ping.visible=true; }
-      renderer.toneMappingExposure=expo;
       renderer.setScissorTest(false); renderer.setViewport(0,0,W,H);
     }
     requestAnimationFrame(frame);
