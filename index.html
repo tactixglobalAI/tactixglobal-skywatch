@@ -21,7 +21,10 @@
   .cast span{display:flex;align-items:baseline;gap:7px;border:1px solid var(--line);border-radius:2px;padding:6px 9px;
     font-size:12px;color:#8A93A1;background:var(--panel)}
   .cast b{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink);font-weight:600}
-  @media (max-width:720px){.cast{display:none}}
+  @media (max-width:720px){.cast{display:none}
+    .wrap{display:flex;flex-direction:column}
+    .lede{order:1;margin:14px 0 0}          /* after the scene, not before it */
+    .legend,.details,.foot{order:2}}
   .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
   button{font:inherit;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;background:var(--panel);color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:8px 11px}
   button[aria-pressed="true"]{color:var(--ink);border-color:var(--red);background:#181B21}
@@ -126,7 +129,8 @@
   .cap .vstate,.cap .vwho{display:none}
   .cap .vtext{flex:1 1 auto;font-size:12.5px;line-height:1.4;max-height:36px;overflow:hidden}
   @media (max-width:720px){.ovl{padding:22px 8px 8px}.cap .vtext{font-size:12px}}
-  @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}}
+  @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}
+    .voice{border:none;background:none;padding:0;margin-top:8px}}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
   .legend b{display:inline-block;width:16px;height:2px;margin-right:6px;vertical-align:middle;border-radius:2px}
   .details{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 26px;margin-top:16px;padding-top:15px;border-top:1px solid var(--line)}
@@ -510,7 +514,7 @@
 
   var MODES=[
     {label:'Night patrol',h:'1 · Night patrol · Sentry One',
-     sub:'The camera turns all the way round while the crew drives, looking for anything out of the ordinary. After dark it is the thermal sensor that finds someone lying still in cover, where the headlights never reach, and it speaks up before anyone thinks to look.',
+     sub:'The camera turns all the way round while the crew drives, and after dark the thermal sensor finds what the headlights never reach.',
      p:'After dark the camera keeps turning while the crew drives. It carries a colour sensor and a thermal one, and at night the thermal sensor is what matters: a person crouched in a hedge shows up plainly even though the headlights go straight past them. Whatever it finds gets a name and a number on the screen inside the vehicle, so the crew can simply say which one they mean.',
      legend:[['#3E75C3','SENTRY 1 · 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
      show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
@@ -522,7 +526,7 @@
         [11000,'SENTRY 1','Thermal. Crouched behind the hedge, carrying a bag. No vehicle with them.',{}],
         [16400,'OPERATOR','Stay with them.',{ptz:'track',bl:'TRACKING PERSON 1',tstate:{'PERSON 1':'TRACKING'}}]]},
     {label:'Recon search',h:'2 · Eagle One · search by description',
-     sub:'The crew says what they are looking for. The system works out that a drone is the quickest way to find it, sends one up itself, and reports back what matches and what does not.',
+     sub:'The crew says what they are looking for, and the system works out that a drone is the quickest way to find it.',
      p:'The crew describes what they want found. Nobody has to say which piece of kit to use for it: the system decides the drone is the way to do the job, launches it off the roof, flies the search, and reports what it sees through the same colour and thermal pair the mast camera carries, including the vehicles it has ruled out along the way.',
      legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
      show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
@@ -539,7 +543,7 @@
           alert:'MATCH 0.88 · VEHICLE 2',bl:'EAGLE 1 · HOLDING'}],
         [21500,'OPERATOR','Stay over it and send me the clip.',{to:'eagle1'}]]},
     {label:'Detect & intercept',h:'3 · Acoustic cue, then the decision',
-     sub:'The microphones listen for unusual activity, a gunshot or a drone for example. They hear this one before anyone sees it and the camera swings onto the bearing by itself. If the system is sure what it is, the crew can bring it down. If it is not sure, it offers to send a drone for a closer look first.',
+     sub:'The microphones hear unusual activity, a gunshot or a drone for example, and the camera swings onto the bearing by itself.',
      p:'The microphones listen for unusual activity, whether that is a gunshot, a drone or something else that does not belong. Here they pick up an aircraft no camera has seen yet, and the camera turns onto the sound without being asked. What the crew is offered then depends on how certain the system is. It will only offer to bring something down once it is sure of what it is, and doing that uses up the one interceptor the vehicle carries.',
      legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2']],
      show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
@@ -548,7 +552,7 @@
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
     {label:'Connected fleet',h:'4 · Connected fleet',
-     sub:'Every vehicle does all of this on its own. When the ground link will not carry, each one can put its own drone up, and the drones pass the traffic between them until the fleet is joined up again.',
+     sub:'Every vehicle does all of this on its own, and when the ground link will not carry, their drones pass the traffic between them.',
      p:'Each vehicle works on its own and needs no connection to do it, every one of them watching its own patch of ground. When a link is there, the whole fleet shares one picture. When it is not, because a vehicle has gone behind a building or over a ridge, every vehicle can put its own drone up and the drones carry the traffic between them, so clips, alerts and orders still get through.',
      legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE'],['#39C07A','AIR RELAY']],
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
