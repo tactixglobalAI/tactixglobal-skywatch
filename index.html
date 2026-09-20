@@ -423,6 +423,19 @@
     G.userData.fan=f; return G;
   }
   var fleetRigs=fleet.map(function(c,i){ var g=scanRig(); c.add(g); return {fan:g.userData.fan,ph:i*1.7}; });
+  var fleetDrones=fleet.map(function(){ var d=drone(M.blue); d.scale.setScalar(0.85);
+    d.children.slice().forEach(function(ch){ if(ch.isLight) d.remove(ch); });
+    var nav=new THREE.Mesh(new THREE.SphereGeometry(0.17,8,6),new THREE.MeshBasicMaterial({color:0x8fc4ff}));
+    nav.position.y=0.2; nav.userData.heat=0.6; d.add(nav);
+    d.visible=false; scene.add(d); return d; });
+  var airLink=[], airPkt=[];
+  for(var al=0;al<6;al++){
+    var lg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+    var ll=new THREE.Line(lg,new THREE.LineBasicMaterial({color:0x39c07a,transparent:true,opacity:0.45}));
+    ll.visible=false; scene.add(ll); airLink.push(ll);
+    var pk=new THREE.Mesh(new THREE.SphereGeometry(0.15,8,6),new THREE.MeshBasicMaterial({color:0x39c07a}));
+    pk.visible=false; pk.userData.heat=0.5; scene.add(pk); airPkt.push(pk);
+  }
   var ping=new THREE.Mesh(new THREE.RingGeometry(0.2,0.3,64),new THREE.MeshBasicMaterial({color:0xe0a33e,transparent:true,opacity:0.6,side:THREE.DoubleSide,depthWrite:false})); ping.rotation.x=-Math.PI/2; ping.position.y=0.05; scene.add(ping);
 
   // ---------- tracks (dashed lines on the ground) ----------
@@ -522,13 +535,16 @@
      feed:{target:'hx',lab:'DRONE 1 · UNIDENTIFIED',bl:'ACOUSTIC CUE',fov:17},
      variants:[{name:'IDENTIFIED FROM VEHICLE',d:V_ID},{name:'NOT IDENTIFIED',d:V_UNID}],d:V_ID},
     {label:'Connected fleet',h:'4 · Connected fleet',
-     sub:'Every vehicle does all of this on its own. When they can reach each other, they pass what they have seen to the rest of the fleet and to the control room.',
-     p:'Each vehicle works on its own and needs no connection to do it, every one of them watching its own patch of ground. When a link is available the whole fleet shares one picture: vehicles pass clips and alerts to each other and to a control room, and take instructions back.',
-     legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE']],
+     sub:'Every vehicle does all of this on its own. When the ground link will not carry, each one can put its own drone up, and the drones pass the traffic between them until the fleet is joined up again.',
+     p:'Each vehicle works on its own and needs no connection to do it, every one of them watching its own patch of ground. When a link is there, the whole fleet shares one picture. When it is not, because a vehicle has gone behind a building or over a ridge, every vehicle can put its own drone up and the drones carry the traffic between them, so clips, alerts and orders still get through.',
+     legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE'],['#39C07A','AIR RELAY']],
      show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
      feed:{map:1,target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
-     d:[[0,'TACTIX','Clip and position are with the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
-        [4600,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
+     d:[[0,'TACTIX','Clip and position are with the control room and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
+        [4800,'TACTIX','Vehicle 4 keeps dropping out behind the buildings.',{alert:'LINK WEAK · VEHICLE 4'}],
+        [9000,'OPERATOR','Put everyone’s drone up and hold the link.',{fleetLaunch:1,mission:'AIR RELAY · 5 DRONES UP'}],
+        [13500,'TACTIX','All five are up and relaying through each other. Vehicle 4 is steady again.',{alertOff:1}],
+        [19000,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
   var ptzCam=new THREE.PerspectiveCamera(22,16/9,0.6,300);
@@ -582,6 +598,7 @@
   var DUR=9500, ptzAngle=0, last=performance.now();
   // ---------- in-cab voice loop: what is said drives what the kit does ----------
   var beatIx=-1, ptzMode='scan', ptzTgt=null, feedOn=false, feedTgt=null, launched={}, recalled={}, doaUntil=0;
+  var fleetUpT=0;
   var e2Mode='idle', selectedId=null, addressed=null, decideState=null, confirmUntil=0, cueStart=0, cueMs=0, lastUi=0, flashT=0;
   var assets={sentry:'SCANNING',eagle1:'DOCKED',eagle2:'DOCKED'}, labelEls={}, RANGE=3.4;
   var vState=document.getElementById('v-state'), vWho=document.getElementById('v-who'), vText=document.getElementById('v-text'),
@@ -616,6 +633,14 @@
     nodes.forEach(function(nd){ var q=px(nd.p.x,nd.p.z);
       g.fillStyle=nd.own?'#3E75C3':'#9AA3AF'; g.fillRect(q[0]-3.5,q[1]-2.5,7,5);
       g.fillStyle=nd.own?'rgba(159,200,255,0.95)':'rgba(234,238,244,0.7)'; g.fillText(nd.n,q[0]+6,q[1]+3); });
+    if(fleetUpT){
+      var dpts=nodes.map(function(nd){ var q=px(nd.p.x,nd.p.z); return [q[0],q[1]-7]; });
+      g.strokeStyle='rgba(57,192,122,0.55)'; g.lineWidth=0.8;
+      [[0,1],[0,2],[0,3],[0,4],[1,2],[3,4]].forEach(function(pr){
+        g.beginPath(); g.moveTo(dpts[pr[0]][0],dpts[pr[0]][1]); g.lineTo(dpts[pr[1]][0],dpts[pr[1]][1]); g.stroke(); });
+      dpts.forEach(function(dp){ g.fillStyle='#39C07A'; g.beginPath(); g.arc(dp[0],dp[1],1.8,0,6.283); g.fill(); });
+      g.lineWidth=1;
+    }
     g.strokeStyle='#39C07A'; g.lineWidth=1.2; g.strokeRect(cc[0]-4,cc[1]-4,8,8);
     g.fillStyle='rgba(143,211,174,0.95)'; g.fillText('CONTROL',cc[0]+7,cc[1]+3);
   }
@@ -703,6 +728,8 @@
     e1.visible=!!m.show.e1&&!pend.e1; e2.visible=!!m.show.e2&&!pend.e2; hx.visible=!!m.show.hx;
     eagle1Dock.visible=!e1.visible; eagle2Dock.visible=!e2.visible;
     m.list=m.list0?JSON.parse(JSON.stringify(m.list0)):null;
+    fleetUpT=0; fleetDrones.forEach(function(d){ d.visible=false; });
+    airLink.forEach(function(l){ l.visible=false; }); airPkt.forEach(function(k){ k.visible=false; });
     resetVoice(m);
   }
   function resetVoice(m){
@@ -726,6 +753,7 @@
     if(a.to) addressed=a.to;
     vWake.textContent = op ? (addressed?'HEY '+ASSET[addressed]:'TACTIX') : b[1];
     if(a.alert){ vAlertT.textContent=a.alert; vAlert.hidden=false; }
+    if(a.alertOff) vAlert.hidden=true;
     if(a.mission){ missionEl.textContent=a.mission; missionEl.hidden=false; }
     if(a.cue){ ptzMode='slew'; ptzTgt=OBJ[a.cue.target]; cueStart=now; }
     if(a.ptz){ ptzMode=a.ptz; if(a.target) ptzTgt=OBJ[a.target]; }
@@ -746,6 +774,7 @@
       else { eagle2Dock.visible=false; assets.eagle2='AIRBORNE'; e2Mode=a.engage?'engage':'follow'; } }
     if(a.engage){ e2Mode='engage'; assets.eagle2='ENGAGING'; }
     if(a.recall){ recalled[a.recall]=now; e2Mode='recall'; }
+    if(a.fleetLaunch){ fleetUpT=now; e1.visible=true; eagle1Dock.visible=false; assets.eagle1='RELAY'; }
   }
   function speakVoice(m,t,now){
     if(beatIx<0) return;
@@ -798,6 +827,24 @@
       else { orbitPhase+=dt*m.orbit.speed;
         var ob=new THREE.Vector3(m.orbit.cx+Math.cos(orbitPhase)*m.orbit.r,m.orbit.y+Math.sin(now*0.003)*0.1,m.orbit.cz+Math.sin(orbitPhase)*m.orbit.r);
         e1.position.lerp(ob,Math.min(1,dt*1.6)); e1.rotation.y=-orbitPhase; } }
+    // every vehicle puts its own drone up, and the drones carry the link between them
+    if(fleetUpT){
+      var fu=(now-fleetUpT)/1000;
+      fleetDrones.forEach(function(d,i){ var c=fleet[i], st=Math.max(0,Math.min(1,(fu-i*0.35)/1.6));
+        d.visible=st>0; if(st<=0) return;
+        d.position.set(c.position.x,2.2+st*4.4+Math.sin(now*0.003+i)*0.08,c.position.z);
+        d.rotation.y+=dt*0.5;
+        d.children.forEach(function(ch,j){ if(j>0&&ch.geometry&&ch.geometry.type==='CylinderGeometry') ch.rotation.y+=dt*40; }); });
+      var hs=Math.max(0,Math.min(1,fu/1.6));
+      e1.position.set(host.position.x,2.4+hs*4.2+Math.sin(now*0.003)*0.08,host.position.z);
+      var anodes=[e1].concat(fleetDrones), apairs=[[0,1],[0,2],[0,3],[0,4],[1,2],[3,4]];
+      apairs.forEach(function(pr,i){ var a=anodes[pr[0]], b=anodes[pr[1]], L=airLink[i], P=airPkt[i];
+        var on=a.visible&&b.visible; L.visible=on; P.visible=on; if(!on) return;
+        var q=L.geometry.attributes.position;
+        q.setXYZ(0,a.position.x,a.position.y,a.position.z); q.setXYZ(1,b.position.x,b.position.y,b.position.z);
+        q.needsUpdate=true; L.geometry.computeBoundingSphere();
+        P.position.lerpVectors(a.position,b.position,((now*0.0004)+i*0.17)%1); });
+    }
     // Eagle Two: boost off the roof, then shadow at standoff or run it down
     if(launched.e2&&e2Mode!=='expended'){
       var home=new THREE.Vector3(-1.35,2.4,-0.45), ms2=now-launched.e2, vv=new THREE.Vector3();
