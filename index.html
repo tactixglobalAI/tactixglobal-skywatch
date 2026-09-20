@@ -44,7 +44,7 @@
   @keyframes blink{50%{opacity:.15}}
   .toggle{position:absolute;right:12px;top:12px;display:flex;gap:6px}
   .toggle button{padding:6px 9px;font-size:9.5px}
-  @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.toggle{top:8px;right:8px}}
+  @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.toggle{top:8px;right:8px}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
   .legend b{display:inline-block;width:16px;height:2px;margin-right:6px;vertical-align:middle;border-radius:2px}
@@ -319,7 +319,7 @@
     walker.visible=!!m.show.walker; e1.visible=!!m.show.e1; e2.visible=!!m.show.e2; hx.visible=!!m.show.hx;
     feedLab.textContent=(m.feed&&m.feed.lab)||''; feedBL.textContent=(m.feed&&m.feed.bl)||''; feedBox.style.display=m.feed?'block':'none'; eagle1Dock.visible=!m.show.e1; eagle2Dock.visible=!m.show.e2;
     allTracks.forEach(function(t){ t.visible=false; }); (m.tracks||[]).forEach(function(t){ t.visible=true; });
-    lookT.set((m.look||[0,0])[0]*LOOK_BIAS,1,(m.look||[0,0])[1]*LOOK_BIAS); zoomT=m.zoom||1;
+    lookT.set((m.look||[0,0])[0]*0.35,1,(m.look||[0,0])[1]*0.35); zoomT=m.zoom||1;
     document.getElementById('hud-h').textContent=m.h; document.getElementById('hud-p').textContent=m.p;
     var d=document.getElementById('hud-d'); d.innerHTML='';
     m.d.forEach(function(r){ var w=document.createElement('div'); w.className='w'; w.textContent=r[0]; var t=document.createElement('div'); t.className=r[0]==='OPERATOR'?'o':'s'; t.textContent='\u201c'+r[1]+'\u201d'; d.appendChild(w); d.appendChild(t); });
@@ -336,11 +336,10 @@
 
   var W=1,H=1;
   var DESIGN_ASPECT=16/9, BASE_FOV=32, HALF_H=Math.atan(Math.tan(BASE_FOV*Math.PI/360)*DESIGN_ASPECT);
-  // a narrow screen keeps the camera nearer the vehicle and pulls back for margin
-  var LOOK_BIAS=0.35, DIST_MUL=1;
-  function resize(){ var w=stage.clientWidth, h=stage.clientHeight; renderer.setSize(w,h,false); W=Math.round(w*renderer.getPixelRatio()); H=Math.round(h*renderer.getPixelRatio()); var a=w/h; camera.aspect=a;
-    var narrow=a<DESIGN_ASPECT; LOOK_BIAS=narrow?0.18:0.35; DIST_MUL=narrow?1.12:1;
-    if(cur>=0) lookT.set((MODES[cur].look||[0,0])[0]*LOOK_BIAS,1,(MODES[cur].look||[0,0])[1]*LOOK_BIAS);
+  function resize(){ var w=stage.clientWidth, h=stage.clientHeight; renderer.setSize(w,h,false);
+    // viewport and scissor rects are CSS pixels: the renderer scales them by
+    // the pixel ratio itself
+    W=w; H=h; var a=w/h; camera.aspect=a;
     // hold the horizontal field of view to the 16:9 composition, so a narrow
     // screen widens the frame instead of cropping the vehicle out of it
     camera.fov=a>=DESIGN_ASPECT?BASE_FOV:Math.min(58,2*Math.atan(Math.tan(HALF_H)/a)*180/Math.PI);
@@ -367,7 +366,7 @@
     if(!dragging&&!paused) autoAz+=dt*0.045;
     var damp=1-Math.exp(-Math.min(0.25,rdt)*3.5);
     look.lerp(lookT,damp); zoom=lerp(zoom,zoomT,damp);
-    var a=az+autoAz, r=dist*zoom*DIST_MUL;
+    var a=az+autoAz, r=dist*zoom;
     camera.position.set(look.x+Math.cos(a)*Math.cos(el)*r, look.y+Math.sin(el)*r, look.z+Math.sin(a)*Math.cos(el)*r); camera.lookAt(look);
     if(!paused&&t>DUR) setMode((cur+1)%MODES.length,false);
     // main view
@@ -379,8 +378,8 @@
       if(m.feed.target==='e1view'){ e1.getWorldPosition(eye); eye.y-=0.45; hideE1=true; if(eye.y<2.9) eye.y=2.9; if(m.orbit){ at.set(m.orbit.cx,0.9,m.orbit.cz); } else { at.set(-11,0.9,-4); } }
       else { host.userData.ptz.getWorldPosition(eye); tgt.getWorldPosition(at); if(m.feed.target==='walker') at.y+=1.1; if(m.feed.target==='cmd') at.set(20,2,8); }
       ptzCam.fov=m.feed.fov||20; ptzCam.position.copy(eye); ptzCam.lookAt(at);
-      var rect=feedEl.getBoundingClientRect(), sr=canvas.getBoundingClientRect(), pr=renderer.getPixelRatio();
-      var fx=Math.round((rect.left-sr.left)*pr), fy=Math.round((sr.bottom-rect.bottom)*pr), fw=Math.round(rect.width*pr), fh=Math.round(rect.height*pr);
+      var rect=feedEl.getBoundingClientRect(), sr=canvas.getBoundingClientRect();
+      var fx=Math.round(rect.left-sr.left), fy=Math.round(sr.bottom-rect.bottom), fw=Math.round(rect.width), fh=Math.round(rect.height);
       ptzCam.aspect=fw/fh; ptzCam.updateProjectionMatrix();
       var bearing=Math.round(((Math.atan2(at.x-eye.x,at.z-eye.z)*180/Math.PI)+360)%360), tilt=Math.round(Math.atan2(at.y-eye.y,Math.hypot(at.x-eye.x,at.z-eye.z))*180/Math.PI);
       feedBR.textContent='PAN '+String(bearing).padStart(3,'0')+'° TILT '+(tilt<0?'\u2212':'+')+String(Math.abs(tilt)).padStart(2,'0')+'°';
