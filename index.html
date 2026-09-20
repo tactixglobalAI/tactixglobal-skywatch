@@ -46,6 +46,27 @@
   .toggle button{padding:6px 9px;font-size:9.5px}
   @media (max-width:720px){.feed{width:44%;bottom:10px;right:8px}.feed .tr,.feed .br{display:none}.feed .rec{top:auto;bottom:6px;right:8px}.feed .tl,.feed .bl,.feed .box i{font-size:8px;letter-spacing:.1em}.feed .tl,.feed .bl{max-width:72%}.feed .box i{max-width:300%}.toggle{top:8px;right:8px}}
   .prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:#161A20}.prog i{display:block;height:100%;width:0;background:var(--red)}
+  .voice{margin-top:10px;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:10px 12px}
+  .vtop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .vwake{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--ink);border:1px solid var(--red);border-radius:2px;padding:3px 7px}
+  .vstate{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--dim);min-width:86px}
+  .vstate.listen{color:var(--blue)}.vstate.speak{color:var(--red)}
+  .vwave{display:flex;align-items:center;gap:2px;height:16px;flex:1 1 90px;min-width:90px}
+  .vwave i{display:block;width:2px;height:2px;background:#2b3440;border-radius:1px}
+  .vtag{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim);border:1px solid var(--line);border-radius:2px;padding:3px 6px}
+  .valert{display:flex;align-items:center;gap:8px;margin-top:9px;border:1px solid var(--red);border-left-width:3px;border-radius:2px;background:#1a1012;padding:7px 9px}
+  .valert b{font-family:var(--mono);font-size:11px;color:var(--red)}
+  .valert span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#F2A0A4}
+  .vline{margin-top:9px;display:flex;gap:9px;align-items:baseline;min-height:34px}
+  .vwho{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--dim);flex:0 0 auto;padding-top:2px}
+  .vwho.op{color:var(--blue)}.vwho.sys{color:var(--red)}
+  .vtext{font-size:13.5px;line-height:1.5;color:#E2E8F0}
+  .vtext.op{color:#CFE0F8;font-weight:600}
+  .vcur{display:inline-block;width:7px;height:14px;background:var(--dim);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+  .vlog{margin-top:6px;display:grid;gap:3px}
+  .vlog div{font-size:11.5px;line-height:1.4;color:#5F6875;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mission{position:absolute;left:14px;top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:#8FD3AE;border:1px solid #23503c;background:rgba(9,10,12,.7);border-radius:2px;padding:5px 8px;pointer-events:none}
+  @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
   .legend b{display:inline-block;width:16px;height:2px;margin-right:6px;vertical-align:middle;border-radius:2px}
   .foot{margin-top:12px;font-size:10.5px;line-height:1.6;color:#6C7581;max-width:920px}
@@ -65,7 +86,8 @@
   <div class="stage" id="stage">
     <canvas id="c" aria-label="3D view of a TactixGlobal equipped SUV scanning 360 degrees with recon and interceptor drones, a refinery site, a fence line and a command centre"></canvas>
     <div class="fallback" id="fallback">This view needs WebGL. Please open it in a current browser.</div>
-    <div class="hud"><h2 id="hud-h"></h2><p id="hud-p"></p><div class="dlg" id="hud-d"></div></div>
+    <div class="hud"><h2 id="hud-h"></h2><p id="hud-p"></p></div>
+    <div class="mission" id="mission" hidden></div>
     <div class="toggle" role="group" aria-label="PTZ feed mode"><button id="btn-th" aria-pressed="true">Thermal</button><button id="btn-eo" aria-pressed="false">Day</button></div>
     <div class="feed" id="feed"><div class="sl"></div><div class="vg"></div>
       <div class="tl" id="feed-tl">PTZ · THERMAL</div><div class="tr">EO/IR · 30x</div><div class="rec">REC</div>
@@ -74,6 +96,16 @@
     </div>
     <div class="hint">DRAG TO ORBIT · SCROLL TO ZOOM</div>
     <div class="prog"><i id="prog"></i></div>
+  </div>
+  <div class="voice" id="voice">
+    <div class="vtop">
+      <span class="vwake">TACTIX</span><span class="vstate" id="v-state">STANDING BY</span>
+      <span class="vwave" id="v-wave"></span>
+      <span class="vtag">IN-CAB</span><span class="vtag">ON-VEHICLE · NO CLOUD</span>
+    </div>
+    <div class="valert" id="v-alert" hidden><b>⚠</b><span id="v-alert-t"></span></div>
+    <div class="vline"><span class="vwho" id="v-who"></span><span class="vtext" id="v-text"></span></div>
+    <div class="vlog" id="v-log"></div>
   </div>
   <div class="legend">
     <span><b style="background:#3E75C3"></b>PTZ SCAN · EAGLE 1</span><span><b style="background:#E0A33E"></b>ACOUSTIC</span>
@@ -106,14 +138,14 @@
   var camera=new THREE.PerspectiveCamera(32,16/9,0.1,400);
 
   // ---------- lights ----------
-  scene.add(new THREE.HemisphereLight(0x8fb3e8,0x0b0d10,0.55));
-  var sun=new THREE.DirectionalLight(0xffffff,1.15); sun.position.set(18,28,10); sun.castShadow=true;
+  scene.add(new THREE.HemisphereLight(0x8fb3e8,0x0b0d10,0.20));
+  var sun=new THREE.DirectionalLight(0xb9ccea,0.30); sun.position.set(18,28,10); sun.castShadow=true;
   sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.left=-40; sun.shadow.camera.right=40; sun.shadow.camera.top=40; sun.shadow.camera.bottom=-40; sun.shadow.camera.far=120; sun.shadow.bias=-0.0006;
   scene.add(sun);
-  var rim=new THREE.DirectionalLight(0x3e75c3,0.35); rim.position.set(-20,10,-16); scene.add(rim);
+  var rim=new THREE.DirectionalLight(0x3e75c3,0.22); rim.position.set(-20,10,-16); scene.add(rim);
 
   // ---------- ground ----------
-  var ground=new THREE.Mesh(new THREE.PlaneGeometry(240,240),new THREE.MeshStandardMaterial({color:0x0d1014,roughness:1,metalness:0}));
+  var ground=new THREE.Mesh(new THREE.PlaneGeometry(240,240),new THREE.MeshStandardMaterial({color:0x090b0f,roughness:1,metalness:0}));
   ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
   var grid=new THREE.GridHelper(160,40,0x1b2027,0x151920); grid.position.y=0.01; scene.add(grid);
 
@@ -136,7 +168,7 @@
   // ---------- thermal rendering support ----------
   var thermalOn=true, thCache={};
   function thermalMat(heat){ var k=Math.round(heat*20); if(thCache[k]) return thCache[k];
-    var h=Math.pow(Math.max(0,Math.min(1,heat)),0.85); var c=new THREE.Color().setRGB(0.05+0.95*h,0.05+0.95*h,0.06+0.94*h);
+    var h=Math.pow(Math.max(0,Math.min(1,heat)),1.7); var c=new THREE.Color().setRGB(0.03+0.97*h,0.03+0.97*h,0.04+0.96*h);
     thCache[k]=new THREE.MeshBasicMaterial({color:c,fog:true}); return thCache[k]; }
   function tagHeat(obj,heat){ obj.traverse(function(o){ if(o.isMesh && o.userData.heat===undefined) o.userData.heat=heat; }); }
   function swapToThermal(){ scene.traverse(function(o){ if(o.isMesh){ o.userData.eo=o.material; o.material=thermalMat(o.userData.heat===undefined?0.16:o.userData.heat); } else if(o.isLine||o.isLineLoop||o.isLineSegments){ o.userData.v=o.visible; o.visible=false; } }); }
@@ -221,11 +253,19 @@
   var eagle1Dock=drone(M.blue); eagle1Dock.scale.setScalar(0.55); eagle1Dock.position.set(-1.35,2.12,0.35); host.add(eagle1Dock);
   var eagle2Dock=drone(M.green); eagle2Dock.scale.setScalar(0.5); eagle2Dock.position.set(-1.35,2.12,-0.45); host.add(eagle2Dock);
 
+  // headlights and lightbar wash, so the vehicle lights its own patch of road
+  function headlamp(z){ var l=new THREE.SpotLight(0xffeccc,2.2,46,0.40,0.6,1.1);
+    l.position.set(2.0,0.95,z); l.target.position.set(22,-1,z*4); host.add(l); host.add(l.target); return l; }
+  headlamp(0.62); headlamp(-0.62);
+  var bar=new THREE.PointLight(0x3e75c3,0.5,7); bar.position.set(-0.6,2.3,0); host.add(bar);
+
   function fleetCar(x,z,rot){ var c=suv({color:0x171c26,rack:true,lightbar:true}); c.position.set(x,0,z); c.rotation.y=rot; c.visible=false; scene.add(c); return c; }
   var fleet=[fleetCar(-16,-10,0.4),fleetCar(-13,12,-0.6),fleetCar(11,13,2.6),fleetCar(15,-7,3.4)];
-  var walker=person(); walker.position.set(-9,0,11.2); walker.visible=false; scene.add(walker);
-  var subject=suv({color:0x5a1a1e}); subject.position.set(-11,0,-4); subject.rotation.y=0.35; subject.visible=false; scene.add(subject);
-  var stopped=suv({color:0x5a1a1e}); stopped.position.set(-8,0,8); stopped.rotation.y=-1.2; stopped.visible=false; scene.add(stopped);
+  var walker=person(); walker.position.set(-4.2,0,12.05); walker.rotation.y=-0.6; walker.scale.set(1,0.72,1);
+  walker.visible=false; scene.add(walker);
+  // two candidates for the recon search: one to rule out, one to match
+  var candA=suv({color:0x23282f}); candA.position.set(-14,0,-8); candA.rotation.y=0.5; candA.visible=false; scene.add(candA);
+  var candB=suv({color:0xd7dde6}); candB.position.set(-21,0,3.5); candB.rotation.y=-0.42; candB.visible=false; scene.add(candB);
 
   // loading dock + containers
   var urban=new THREE.Group(); scene.add(urban);
@@ -239,6 +279,17 @@
   var fenceG=new THREE.Group(); scene.add(fenceG);
   for(var i=-14;i<=14;i+=2){ var post=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,2.1,8),M.fence); post.position.set(i,1.05,13); fenceG.add(post); }
   [1.9,1.1,0.4].forEach(function(y){ var wire=new THREE.Mesh(new THREE.BoxGeometry(28.2,0.02,0.02),M.fence); wire.position.set(0,y,13); fenceG.add(wire); });
+  // hedge line along the fence: cover in the visible band, none at all in thermal
+  var hedge=new THREE.Group(); scene.add(hedge);
+  var leaf=new THREE.MeshStandardMaterial({color:0x07130c,roughness:1,metalness:0});
+  function bush(x,z,s){ var g=new THREE.Group();
+    [[0,0,1],[0.55,0.22,0.74],[-0.5,-0.18,0.68],[0.1,-0.4,0.6]].forEach(function(o){
+      var b=new THREE.Mesh(new THREE.IcosahedronGeometry(0.8*s*o[2],1),leaf);
+      b.position.set(x+o[0]*s,0.62*s*o[2],z+o[1]*s); b.castShadow=true; b.receiveShadow=true; g.add(b); });
+    return g; }
+  for(var hb=-13;hb<=7;hb+=2.1) hedge.add(bush(hb,11.5,0.95+Math.sin(hb*1.7)*0.14));
+  hedge.visible=false;
+
   // command centre
   var cmd=new THREE.Group(); scene.add(cmd);
   var cc=new THREE.Mesh(new THREE.BoxGeometry(6,3,4),M.concrete); cc.position.set(20,1.5,8); cc.castShadow=true; cmd.add(cc);
@@ -246,11 +297,17 @@
   var beacon=new THREE.Mesh(new THREE.SphereGeometry(0.22,12,10),M.green); beacon.position.set(20,8.1,8); cmd.add(beacon);
   cmd.visible=false;
   ground.userData.heat=0.06; tagHeat(urban,0.2); tagHeat(site,0.24); tagHeat(fenceG,0.3); tagHeat(cmd,0.22);
+  tagHeat(hedge,0.09); tagHeat(candA,0.18); tagHeat(candB,0.2);
 
   // ---------- 360 sweep + rings ----------
   var sweepG=new THREE.Group(); scene.add(sweepG);
   function sector(r,alpha,op){ var m=new THREE.Mesh(new THREE.RingGeometry(0.4,r,64,1,0,alpha),new THREE.MeshBasicMaterial({color:0x3e75c3,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false})); m.rotation.x=-Math.PI/2; m.position.y=0.03; return m; }
   var sw1=sector(12,Math.PI/7,0.32), sw2=sector(12,Math.PI/7,0.16), sw3=sector(12,Math.PI/7,0.07); sweepG.add(sw1,sw2,sw3);
+  // acoustic direction-of-arrival lobe: what the array heard, before any camera sees it
+  var doaG=new THREE.Group(); doaG.visible=false; scene.add(doaG);
+  var doa=new THREE.Mesh(new THREE.RingGeometry(1.2,16,48,1,-Math.PI/10,Math.PI/5),
+    new THREE.MeshBasicMaterial({color:0xe0a33e,transparent:true,opacity:0.22,side:THREE.DoubleSide,depthWrite:false}));
+  doa.rotation.x=-Math.PI/2; doaG.add(doa);
   function ringLine(r,col,dashed){ var pts=new THREE.EllipseCurve(0,0,r,r,0,Math.PI*2,false,0).getPoints(160).map(function(p){return new THREE.Vector3(p.x,0.04,p.y);});
     var geo=new THREE.BufferGeometry().setFromPoints(pts); var mat=dashed?new THREE.LineDashedMaterial({color:col,dashSize:0.5,gapSize:0.5,transparent:true,opacity:0.7}):new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.5});
     var l=new THREE.LineLoop(geo,mat); if(dashed) l.computeLineDistances(); return l; }
@@ -260,12 +317,10 @@
   // ---------- tracks (dashed lines on the ground) ----------
   function track(points,col,op){ var pts=points.map(function(p){return new THREE.Vector3(p[0],p[1]||0.06,p[2]);}); var l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineDashedMaterial({color:col,dashSize:0.7,gapSize:0.5,transparent:true,opacity:op||0.85})); l.computeLineDistances(); l.visible=false; scene.add(l); return l; }
   function circleTrack(cx,cz,r,y,col){ var pts=[]; for(var i=0;i<=96;i++){ var a=i/96*Math.PI*2; pts.push([cx+Math.cos(a)*r,y,cz+Math.sin(a)*r]); } return track(pts,col,0.7); }
-  var trkSubject=track([[0,0.06,0],[-11,0.06,-4]],0xd7262e);
-  var trkSearch=track([[0,0.06,0],[-7,0.06,-4],[-14,0.06,2],[-19,0.06,3]],0x3e75c3);
-  var trkOrbit=circleTrack(-8,8,5,3.2,0x3e75c3);
-  var trkSite=circleTrack(15,-16,8,5.5,0x3e75c3);
+  var trkContact=track([[0,0.06,0],[-4.2,0.06,12.05]],0xd7262e);
+  var trkSearch=track([[0,0.06,0],[-8,0.06,-3],[-14,0.06,-6],[-17,0.06,-2]],0x3e75c3);
+  var trkYard=circleTrack(-17,-2,7.5,6.5,0x3e75c3);
   var trkHostile=track([[-34,9,-30],[-4,7,-4]],0xd7262e);
-  var trkIntercept=track([[0,2.1,0],[-6,6.5,-6]],0x39c07a);
   var mesh=[[-16,-10],[-13,12],[11,13],[15,-7],[20,8]].map(function(p){ return track([[0,2.2,0],[p[0],2.2,p[1]]],0x39c07a,0.6); });
   mesh.push(track([[-16,2.2,-10],[-13,2.2,12]],0x39c07a,0.4)); mesh.push(track([[15,2.2,-7],[20,2.2,8]],0x39c07a,0.4));
 
@@ -276,30 +331,50 @@
 
   // ---------- missions ----------
   var MODES=[
-    {label:'Scan & track',h:'1 · Scan and track',
-     p:'The camera pans a full 360° and tilts while the vehicle drives, and the acoustic sensor listens. The system flags a person, a vehicle or a plate and holds the track while the crew keeps driving.',
-     d:[['SYSTEM','Person at the fence line, 2 o\u2019clock, moving along the perimeter.'],['OPERATOR','Show me.'],['SYSTEM','On screen, thermal. One person, carrying a bag. Vehicle behind the loading dock, no plate this angle.'],['OPERATOR','Track him. Send the clip to dispatch.']],
-     show:{urban:1,fence:1,subject:1,walker:1},tracks:[trkSubject],look:[-9,4],feed:{target:'walker',lab:'PERSON · 0.91',bl:'TRACK COMMANDED',fov:16}},
-    {label:'Drone search',h:'2 · Drone search beyond line of sight',
-     p:'When the subject goes behind a building or a berm, the ground camera loses it. Eagle 1 launches from the roof on a word, searches, and reports a match with a confidence level, so the crew keeps its distance.',
-     d:[['SYSTEM','Lost visual behind the dock.'],['OPERATOR','Send Eagle 1, search west.'],['SYSTEM','Eagle 1 up. Vehicle match, 80 percent, 2 o\u2019clock.']],
-     show:{urban:1,fence:1,subject:1,e1:1,walker:1},tracks:[trkSearch],fly:{e1:{from:[-1.35,2.4,0.35],to:[-19,5.5,3],dur:4000}},feed:{target:'e1view',lab:'VEHICLE · 0.80',bl:'EAGLE 1 · SEARCH',fov:26}},
-    {label:'Vehicle inspection',h:'3 · Vehicle inspection at a stop',
-     p:'At a checkpoint or after a stop, Eagle 1 circles the subject vehicle and reports every side, including the roof and anything the roof camera cannot reach. The officer stays back and keeps hands free.',
-     d:[['OPERATOR','Inspect this vehicle.'],['SYSTEM','Circling. Rear left tire low. Plate unreadable from ground sensor; reading from above.'],['SYSTEM','Roof clear. Clip saved to the incident.']],
-     show:{fence:1,stopped:1,e1:1},tracks:[trkOrbit],orbit:{cx:-8,cz:8,r:5,y:3.2,speed:0.9},look:[-8,8],feed:{target:'e1view',lab:'VEHICLE · INSPECTION',bl:'EAGLE 1 · ORBIT',fov:30}},
-    {label:'Site inspection',h:'4 · Site inspection while idle',
-     p:'Parked at a refinery, substation or depot, the same vehicle keeps working. Eagle 1 flies inspection rounds over tanks, pipelines and fences and reports what has changed. Inspection pauses the moment a threat appears, then resumes.',
-     d:[['SYSTEM','Round complete. Hatch open on tank 4; fence damaged, north corner.'],['OPERATOR','Send the clip to the control room. Fly it again in an hour.']],
-     show:{site:1,fence:1,e1:1},tracks:[trkSite],orbit:{cx:15,cz:-16,r:8,y:5.5,speed:0.6},look:[10,-12],feed:{target:'e1view',lab:'TANK 4 · HATCH OPEN',bl:'EAGLE 1 · INSPECTION ROUND',fov:34}},
-    {label:'Detect & intercept',h:'5 · Drone detect and intercept',
-     p:'The acoustic sensor hears what no camera can see. The camera acquires, and on command Eagle 2 launches and shadows the target at standoff. The system identifies and reports; the operator decides: follow, engage or recall.',
-     d:[['SYSTEM','Unknown aircraft, 2 o\u2019clock, high. Small quad, closing.'],['OPERATOR','Follow.'],['SYSTEM','Eagle 2 airborne, following. Commercial quad, no visible payload.'],['OPERATOR','Recall.']],
-     show:{site:1,fence:1,hx:1,e2:1},tracks:[trkHostile,trkIntercept],fly:{hx:{from:[-34,9,-30],to:[-4,7,-4],dur:7000},e2:{from:[-1.35,2.4,-0.45],to:[-6,6.5,-6],dur:3500}},look:[-8,-8],feed:{target:'hx',lab:'AIRCRAFT · SMALL QUAD',bl:'FOLLOW · AWAITING DECISION',fov:12}},
-    {label:'Connected fleet',h:'6 · Connected fleet',
+    {label:'Night patrol',h:'1 · Night patrol · PTZ detection',
+     p:'On patrol after dark the camera sweeps a full 360° while the crew drives. Thermal picks a person out of cover that headlights and the naked eye go straight past. The system speaks up inside the cab, and the crew decides what happens next.',
+     show:{urban:1,fence:1,hedge:1,walker:1},tracks:[trkContact],look:[-6,8],zoom:0.8,
+     legend:[['#3E75C3','PTZ 360° SCAN'],['#D7262E','CONTACT · PERSON'],['#E0A33E','ACOUSTIC']],
+     feed:{target:'walker',lab:'PERSON · 0.91',bl:'THERMAL · CONTACT',fov:13},
+     d:[[0,'SYSTEM','Movement, two o’clock, forty metres. Person in the treeline, not moving.',
+         {alert:'PERSON · 2 O’CLOCK · 40 m',ptz:'slew',target:'walker'}],
+        [4200,'OPERATOR','Show me.',{feed:1}],
+        [6600,'SYSTEM','On screen, thermal. One person, crouched behind the hedge. No vehicle with them.',{}],
+        [11800,'OPERATOR','Mark it. Keep the camera on him.',{ptz:'track',bl:'TRACK COMMANDED'}]]},
+    {label:'Recon search',h:'2 · Recon drone search',
+     p:'When the crew needs eyes somewhere they cannot drive, Eagle 1 launches from the roof on a word and searches for the vehicle they describe. It reports what it finds with a confidence, and rules out what it is not.',
+     legend:[['#3E75C3','EAGLE 1 · SEARCH PATTERN'],['#D7262E','CANDIDATE VEHICLE']],
+     show:{urban:1,fence:1,candA:1,candB:1,e1:1},tracks:[trkSearch,trkYard],
+     orbit:{cx:-17,cz:-2,r:7.5,y:6.5,speed:0.5},look:[-15,-2],
+     feed:{from:'e1',target:'candA',lab:'SEDAN · NOT A MATCH',bl:'EAGLE 1 · SEARCHING',fov:24},
+     d:[[0,'OPERATOR','Eagle 1, launch. Search the yard for a white four-by-four.',
+         {launch:'e1',mission:'MISSION · SEARCH YARD · WHITE 4X4'}],
+        [3600,'SYSTEM','Eagle 1 up. Searching the yard now.',{feed:1}],
+        [7000,'SYSTEM','Two vehicles down there. The first is a dark sedan, not a match.',
+         {feedTarget:'candA',lab:'SEDAN · NOT A MATCH'}],
+        [12000,'SYSTEM','Second one matches, eighty percent. White four-by-four, north side of the yard.',
+         {feedTarget:'candB',lab:'4X4 · MATCH 0.80',alert:'MATCH 0.80 · WHITE 4X4',bl:'EAGLE 1 · HOLDING'}],
+        [17500,'OPERATOR','Hold overhead. Send me the clip.',{}]]},
+    {label:'Detect & intercept',h:'3 · Acoustic detect, then intercept',
+     p:'The acoustic array hears an aircraft no camera has seen yet and gives a bearing. The camera turns to it, acquires and classifies. The crew is told, and the crew decides: follow at standoff, or let it go.',
+     legend:[['#E0A33E','ACOUSTIC · BEARING'],['#D7262E','UNKNOWN AIRCRAFT'],['#39C07A','EAGLE 2 · STANDOFF']],
+     show:{urban:1,fence:1,hx:1,e2:1},tracks:[trkHostile],look:[-8,-8],
+     fly:{hx:{from:[-34,9,-30],to:[-4,7,-4],dur:13000}},
+     feed:{target:'hx',lab:'SMALL QUAD · 0.84',bl:'ACOUSTIC CUE',fov:11},
+     d:[[0,'SYSTEM','Aircraft heard, bearing three-one-two, closing.',
+         {alert:'ACOUSTIC · DOA 312° · 68 dB',acoustic:11000}],
+        [3800,'OPERATOR','Point the camera at it.',{ptz:'slew',target:'hx'}],
+        [6400,'SYSTEM','Camera on it. Small quad, four hundred metres out, ninety up.',{feed:1,ptz:'track'}],
+        [11200,'OPERATOR','Follow it.',{launch:'e2',mission:'MISSION · FOLLOW AT STANDOFF',bl:'EAGLE 2 · SHADOWING'}],
+        [15000,'SYSTEM','Eagle 2 airborne, shadowing at standoff. Commercial quad, no visible payload.',{}],
+        [20000,'OPERATOR','Recall.',{recall:'e2',bl:'EAGLE 2 · RETURNING'}]]},
+    {label:'Connected fleet',h:'4 · Connected fleet',
      p:'Every vehicle works alone with no network. When a link is available, a whole fleet shares one picture: vehicles pass clips and alerts to each other and to a command centre, and take instructions back.',
-     d:[['SYSTEM','Clip and position sent to the command centre and Vehicle 2.'],['COMMAND','Vehicle 2, move to the east gate and hold.']],
-     show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,feed:{target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24}}
+     legend:[['#39C07A','FLEET LINK'],['#3E75C3','OWN VEHICLE']],
+     show:{site:1,fence:1,cmd:1,fleet:1},tracks:mesh,look:[2,2],zoom:1.35,
+     feed:{target:'cmd',lab:'LINK · 5 VEHICLES',bl:'CLIPS · ALERTS · ORDERS',fov:24},
+     d:[[0,'SYSTEM','Clip and position sent to the command centre and Vehicle 2.',{feed:1,mission:'LINK · 5 VEHICLES'}],
+        [4200,'COMMAND','Vehicle 2, move to the east gate and hold.',{}]]}
   ];
   // ---------- PTZ feed camera ----------
   var ptzCam=new THREE.PerspectiveCamera(22,16/9,0.6,300);
@@ -308,31 +383,35 @@
   document.getElementById('btn-eo').addEventListener('click',function(){ thermalOn=false; this.setAttribute('aria-pressed','true'); document.getElementById('btn-th').setAttribute('aria-pressed','false'); feedTL.textContent='PTZ · DAY / EO'; });
   var tabs=document.querySelector('.tabs');
   MODES.forEach(function(m,i){ var b=document.createElement('button'); b.textContent=(i+1)+' · '+m.label; b.setAttribute('aria-pressed',i===0?'true':'false'); b.addEventListener('click',function(){ setMode(i,true); }); tabs.appendChild(b); m.btn=b; });
-  var allTracks=[trkSubject,trkSearch,trkOrbit,trkSite,trkHostile,trkIntercept].concat(mesh);
+  var allTracks=[trkContact,trkSearch,trkYard,trkHostile].concat(mesh);
 
   var cur=-1,t0=0,paused=false,orbitPhase=0,look=new THREE.Vector3(0,1,0),lookT=new THREE.Vector3(0,1,0),zoomT=1,zoom=1;
   function setMode(i,manual){
     if(i===cur) return; cur=i; t0=performance.now(); orbitPhase=0; var m=MODES[i];
     MODES.forEach(function(x,j){ x.btn.setAttribute('aria-pressed',String(i===j)); });
     urban.visible=!!m.show.urban; site.visible=!!m.show.site; fenceG.visible=!!m.show.fence; cmd.visible=!!m.show.cmd;
-    subject.visible=!!m.show.subject; stopped.visible=!!m.show.stopped; fleet.forEach(function(c){ c.visible=!!m.show.fleet; });
-    walker.visible=!!m.show.walker; e1.visible=!!m.show.e1; e2.visible=!!m.show.e2; hx.visible=!!m.show.hx;
-    feedLab.textContent=(m.feed&&m.feed.lab)||''; feedBL.textContent=(m.feed&&m.feed.bl)||''; feedBox.style.display=m.feed?'block':'none'; eagle1Dock.visible=!m.show.e1; eagle2Dock.visible=!m.show.e2;
+    hedge.visible=!!m.show.hedge; candA.visible=!!m.show.candA; candB.visible=!!m.show.candB;
+    fleet.forEach(function(c){ c.visible=!!m.show.fleet; }); walker.visible=!!m.show.walker; hx.visible=!!m.show.hx;
+    restartScene(m);
+    feedLab.textContent=(m.feed&&m.feed.lab)||''; feedBL.textContent=(m.feed&&m.feed.bl)||''; feedBox.style.display=m.feed?'block':'none';
     allTracks.forEach(function(t){ t.visible=false; }); (m.tracks||[]).forEach(function(t){ t.visible=true; });
     lookT.set((m.look||[0,0])[0]*0.35,1,(m.look||[0,0])[1]*0.35); zoomT=m.zoom||1;
     document.getElementById('hud-h').textContent=m.h; document.getElementById('hud-p').textContent=m.p;
-    var d=document.getElementById('hud-d'); d.innerHTML='';
-    m.d.forEach(function(r){ var w=document.createElement('div'); w.className='w'; w.textContent=r[0]; var t=document.createElement('div'); t.className=r[0]==='OPERATOR'?'o':'s'; t.textContent='\u201c'+r[1]+'\u201d'; d.appendChild(w); d.appendChild(t); });
-    if(manual){ paused=true; clearTimeout(setMode._t); setMode._t=setTimeout(function(){ paused=false; t0=performance.now(); },14000); }
+    var lg=document.querySelector('.legend'); lg.innerHTML='';
+    (m.legend||[]).forEach(function(r){ var sp=document.createElement('span');
+      sp.innerHTML='<b style="background:'+r[0]+'"></b>'+r[1]; lg.appendChild(sp); });
+    if(manual){ paused=true; clearTimeout(setMode._t);
+      setMode._t=setTimeout(function(){ paused=false; },DUR+1200); }
   }
 
   // ---------- camera control (drag to orbit, wheel to zoom) ----------
   var az=0.72, el=0.52, dist=34, dragging=false, lx=0, ly=0, autoAz=0;
   stage.addEventListener('pointerdown',function(e){ dragging=true; lx=e.clientX; ly=e.clientY; paused=true; });
-  window.addEventListener('pointerup',function(){ dragging=false; setTimeout(function(){ paused=false; t0=performance.now(); },6000); });
+  window.addEventListener('pointerup',function(){ dragging=false; setTimeout(function(){ paused=false; },6000); });
   window.addEventListener('pointermove',function(e){ if(!dragging) return; az-=(e.clientX-lx)*0.006; el=Math.max(0.22,Math.min(1.2,el+(e.clientY-ly)*0.004)); lx=e.clientX; ly=e.clientY; });
   stage.addEventListener('wheel',function(e){ e.preventDefault(); dist=Math.max(16,Math.min(70,dist+e.deltaY*0.03)); },{passive:false});
-  stage.addEventListener('pointerenter',function(){ paused=true; }); stage.addEventListener('pointerleave',function(){ if(!dragging){ paused=false; t0=performance.now(); } });
+  stage.addEventListener('pointerenter',function(){ paused=true; }); stage.addEventListener('pointerleave',function(){ if(dragging) return; paused=false;
+    if(performance.now()-t0>DUR){ t0=performance.now(); restartScene(MODES[cur]); } });
 
   var W=1,H=1;
   var DESIGN_ASPECT=16/9, BASE_FOV=32, HALF_H=Math.atan(Math.tan(BASE_FOV*Math.PI/360)*DESIGN_ASPECT);
@@ -347,21 +426,102 @@
   window.addEventListener('resize',resize); resize(); setTimeout(resize,250); setTimeout(resize,1200);
 
   var DUR=9500, ptzAngle=0, last=performance.now();
+  // ---------- in-cab voice loop: what is said drives what the kit does ----------
+  var beatIx=-1, ptzMode='scan', ptzTgt=null, feedOn=false, feedTgt=null, launched={}, recalled={}, doaUntil=0;
+  var vState=document.getElementById('v-state'), vWho=document.getElementById('v-who'), vText=document.getElementById('v-text'),
+      vLog=document.getElementById('v-log'), vAlert=document.getElementById('v-alert'), vAlertT=document.getElementById('v-alert-t'),
+      missionEl=document.getElementById('mission'), waveBars=[];
+  (function(){ var w=document.getElementById('v-wave');
+    for(var i=0;i<16;i++){ var b=document.createElement('i'); w.appendChild(b); waveBars.push(b); } })();
+  var OBJ={walker:walker,hx:hx,candA:candA,candB:candB,cmd:cmd,e1:e1,e2:e2};
+  function aimAngle(o){ var p=new THREE.Vector3(); o.getWorldPosition(p); return Math.atan2(p.z-host.position.z,p.x-host.position.x); }
+  function wrapPi(a){ while(a>Math.PI)a-=Math.PI*2; while(a<-Math.PI)a+=Math.PI*2; return a; }
+  // a drone the operator launches later starts the scene on its dock
+  function restartScene(m){
+    var pend={}; m.d.forEach(function(b){ if(b[3]&&b[3].launch) pend[b[3].launch]=true; });
+    e1.visible=!!m.show.e1&&!pend.e1; e2.visible=!!m.show.e2&&!pend.e2;
+    eagle1Dock.visible=!e1.visible; eagle2Dock.visible=!e2.visible;
+    resetVoice(m);
+  }
+  function resetVoice(m){
+    beatIx=-1; feedOn=false; feedTgt=null; ptzMode='scan'; ptzTgt=null; launched={}; recalled={}; doaUntil=0;
+    DUR=m.d[m.d.length-1][0]+5200;
+    vAlert.hidden=true; missionEl.hidden=true; vLog.innerHTML=''; vText.textContent=''; vWho.textContent='';
+    vState.className='vstate'; vState.textContent='STANDING BY';
+  }
+  function applyBeat(m,i,now){
+    var b=m.d[i], a=b[3]||{}, op=b[1]==='OPERATOR';
+    vWho.className='vwho '+(op?'op':'sys'); vWho.textContent=b[1];
+    vText.className='vtext '+(op?'op':'');
+    vState.className='vstate '+(op?'listen':'speak'); vState.textContent=op?'LISTENING':'SPEAKING';
+    vLog.innerHTML=''; m.d.slice(Math.max(0,i-2),i).forEach(function(r){
+      var d=document.createElement('div'); d.textContent=r[1]+' · '+r[2]; vLog.appendChild(d); });
+    if(a.alert){ vAlertT.textContent=a.alert; vAlert.hidden=false; }
+    if(a.mission){ missionEl.textContent=a.mission; missionEl.hidden=false; }
+    if(a.ptz){ ptzMode=a.ptz; if(a.target) ptzTgt=OBJ[a.target]; }
+    if(a.feed) feedOn=true;
+    if(a.feedTarget) feedTgt=a.feedTarget;
+    if(a.lab) feedLab.textContent=a.lab;
+    if(a.bl) feedBL.textContent=a.bl;
+    if(a.acoustic) doaUntil=now+a.acoustic;
+    if(a.launch){ launched[a.launch]=now; OBJ[a.launch].visible=true;
+      if(a.launch==='e1') eagle1Dock.visible=false; else eagle2Dock.visible=false; }
+    if(a.recall) recalled[a.recall]=now;
+  }
+  function speakVoice(m,t,now){
+    if(beatIx<0) return;
+    var b=m.d[beatIx], full=b[2], dur=Math.min(4600,300+full.length*44), k=Math.max(0,Math.min(1,(t-b[0])/dur)), live=k<1;
+    vText.textContent=full.slice(0,Math.round(full.length*k));
+    if(!live && vState.textContent!=='STANDING BY'){ vState.className='vstate'; vState.textContent='STANDING BY'; }
+    for(var i=0;i<waveBars.length;i++){
+      var amp=live?3+12*Math.abs(Math.sin(now*0.006+i*0.8)*Math.sin(now*0.0019+i*0.4)):1.4;
+      waveBars[i].style.height=(2+amp).toFixed(1)+'px';
+      waveBars[i].style.background=live?(b[1]==='OPERATOR'?'#3E75C3':'#D7262E'):'#2b3440';
+    }
+  }
   function lerp(a,b,t){ return a+(b-a)*t; }
   function ease(t){ return t<0.5?2*t*t:-1+(4-2*t)*t; }
   function frame(now){
     var rdt=(now-last)/1000, dt=Math.min(0.05,rdt); last=now; var m=MODES[cur], t=now-t0;
     document.getElementById('prog').style.width=Math.min(100,(t/DUR)*100)+'%';
-    // 360 sweep + PTZ head
-    ptzAngle+=dt*0.9; sw1.rotation.z=ptzAngle; sw2.rotation.z=ptzAngle-0.18; sw3.rotation.z=ptzAngle-0.36;
+    // voice beats first: an utterance is what starts anything below
+    var nb=-1; for(var bq=0;bq<m.d.length;bq++) if(t>=m.d[bq][0]) nb=bq;
+    if(nb!==beatIx){ beatIx=nb; if(nb>=0) applyBeat(m,nb,now); }
+    speakVoice(m,t,now);
+    // sensors: the 360 sweep runs until a command points the camera somewhere
+    if(ptzMode==='scan'){ ptzAngle+=dt*0.9; }
+    else if(ptzTgt){ var want=aimAngle(ptzTgt), off=wrapPi(want-ptzAngle);
+      if(ptzMode==='slew'){ ptzAngle+=off*Math.min(1,dt*3); if(Math.abs(off)<0.04) ptzMode='track'; } else { ptzAngle=want; } }
+    sw1.rotation.z=ptzAngle; sw2.rotation.z=ptzAngle-0.18; sw3.rotation.z=ptzAngle-0.36; sweepG.visible=(ptzMode==='scan');
     if(host.userData.ptz){ host.userData.ptz.rotation.y=-ptzAngle+Math.PI/2; host.userData.ptz.children[1].rotation.z=Math.sin(now*0.0009)*0.35; }
     var pp=((now*0.00028)%1); ping.scale.setScalar(1+pp*40); ping.material.opacity=0.5*(1-pp);
-    // drones
-    if(m.fly){ Object.keys(m.fly).forEach(function(k){ var f=m.fly[k], o={e1:e1,e2:e2,hx:hx}[k], u=ease(Math.min(1,t/f.dur)); o.position.set(lerp(f.from[0],f.to[0],u),lerp(f.from[1],f.to[1],u)+Math.sin(now*0.004)*0.08,lerp(f.from[2],f.to[2],u)); o.rotation.y=Math.atan2(f.to[0]-f.from[0],f.to[2]-f.from[2]); }); }
-    if(m.orbit){ orbitPhase+=dt*m.orbit.speed; e1.position.set(m.orbit.cx+Math.cos(orbitPhase)*m.orbit.r,m.orbit.y+Math.sin(now*0.003)*0.1,m.orbit.cz+Math.sin(orbitPhase)*m.orbit.r); e1.rotation.y=-orbitPhase; }
+    // acoustic bearing, heard before anything is seen
+    doaG.visible=now<doaUntil;
+    if(doaG.visible){ doaG.position.set(host.position.x,0.06,host.position.z); doaG.rotation.y=-aimAngle(hx);
+      doa.material.opacity=0.10+0.16*Math.abs(Math.sin(now*0.004)); }
+    // the hostile flies its own track; our drones move only once told to
+    if(m.fly){ Object.keys(m.fly).forEach(function(k){ var f=m.fly[k], o=OBJ[k];
+      var ms=(k==='hx')?t:(launched[k]?now-launched[k]:-1); if(ms<0) return; var u=ease(Math.min(1,ms/f.dur));
+      o.position.set(lerp(f.from[0],f.to[0],u),lerp(f.from[1],f.to[1],u)+Math.sin(now*0.004)*0.08,lerp(f.from[2],f.to[2],u));
+      o.rotation.y=Math.atan2(f.to[0]-f.from[0],f.to[2]-f.from[2]); }); }
+    // Eagle 1: climb off the roof, then fly the search pattern
+    if(m.orbit&&launched.e1){ var ms1=now-launched.e1;
+      if(ms1<1400){ e1.position.set(-1.35,2.4+ms1/1400*2.6,0.35); }
+      else { orbitPhase+=dt*m.orbit.speed;
+        var ob=new THREE.Vector3(m.orbit.cx+Math.cos(orbitPhase)*m.orbit.r,m.orbit.y+Math.sin(now*0.003)*0.1,m.orbit.cz+Math.sin(orbitPhase)*m.orbit.r);
+        e1.position.lerp(ob,Math.min(1,dt*1.6)); e1.rotation.y=-orbitPhase; } }
+    // Eagle 2: climb, close on the target, hold standoff, come home on the word
+    if(launched.e2){ var home=new THREE.Vector3(-1.35,2.4,-0.45), ms2=now-launched.e2;
+      if(recalled.e2){ var back=new THREE.Vector3().subVectors(home,e2.position), db=back.length();
+        if(db<0.4){ e2.visible=false; eagle2Dock.visible=true; }
+        else { e2.position.addScaledVector(back.normalize(),Math.min(11*dt,db)); e2.rotation.y=Math.atan2(back.x,back.z); } }
+      else if(ms2<1100){ e2.position.set(-1.35,2.4+ms2/1100*2.2,-0.45); }
+      else { var to=new THREE.Vector3().subVectors(hx.position,e2.position), dd=to.length();
+        e2.position.addScaledVector(to.normalize(),Math.min((dd>3.4?12:4)*dt,Math.max(0,dd-3.4)));
+        e2.rotation.y=Math.atan2(to.x,to.z); } }
     e1.children.forEach(function(c,i){ if(i>0&&c.geometry&&c.geometry.type==='CylinderGeometry') c.rotation.y+=dt*40; });
-    // walking figure along the fence
-    if(walker.visible){ var wx=-9+((now*0.00055)%1)*13; walker.position.x=wx; walker.rotation.y=Math.PI/2; var ph=now*0.008; walker.userData.limbs.forEach(function(l,i){ l.rotation.z=Math.sin(ph+(i%2?Math.PI:0))*0.55; }); }
+    // the figure in cover stays put: only a slight settle in the limbs
+    if(walker.visible){ var ph=now*0.0016; walker.userData.limbs.forEach(function(l,i){ l.rotation.z=Math.sin(ph+(i%2?Math.PI:0))*0.07; }); }
     // camera
     if(!dragging&&!paused) autoAz+=dt*0.045;
     var damp=1-Math.exp(-Math.min(0.25,rdt)*3.5);
@@ -372,11 +532,15 @@
     // main view
     renderer.setScissorTest(false); renderer.setViewport(0,0,W,H); renderer.render(scene,camera);
     // PTZ / drone feed inset, rendered from the sensor's point of view
-    if(m.feed){
-      var tgt={walker:walker,hx:hx,cmd:cmd,e1view:null}[m.feed.target], eye=new THREE.Vector3(), at=new THREE.Vector3();
+    // the feed panel opens when the operator asks for it, not before
+    feedEl.style.display=(m.feed&&feedOn)?'block':'none';
+    if(m.feed&&feedOn){
+      var fname=feedTgt||m.feed.target, tgt=OBJ[fname]||null, eye=new THREE.Vector3(), at=new THREE.Vector3();
       var hideE1=false;
-      if(m.feed.target==='e1view'){ e1.getWorldPosition(eye); eye.y-=0.45; hideE1=true; if(eye.y<2.9) eye.y=2.9; if(m.orbit){ at.set(m.orbit.cx,0.9,m.orbit.cz); } else { at.set(-11,0.9,-4); } }
-      else { host.userData.ptz.getWorldPosition(eye); tgt.getWorldPosition(at); if(m.feed.target==='walker') at.y+=1.1; if(m.feed.target==='cmd') at.set(20,2,8); }
+      if(m.feed.from==='e1'){ e1.getWorldPosition(eye); eye.y-=0.45; hideE1=true; if(eye.y<2.9) eye.y=2.9;
+        if(tgt) tgt.getWorldPosition(at); at.y+=0.9; }
+      else { host.userData.ptz.getWorldPosition(eye); if(tgt) tgt.getWorldPosition(at);
+        if(fname==='walker') at.y+=0.9; if(fname==='cmd') at.set(20,2,8); }
       ptzCam.fov=m.feed.fov||20; ptzCam.position.copy(eye); ptzCam.lookAt(at);
       var rect=feedEl.getBoundingClientRect(), sr=canvas.getBoundingClientRect();
       var fx=Math.round(rect.left-sr.left), fy=Math.round(sr.bottom-rect.bottom), fw=Math.round(rect.width), fh=Math.round(rect.height);
@@ -389,7 +553,7 @@
       if(hideE1){ e1.visible=false; }
       renderer.clear(); renderer.render(scene,ptzCam);
       if(hideE1){ e1.visible=true; }
-      if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=true; ping.visible=true; }
+      if(thermalOn){ swapBack(); scene.background=bg; scene.fog=fog; sweepG.visible=(ptzMode==='scan'); ping.visible=true; }
       renderer.setScissorTest(false); renderer.setViewport(0,0,W,H);
     }
     requestAnimationFrame(frame);
