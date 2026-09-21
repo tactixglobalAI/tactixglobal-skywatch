@@ -142,7 +142,27 @@
   .foot{margin-top:12px;font-size:10.5px;line-height:1.6;color:#6C7581;max-width:920px}
   .fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;color:var(--dim);font-size:13px;padding:20px;text-align:center}
   @media (max-width:720px){.hud{position:static;max-width:none;border:none;background:none;backdrop-filter:none;padding:12px 12px 0}.stage{aspect-ratio:1/1;min-height:0}.hint{display:none}}
+
+  /* embedded in another site: the host page already carries the logo and the headline,
+     so ?embed=1 drops ours and sits flush. ?embed=scene also drops the writeup below. */
+  html.embed{--bg:#05111F;padding:0}
+  html.embed header,html.embed h1,html.embed .lede,html.embed .foot{display:none}
+  html.embed .wrap{max-width:none;padding:14px 16px 18px}
+  html.embed .cast{margin-top:0}
+  html.embed-scene .legend,html.embed-scene .details{display:none}
 </style>
+<script>
+// run before first paint so the embedded version never flashes its own header
+(function(){
+  var q, e;
+  try{ q=new URLSearchParams(location.search); }catch(err){ return; }
+  e=q.get('embed'); if(!e) return;
+  var r=document.documentElement;
+  r.className=(r.className?r.className+' ':'')+'embed'+(e==='scene'?' embed-scene':'');
+  var bg=q.get('bg');                       // host can hand us its own background colour
+  if(bg&&/^[0-9a-fA-F]{6}$/.test(bg)) r.style.setProperty('--bg','#'+bg);
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
