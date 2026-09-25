@@ -126,11 +126,13 @@
   .cap .ic{display:none;width:14px;height:14px;flex:0 0 auto}
   .cap.op .ic-mic{display:block;fill:var(--blue)}
   .cap.sys .ic-spk{display:block;fill:var(--red)}
+  /* three lines on a phone: at embed width the longest spoken line needs them, and a two line
+     limit cut the last one mid word, which reads as breakage rather than as an abbreviation */
   .cap .vtext{flex:1 1 100%;font-size:12.5px;line-height:1.4;max-height:36px;overflow:hidden}
   .cap .vtext:not(:empty)::before{content:'\201C'}
   .cap .vtext:not(:empty)::after{content:'\201D'}
   @media (max-width:720px){.cap .vstate{display:none}}
-  @media (max-width:720px){.ovl{padding:22px 8px 8px}.cap .vtext{font-size:12px}}
+  @media (max-width:720px){.ovl{padding:22px 8px 8px}.cap .vtext{font-size:12px;max-height:52px}}
   @media (max-width:720px){.vtext{font-size:12.5px}.vtag{display:none}.vlog div{font-size:10.5px}
     .voice{border:none;background:none;padding:0;margin-top:8px}}
   .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim)}
